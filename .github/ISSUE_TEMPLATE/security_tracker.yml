@@ -1,0 +1,116 @@
+name: Security tracker (mirror)
+description: Mirror a security PR or disclosure for Linear and Slack escalation / 镜像一个安全 PR 或披露
+title: "[Security Track] CWE-<id>: <short summary>"
+labels: ["security", "pr-mirror", "tracking", "urgent"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for any PR or disclosure that affects credentials, authn/authz, data exposure,
+        supply chain, or sandbox escape. The `urgent` label routes this to high-priority
+        notifications in Slack and Linear.
+        用于凭证、认证授权、数据暴露、供应链、沙箱逃逸等安全 PR / 披露。`urgent` 标签会触发高优先级通知。
+        Do NOT include exploit details that are not already public in the upstream PR.
+        请勿写入未在 upstream PR 公开的利用细节。
+  - type: input
+    id: cwe
+    attributes:
+      label: CWE id
+      placeholder: "CWE-798"
+    validations:
+      required: true
+  - type: input
+    id: pr_url
+    attributes:
+      label: Upstream PR or advisory URL
+      placeholder: https://github.com/EverMind-AI/EverOS/pull/<number>
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Critical (full auth bypass / unauthenticated RCE / mass data loss)
+        - High (privileged data access / credential exposure / persistent compromise)
+        - Medium (limited data access / requires user interaction)
+        - Low (defense-in-depth / hardening)
+    validations:
+      required: true
+  - type: dropdown
+    id: exposure
+    attributes:
+      label: Reachability
+      description: How reachable is this in the documented quickstart / default config?
+      options:
+        - Default config (reproducible from a clean clone)
+        - Default config + network position
+        - Non-default config but documented
+        - Hypothetical / not yet reproducible
+    validations:
+      required: true
+  - type: textarea
+    id: affected
+    attributes:
+      label: Affected components
+      description: File paths, services, or versions impacted.
+      placeholder: |
+        - methods/EverCore/docker-compose.yaml (memsys-milvus-minio block)
+        - methods/EverCore/env.template
+    validations:
+      required: true
+  - type: textarea
+    id: fix_summary
+    attributes:
+      label: Proposed fix summary
+      description: One paragraph. What does the PR change? Cite the contract that makes it fail-closed.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Verification evidence
+      description: |
+        Required before closure. Show the commands and output that prove the fix works AND
+        that the unpatched state was exploitable. "No security mirror closes without evidence."
+        关闭前必填。展示证明 fix 生效以及未修复状态可利用的命令与输出。
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: residual
+    attributes:
+      label: Residual risk / follow-ups
+      description: Anything intentionally out of scope, plus follow-up issues that should be filed.
+      placeholder: |
+        - docs/installation/ still references the old default in examples; follow-up sweep needed.
+        - Consider adding a CI lint to catch hardcoded secrets in docker-compose files.
+  - type: input
+    id: linear_issue
+    attributes:
+      label: Linear issue (optional)
+      placeholder: "EVE-123"
+  - type: input
+    id: slack_thread
+    attributes:
+      label: Slack thread (optional)
+      placeholder: "https://everminddash.slack.com/archives/.../p..."
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Disclosure hygiene
+      description: Confirm before submitting.
+      options:
+        - label: This mirror contains no exploit details beyond what is already public in the upstream PR.
+          required: true
+        - label: The upstream PR or advisory link is correct and reachable.
+          required: true
+        - label: A maintainer has been pinged in Slack #bots or via Linear EVE if Severity is Critical or High.
+  - type: checkboxes
+    id: closure
+    attributes:
+      label: Closure criteria
+      options:
+        - label: Upstream PR merged, advisory published, or risk formally accepted.
+        - label: Verification evidence above reflects the merged state.
+        - label: Residual-risk follow-ups have issues filed (or explicitly waived).

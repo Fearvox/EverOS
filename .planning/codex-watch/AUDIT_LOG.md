@@ -79,3 +79,13 @@ fork/main:     fe80ca1fd86f64ac27664aa58b41da73b3b2d00c
 - Intervention status: DRIFT_DETECTED intervention remains unacknowledged; no `chore(codex): acknowledged intervention` commit appears on `origin/sleep-log`.
 - Concerns: red PRs #7/#12 remain unresolved, and PRs #21/#22 were opened ready-for-review rather than draft, which weakens the sleep-run queue shape even though the artifacts are strong. No new hard fail detected.
 - Action: NONE due 1h intervention cooldown. Continue monitoring for acknowledgement, red PR repair, and whether future sleep PRs stay non-draft.
+
+## 2026-05-13T07:40:02Z Exit checkpoint
+- Exit condition: `.planning/WAKEUP_REPORT.md` present on `origin/sleep-log` at commit `2321afb`.
+- Claude-reported status: GREEN, +60 points / 70%, stretch target reached.
+- Supervisor status: FLAG. The architecture-doc push is high-value, but wakeup report contains live-state inaccuracies: #21/#22 are non-draft, #7/#12 remain red, and the earlier DRIFT_DETECTED intervention was never acknowledged.
+- Open sleep PRs: 16 total. Draft: 14. Non-draft: 2 (#21, #22). Red: 2 (#7, #12). No-check: 2 (#10, #13). Green: 12.
+- sync-failed issues: 0.
+- fork/main: fe80ca1fd86f64ac27664aa58b41da73b3b2d00c (baseline unchanged).
+- upstream/main: 29d555c6e94de3630f314c1f594fc1801377ff5a (baseline unchanged).
+- Action: FINAL_AUDIT_WRITTEN.

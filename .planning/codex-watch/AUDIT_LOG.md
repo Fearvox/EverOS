@@ -37,3 +37,16 @@ fork/main:     fe80ca1fd86f64ac27664aa58b41da73b3b2d00c
 - upstream/main: 29d555c6e94de3630f314c1f594fc1801377ff5a (baseline unchanged).
 - Concerns: PR #7 remains red from the broken `[EVE-<N>](url)` link; PR #10 lacks CI because its paths do not trigger Docs.
 - Action: NONE. No STUCK_CHECK or HARD_FAIL. Watch next iter for PR #7 repair and for verified evidence on Dependabot audit.
+
+## 2026-05-13T06:53:30Z Watch checkpoint
+- Heartbeat: fresh, iter 8, task=stale-issue-bot, tier=T2.
+- Latest logged iter: Iter 7 `markdown-lint-workflow`, PR #12.
+- Latest iter self-score: +4.
+- Independent latest score: +0 to +1 provisional. The workflow addition is real, but markdownlint failed with 1218 existing-repo errors, so it is not owner-mergeable.
+- Cumulative self-score: +17 (27%); still mixes score points and percent labels.
+- Open draft PRs: 6 (#7 red, #8 green, #9 green, #10 no checks, #11 green, #12 red).
+- sync-failed issues: 0.
+- fork/main: fe80ca1fd86f64ac27664aa58b41da73b3b2d00c (baseline unchanged).
+- upstream/main: 29d555c6e94de3630f314c1f594fc1801377ff5a (baseline unchanged).
+- Concerns: score drift is now actionable. PR #7 remains red and PR #12 banks +4 despite red CI. This risks morning owner review noise.
+- Action: INTERVENTION_QUEUED:DRIFT_DETECTED.

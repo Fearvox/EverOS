@@ -109,3 +109,36 @@
 - Score delta: +3
 - Evidence: review artifact written; it flags private path references, unverified market/runtime claims, and EverCore API method mismatch risk with live repo evidence.
 - Next decision: Continue DX/CI/docs hygiene verification and public-surface safety scans.
+
+## Iter 11 - post-review-remote-checks - 2026-05-13T09:35:20Z
+
+- Intent: Verify #24 after the May Agent review artifact push, not just the earlier docs-gate commit.
+- Scope bucket: ci
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,commits,body,updatedAt,url`; `git diff --name-only origin/main...HEAD | sort`; `git log --format='%h %s%n%b' origin/main..HEAD`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: latest #24 Docs `markdown-lint` and `links` checks both concluded `SUCCESS`; branch diff has 10 files; all four commits include the required co-author trailer once.
+- Next decision: Update #24 body so PR gate includes changed files, tests, risks, and rollback.
+
+## Iter 12 - pr-body-update - 2026-05-13T09:36:02Z
+
+- Intent: Bring #24 PR body up to the runbook PR gate after adding review artifacts.
+- Scope bucket: curator
+- Files touched: none in git; fork-scoped PR metadata updated
+- Commands run: `gh pr edit 24 --repo Fearvox/EverOS --body-file <tempfile>`
+- Gate result: PASS
+- Score delta: +1
+- Evidence: #24 body now includes `Changed Files`, `Validation`, `Risks`, `Rollback`, and `Run Notes`.
+- Next decision: Re-read the PR body from GitHub and assert required sections.
+
+## Iter 13 - pr-body-gate-proof - 2026-05-13T09:36:02Z
+
+- Intent: Verify the updated PR body from GitHub rather than relying on the local edit command.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,body,url`; Python assertion that body contains `## Changed Files`, `## Validation`, `## Risks`, `## Rollback`, and `Fearvox/EverOS:main`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: command printed `PR body gate ok.`; #24 remains draft and `CLEAN` with Docs checks green.
+- Next decision: Run public-surface safety and hard-boundary checks over branch artifacts.

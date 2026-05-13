@@ -67,3 +67,12 @@
 | #16 strategy gate | FLAG | Draft and links pass, but contains private memory-path reference and unverified external claims. |
 | #17-#22 packet review | FLAG | Draft PRs with green links; source docs are ordered, but index must land last and several claims need evidence. |
 | `MAY_AGENT_REVIEW.md` required fields | PASS | Artifact includes merge order, contradictions, missing evidence, upstream-pitch framing, and what should not be merged. |
+
+## PR Body Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Draft state | PASS | #24 reports `isDraft: true`. |
+| Base target | PASS | PR body and `gh pr view` confirm target is `Fearvox/EverOS:main`. |
+| Required body sections | PASS | Python assertion found `Changed Files`, `Validation`, `Risks`, and `Rollback` sections. |
+| Latest remote checks | PASS | #24 latest `markdown-lint` and `links` checks concluded `SUCCESS` after commit `2174b39`. |

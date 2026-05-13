@@ -12,6 +12,9 @@
 | 8 | may-agent-strategy-gate | +1 | +16 | #16 coherent but flagged for private path and unverified claims. |
 | 9 | may-agent-packet-review | +2 | +18 | #17-#22 reviewed as a dependent draft packet. |
 | 10 | may-agent-review-artifact | +3 | +21 | Required May Agent review artifact created. |
+| 11 | post-review-remote-checks | +2 | +23 | #24 checks green after review artifact push. |
+| 12 | pr-body-update | +1 | +24 | #24 body updated with required PR-gate sections. |
+| 13 | pr-body-gate-proof | +2 | +26 | PR body sections verified from GitHub. |
 
 ## Current Assessment
 
@@ -20,3 +23,4 @@
 - Queue-shape risk: #21, #22, and #23 are now draft.
 - New dependency risk: #23 is quarantined draft; older dependabot #1 is a separate non-draft/no-checks risk for owner review.
 - May Agent packet: do not merge as-is; review artifact lists exact blockers and safe order.
+- PR gate: #24 is draft, targets `Fearvox/EverOS:main`, and has changed files, validation, risks, and rollback in the body.

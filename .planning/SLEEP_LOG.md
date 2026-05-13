@@ -49,3 +49,10 @@ PR: #10
 Score: +2 [Created .github/CODEOWNERS (22 lines) mapping 11 fork-owned paths to @Fearvox. Created .github/dependabot.yml (99 lines) with 6 update streams (pip x4, npm x2), weekly Monday 09:00 CST. Config-only iteration; no prose content.]
 Cumulative: +11 (22%)
 Next planned: dependabot-audit
+
+## Iter 6 [2026-05-13T06:47Z–06:50Z] tier=T1 task=dependabot-audit
+Branch: sleep-iter-6-dependabot-audit
+PR: #11
+Score: +2 [Full audit of 127 Dependabot alerts (64 open, 63 fixed) via live GitHub API. 64 unique vulnerability families across pip (126) and npm (1). 2 critical (langchain-core serialization + NLTK zip slip), 24 high, 23 medium, 15 low. Hotspot analysis: aiohttp (15), nltk (7), langchain* (8), urllib3 (4). 5-section doc with severity-by-family enumeration, dependency hotspot table, and 4-tier recommendation.]
+Cumulative: +13 (22%)
+Next planned: markdown-lint-workflow

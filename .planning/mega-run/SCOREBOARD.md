@@ -21,6 +21,9 @@
 | 17 | latest-remote-checks | +2 | +33 | #24 checks green after boundary audit commit. |
 | 18 | evercore-quickstart-inventory | +1 | +34 | Quick-start files found; `.env.example` absent, `env.template` present. |
 | 19 | evercore-dry-run-gates | +1 | +35 | Compose config and uv dry-run pass; full infra skipped. |
+| 20 | sync-failed-issue-check | +1 | +36 | No open `sync-failed` issues. |
+| 21 | open-pr-matrix-final-prep | +1 | +37 | Full PR matrix captured; #1 remains extra unchecked dependency risk. |
+| 22 | owner-gate-checks | +2 | +39 | #24 latest checks green after reproducibility commit. |
 
 ## Current Assessment
 
@@ -32,3 +35,4 @@
 - PR gate: #24 is draft, targets `Fearvox/EverOS:main`, and has changed files, validation, risks, and rollback in the body.
 - Hard-boundary gate: origin/main and upstream/main SHA values remain unchanged from baseline.
 - Reproducibility gate: EverCore quick-start is mostly checkable, but local Docker uses `docker-compose` rather than `docker compose`, and full install/test is heavy.
+- Owner handoff prep: no open `sync-failed` issues; PR matrix refreshed.

@@ -97,3 +97,11 @@
 | Local compose command | FLAG | `docker compose` subcommand is unavailable locally; standalone `docker-compose` exists. |
 | `uv sync --locked --dry-run` | PASS | Dry-run resolves 204 packages without installing; full sync skipped because it would install 193 packages. |
 | `make -n test` / `make -n lint` | PASS | Make dry-runs expand to pytest, black, and i18n check commands. |
+
+## Owner Handoff Prep Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Open `sync-failed` issues | PASS | `gh issue list --label sync-failed` returned `[]`. |
+| Open PR matrix | FLAG | Named queue is handled, but #1 remains an older non-draft dependency PR with zero checks. |
+| #24 latest checks | PASS | Latest `markdown-lint` and `links` checks both concluded `SUCCESS`; PR is `CLEAN` and draft. |

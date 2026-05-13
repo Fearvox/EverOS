@@ -208,3 +208,36 @@
 - Score delta: +1
 - Evidence: standalone `docker-compose` exists and `config` passes with an obsolete `version` warning; `docker compose` subcommand is unavailable locally; `uv sync --locked --dry-run` resolves 204 packages and would install 193 packages, so full install/test run was skipped as heavy infra.
 - Next decision: Record skipped-heavy-infra rationale in gate results and continue final owner-flow reduction.
+
+## Iter 20 - sync-failed-issue-check - 2026-05-13T09:42:15Z
+
+- Intent: Re-run the final-gate check for open `sync-failed` issues.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `gh issue list --repo Fearvox/EverOS --label sync-failed --state open --limit 50 --json number,title,state,labels,url`
+- Gate result: PASS
+- Score delta: +1
+- Evidence: command returned `[]`; no open `sync-failed` issues found.
+- Next decision: Re-run full open PR matrix for morning handoff.
+
+## Iter 21 - open-pr-matrix-final-prep - 2026-05-13T09:42:15Z
+
+- Intent: Capture current open PR queue before final reduction.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/OWNER_BRIEF.md`
+- Commands run: `gh pr list --repo Fearvox/EverOS --state open --limit 50 --json number,title,isDraft,headRefName,mergeStateStatus,statusCheckRollup,updatedAt,url`
+- Gate result: FLAG
+- Score delta: +1
+- Evidence: #24 is draft; #23 is draft with zero checks; #16-#22 are draft; #7/#12 remain historically red but covered by #24; older dependabot #1 remains non-draft with zero checks and is outside the named queue.
+- Next decision: Wait for latest #24 links check to finish after the reproducibility commit.
+
+## Iter 22 - owner-gate-checks - 2026-05-13T09:42:20Z
+
+- Intent: Verify #24 checks are green after the latest pushed reproducibility evidence.
+- Scope bucket: ci
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,updatedAt,url`; `sleep 5`; repeated `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,updatedAt,url`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: #24 reports `CLEAN`; latest `markdown-lint` and `links` checks both concluded `SUCCESS`.
+- Next decision: Reduce owner brief to a 10-line morning action list.

@@ -84,3 +84,10 @@ PR: #15
 Score: +2 [Cloned NousResearch/hermes-agent (147k★, MIT) to /tmp/hermes-recon. Mapped 6 integration seams: memory provider ABC, session store SQLite→tenant, tool registry, context engine, plugin discovery, environment sandboxes. 207-line doc with concrete file paths. Key finding: Hermes memory layer is ABC-based with 8 implementations — Evercore swap is a drop-in provider replacement.]
 Cumulative: +25 (35%)
 Next planned: may-agent-vision
+
+## Iter 11 [2026-05-13T07:01Z–07:03Z] tier=T5 task=may-agent-vision
+Branch: sleep-iter-11-may-vision
+PR: #16
+Score: +5 [Architecture doc: 00-vision.md (141 lines, 9 sections). Decision matrix for 8 key architecture choices (Fork Hermes vs alternatives, Rust runtime rationalization, Evercore kernel integration). Success criteria table for May 31 with threshold/stretch metrics. Target market analysis (Chinese enterprise + international). Top 5 risk log with mitigations. Cites real files: memory_manager.py, EverMem Bench, EvoAgent Bench, Hermes recon.]
+Cumulative: +30 (40%)
+Next planned: may-agent-architecture

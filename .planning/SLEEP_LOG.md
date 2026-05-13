@@ -132,3 +132,10 @@ PR: #21
 Score: +5 [90-risk-log.md (216 lines, 7 sections). 7 risks with severity matrix, likelihood, owner, status, detailed mitigations, and escalation triggers: R1 Rust team buy-in (high/medium), R2 Hermes upstream churn (high/high), R3 邓Sir bandwidth (medium/high), R4 Python GIL contention (medium/medium), R5 cross-platform sandbox (medium/high), R6 May 31 deadline (high/high), R7 Hermes community reaction (low/low). Risk heatmap. Weekly review cadence through May 31.]
 Cumulative: +55 (65%)
 Next planned: may-agent-INDEX
+
+## Iter 17 [2026-05-13T07:21Z–07:23Z] tier=T5 task=may-agent-INDEX
+Branch: sleep-iter-17-may-agent-index
+PR: #22
+Score: +5 [INDEX.md (153 lines, 8 sections). Document manifest for 6 core docs (1,377 lines total). 3 reading paths: Executive (30 min), Developer (2 hrs), Reviewer (60 min). Cross-document reference matrix (26 topics × 6 docs). 10 key decisions with source locations. Document relationship diagram. Gap analysis (11 items). Status dashboard. Reading time estimates for each path.]
+Cumulative: +60 (70%)
+**Exit condition E4: cumulative >= baseline + 60%. Stretch target reached.**

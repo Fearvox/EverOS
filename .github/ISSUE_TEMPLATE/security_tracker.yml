@@ -105,7 +105,7 @@ body:
           required: true
         - label: The upstream PR or advisory link is correct and reachable.
           required: true
-        - label: A maintainer has been pinged in Slack #bots or via Linear EVE if Severity is Critical or High.
+        - label: A maintainer has been pinged in Slack #p-evermind-dash or via Linear EVE if Severity is Critical or High.
   - type: checkboxes
     id: closure
     attributes:

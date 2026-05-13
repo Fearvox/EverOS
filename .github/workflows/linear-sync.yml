@@ -8,9 +8,15 @@ permissions:
   issues: write
   contents: read
 
+concurrency:
+  group: linear-sync-issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
 jobs:
   sync:
-    if: contains(github.event.issue.labels.*.name, 'pr-mirror')
+    if: |
+      contains(github.event.issue.labels.*.name, 'pr-mirror') &&
+      (github.event.action == 'opened' || github.event.label.name == 'pr-mirror')
     runs-on: ubuntu-latest
     steps:
       - name: Mirror GitHub issue to Linear

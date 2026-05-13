@@ -56,3 +56,10 @@ PR: #11
 Score: +2 [Full audit of 127 Dependabot alerts (64 open, 63 fixed) via live GitHub API. 64 unique vulnerability families across pip (126) and npm (1). 2 critical (langchain-core serialization + NLTK zip slip), 24 high, 23 medium, 15 low. Hotspot analysis: aiohttp (15), nltk (7), langchain* (8), urllib3 (4). 5-section doc with severity-by-family enumeration, dependency hotspot table, and 4-tier recommendation.]
 Cumulative: +13 (22%)
 Next planned: markdown-lint-workflow
+
+## Iter 7 [2026-05-13T06:51Z–06:52Z] tier=T2 task=markdown-lint-workflow
+Branch: sleep-iter-7-markdown-lint
+PR: #12
+Score: +4 [CI/CD workflow addition: added markdownlint job to existing docs.yml using DavidAnson/markdownlint-cli2-action@v19. Created .markdownlint.json config tuned for repo style (no line-length, inline-HTML allowed, first-line heading optional). Runs on all **/*.md on PR and push to main. Extends existing docs.yml which already has relative link validation + YAML lint + use-case banner validation.]
+Cumulative: +17 (27%)
+Next planned: stale-issue-bot

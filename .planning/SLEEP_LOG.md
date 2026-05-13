@@ -42,3 +42,10 @@ PR: #9
 Score: +3 [AGENTS.md expanded from 74 to 138 lines with "Fork-Side Addendum" section (7 subsections): Fork Identity table (origin vs upstream roles), dual-remote gh CLI rule, branch conventions for agents (sleep-iter/codex-watch/sleep-log/feature), planning directory layout, label usage policy, 8 hard bans aligned with sleep run H1-H11 constraints, and CI/CD awareness (sync-upstream/linear-sync/overnight-watch). Aligns with upstream #208 (merged AGENTS.md foundation).]
 Cumulative: +9 (22%)
 Next planned: codeowners-dependabot-config
+
+## Iter 5 [2026-05-13T06:44Z–06:45Z] tier=T1 task=codeowners-dependabot-config
+Branch: sleep-iter-5-codeowners
+PR: #10
+Score: +2 [Created .github/CODEOWNERS (22 lines) mapping 11 fork-owned paths to @Fearvox. Created .github/dependabot.yml (99 lines) with 6 update streams (pip x4, npm x2), weekly Monday 09:00 CST. Config-only iteration; no prose content.]
+Cumulative: +11 (22%)
+Next planned: dependabot-audit

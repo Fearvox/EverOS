@@ -91,3 +91,10 @@ PR: #16
 Score: +5 [Architecture doc: 00-vision.md (141 lines, 9 sections). Decision matrix for 8 key architecture choices (Fork Hermes vs alternatives, Rust runtime rationalization, Evercore kernel integration). Success criteria table for May 31 with threshold/stretch metrics. Target market analysis (Chinese enterprise + international). Top 5 risk log with mitigations. Cites real files: memory_manager.py, EverMem Bench, EvoAgent Bench, Hermes recon.]
 Cumulative: +30 (40%)
 Next planned: may-agent-architecture
+
+## Iter 12 [2026-05-13T07:04Z–07:07Z] tier=T5 task=may-agent-architecture
+Branch: sleep-iter-12-architecture
+PR: #17
+Score: +5 [Architecture doc: 10-architecture.md (264 lines, 9 sections). 2 mermaid diagrams (system overview graph + data flow sequence). 4 decision matrices (runtime language: Rust+Python hybrid chosen, memory backend: Evercore chosen, sandbox: seccomp+Docker, messaging: WeCom/Feishu P0). Crate structure with proposed Cargo.toml. PyO3 FFI signatures. Prior art comparison table (5 projects). Integration contract outline (4 APIs).]
+Cumulative: +35 (45%)
+Next planned: rust-runtime-scaffold

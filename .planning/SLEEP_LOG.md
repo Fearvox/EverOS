@@ -63,3 +63,10 @@ PR: #12
 Score: +4 [CI/CD workflow addition: added markdownlint job to existing docs.yml using DavidAnson/markdownlint-cli2-action@v19. Created .markdownlint.json config tuned for repo style (no line-length, inline-HTML allowed, first-line heading optional). Runs on all **/*.md on PR and push to main. Extends existing docs.yml which already has relative link validation + YAML lint + use-case banner validation.]
 Cumulative: +17 (27%)
 Next planned: stale-issue-bot
+
+## Iter 8 [2026-05-13T06:52Z–06:53Z] tier=T2 task=stale-issue-bot
+Branch: sleep-iter-8-stale-bot
+PR: #13
+Score: +4 [CI/CD workflow addition: created .github/workflows/stale.yml using actions/stale@v9. Issues stale after 60d, closed after 30d more. PRs stale after 45d but never auto-closed. Exempts all 5 fork labels (tracking, security, urgent, pr-mirror, sync-failed). Daily at 09:30 CST + workflow_dispatch. No run: commands — pure config, zero injection surface.]
+Cumulative: +21 (31%)
+Next planned: issue-pr-triage

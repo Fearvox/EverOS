@@ -98,3 +98,10 @@ PR: #17
 Score: +5 [Architecture doc: 10-architecture.md (264 lines, 9 sections). 2 mermaid diagrams (system overview graph + data flow sequence). 4 decision matrices (runtime language: Rust+Python hybrid chosen, memory backend: Evercore chosen, sandbox: seccomp+Docker, messaging: WeCom/Feishu P0). Crate structure with proposed Cargo.toml. PyO3 FFI signatures. Prior art comparison table (5 projects). Integration contract outline (4 APIs).]
 Cumulative: +35 (45%)
 Next planned: rust-runtime-scaffold
+
+## Iter 13 [2026-05-13T07:08Z–07:10Z] tier=T5 task=rust-runtime-scaffold
+Branch: sleep-iter-13-rust-scaffold
+PR: #18
+Score: +5 [20-rust-runtime-scaffold.md (305 lines, 9 sections). Full crate map (5 crates). 4 async traits defined in Rust. Prior art: Tauri, tokio, Burn, candle. Build pipeline. Risk matrix (5 risks). Sprint 1 file list.]
+Cumulative: +40 (50%)
+Next planned: evercore-integration-contract

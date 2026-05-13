@@ -21,3 +21,10 @@ Target final score: >= baseline + 48% (min 58% / ~23 pts). Stretch: +60% (70% / 
 | 8 | T2 | Stale issue bot workflow | +4 |
 | 9 | T3 | Issue/PR triage pass | +3 |
 | 10 | T5 | may-agent/00-vision.md | +5 |
+
+## Iter 2 [2026-05-13T06:38Z–06:39Z] tier=T1 task=contributing-fork-lab
+Branch: sleep-iter-2-contributing
+PR: #7
+Score: +3 [CONTRIBUTING.md expanded from 84 to 167 lines with new "Fork-as-Lab Workflow" section covering: staying current with upstream rebase, branch strategy (sleep-iter/codex-watch/feature/sleep-log), label conventions (5 labels with hex colors and usage), issue template usage (PR Tracker + Security Tracker with trigger behavior), Linear sync flow, and upstream promotion commands. Eight sections total, fork-specific operational knowledge codified.]
+Cumulative: +3 (13%)
+Next planned: security-md-expansion

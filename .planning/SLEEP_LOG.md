@@ -105,3 +105,10 @@ PR: #18
 Score: +5 [20-rust-runtime-scaffold.md (305 lines, 9 sections). Full crate map (5 crates). 4 async traits defined in Rust. Prior art: Tauri, tokio, Burn, candle. Build pipeline. Risk matrix (5 risks). Sprint 1 file list.]
 Cumulative: +40 (50%)
 Next planned: evercore-integration-contract
+
+## Iter 14 [2026-05-13T07:11Z–07:13Z] tier=T5 task=evercore-integration-contract
+Branch: sleep-iter-14-evercore-contract
+PR: #19
+Score: +5 [30-evercore-integration-contract.md (266 lines, 8 sections). API surface mapped from live EverCore controllers (10 endpoints). Wire format examples (JSON). 8 error codes with retry strategy. Circuit breaker + graceful degradation pseudocode. Tenant model mapping for 5 platforms. curl-based integration test plan.]
+Cumulative: +45 (55%)
+Next planned: benchmark-strategy

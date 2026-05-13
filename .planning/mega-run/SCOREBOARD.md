@@ -9,6 +9,9 @@
 | 5 | dependabot-23-quarantine | +2 | +12 | #23 inspected, found no checks, converted to draft; no merge. |
 | 6 | open-pr-matrix-refresh | +1 | +13 | Full queue refreshed; old unchecked dependabot #1 surfaced. |
 | 7 | collector-scope-proof | +2 | +15 | Changed-Markdown collector returns six files; lint passes. |
+| 8 | may-agent-strategy-gate | +1 | +16 | #16 coherent but flagged for private path and unverified claims. |
+| 9 | may-agent-packet-review | +2 | +18 | #17-#22 reviewed as a dependent draft packet. |
+| 10 | may-agent-review-artifact | +3 | +21 | Required May Agent review artifact created. |
 
 ## Current Assessment
 
@@ -16,3 +19,4 @@
 - Red queue: #7/#12 root causes are covered by draft PR #24, with remote Docs checks green.
 - Queue-shape risk: #21, #22, and #23 are now draft.
 - New dependency risk: #23 is quarantined draft; older dependabot #1 is a separate non-draft/no-checks risk for owner review.
+- May Agent packet: do not merge as-is; review artifact lists exact blockers and safe order.

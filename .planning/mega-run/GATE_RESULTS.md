@@ -59,3 +59,11 @@
 | Changed Markdown collector | PASS | Local simulation against `origin/main...HEAD` returned six Markdown files, not the full legacy tree. |
 | Branch diff boundary | PASS | `git diff --name-only origin/main...HEAD` lists nine files total: `.github`, `.markdownlint.json`, and `.planning/mega-run` only. |
 | Markdownlint diff set | PASS | Running markdownlint on the PR Markdown diff reports `Summary: 0 error(s)`. |
+
+## May Agent Review Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| #16 strategy gate | FLAG | Draft and links pass, but contains private memory-path reference and unverified external claims. |
+| #17-#22 packet review | FLAG | Draft PRs with green links; source docs are ordered, but index must land last and several claims need evidence. |
+| `MAY_AGENT_REVIEW.md` required fields | PASS | Artifact includes merge order, contradictions, missing evidence, upstream-pitch framing, and what should not be merged. |

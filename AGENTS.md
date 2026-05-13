@@ -72,7 +72,7 @@ uv run pyright                # Type check, if pyright is installed
 - Prefer existing repo patterns and component boundaries before adding new
   abstractions.
 
-## GitHub Agent Review Contract
+## Review guidelines
 
 - GitHub Copilot, Codex, and other review agents should follow
   `.github/copilot-instructions.md`.

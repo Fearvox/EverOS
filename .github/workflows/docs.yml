@@ -103,6 +103,9 @@ jobs:
                   banner_match = re.search(r"\[!\[[^\]]*\]\([^)]+\)\]\(([^)]+)\)", cell)
                   primary_match = re.search(r"^\[(?:Code|Plugin|Live Demo)\]\(([^)]+)\)", cell, flags=re.M)
 
+                  if "Coming soon" in cell and not primary_match:
+                      continue
+
                   if not banner_match:
                       failures.append(f"{path}: {title}: missing linked banner")
                   elif not primary_match:

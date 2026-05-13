@@ -77,3 +77,10 @@ PR: #14
 Score: +2 [Triage of 3 fork issues + 1 non-sleep-run PR. Closed issue #4 (smoke test completed, --reason completed). Confirmed issue #6 as active tracking (labels correct, exempt from stale bot). Flagged PR #1 (2-week-old dependabot vite bump) for human review. Wrote triage-summary.md with before/after counts. 3 actionable items = +2 per rubric.]
 Cumulative: +23 (32%)
 Next planned: hermes-recon
+
+## Iter 10 [2026-05-13T06:57Z–07:00Z] tier=T4 task=hermes-recon
+Branch: sleep-iter-10-hermes-recon
+PR: #15
+Score: +2 [Cloned NousResearch/hermes-agent (147k★, MIT) to /tmp/hermes-recon. Mapped 6 integration seams: memory provider ABC, session store SQLite→tenant, tool registry, context engine, plugin discovery, environment sandboxes. 207-line doc with concrete file paths. Key finding: Hermes memory layer is ABC-based with 8 implementations — Evercore swap is a drop-in provider replacement.]
+Cumulative: +25 (35%)
+Next planned: may-agent-vision

@@ -18,6 +18,9 @@
 | 14 | public-surface-scan | +2 | +28 | Branch artifacts clean for token/local-path patterns. |
 | 15 | branch-path-boundary | +1 | +29 | Branch diff contains only intended files. |
 | 16 | commit-trailer-gate | +2 | +31 | origin/upstream main unchanged; trailers verified. |
+| 17 | latest-remote-checks | +2 | +33 | #24 checks green after boundary audit commit. |
+| 18 | evercore-quickstart-inventory | +1 | +34 | Quick-start files found; `.env.example` absent, `env.template` present. |
+| 19 | evercore-dry-run-gates | +1 | +35 | Compose config and uv dry-run pass; full infra skipped. |
 
 ## Current Assessment
 
@@ -28,3 +31,4 @@
 - May Agent packet: do not merge as-is; review artifact lists exact blockers and safe order.
 - PR gate: #24 is draft, targets `Fearvox/EverOS:main`, and has changed files, validation, risks, and rollback in the body.
 - Hard-boundary gate: origin/main and upstream/main SHA values remain unchanged from baseline.
+- Reproducibility gate: EverCore quick-start is mostly checkable, but local Docker uses `docker-compose` rather than `docker compose`, and full install/test is heavy.

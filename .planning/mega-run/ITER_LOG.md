@@ -175,3 +175,36 @@
 - Score delta: +2
 - Evidence: origin/main remains `fe80ca1fd86f64ac27664aa58b41da73b3b2d00c`; upstream/main remains `29d555c6e94de3630f314c1f594fc1801377ff5a`; current branch is `mega-24h-curator-2026-05-13`; trailer check printed `Commit trailer gate ok: 5 commits.`
 - Next decision: Re-run #24 remote checks after latest pushed audit commit.
+
+## Iter 17 - latest-remote-checks - 2026-05-13T09:41:08Z
+
+- Intent: Verify #24 after the boundary audit commit was pushed.
+- Scope bucket: ci
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,updatedAt,url`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: latest #24 `markdown-lint` and `links` checks both concluded `SUCCESS`; PR is draft and `CLEAN`.
+- Next decision: Verify EverCore quick-start prerequisites without starting heavy infrastructure.
+
+## Iter 18 - evercore-quickstart-inventory - 2026-05-13T09:41:08Z
+
+- Intent: Check whether documented EverCore quick-start entrypoints exist.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `find methods/EverCore -maxdepth 2 -type f` for compose, `pyproject.toml`, `uv.lock`, `Makefile`, and env examples; `ls -la methods/EverCore`
+- Gate result: FLAG
+- Score delta: +1
+- Evidence: `docker-compose.yaml`, `pyproject.toml`, `uv.lock`, and `Makefile` exist; no `.env.example` was found, but `env.template` exists.
+- Next decision: Dry-run non-mutating quick-start commands and record skipped heavy infra.
+
+## Iter 19 - evercore-dry-run-gates - 2026-05-13T09:41:08Z
+
+- Intent: Validate quick-start commands where feasible without starting services or installing 193 packages.
+- Scope bucket: tests
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `docker compose version || true`; `docker-compose version || true`; `docker-compose -f docker-compose.yaml config`; `uv --version`; `make -n test`; `make -n lint`; `uv sync --locked --dry-run`
+- Gate result: FLAG
+- Score delta: +1
+- Evidence: standalone `docker-compose` exists and `config` passes with an obsolete `version` warning; `docker compose` subcommand is unavailable locally; `uv sync --locked --dry-run` resolves 204 packages and would install 193 packages, so full install/test run was skipped as heavy infra.
+- Next decision: Record skipped-heavy-infra rationale in gate results and continue final owner-flow reduction.

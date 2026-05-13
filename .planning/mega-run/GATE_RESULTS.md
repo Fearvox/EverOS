@@ -86,3 +86,14 @@
 | origin/main unchanged | PASS | `fe80ca1fd86f64ac27664aa58b41da73b3b2d00c`. |
 | upstream/main unchanged | PASS | `29d555c6e94de3630f314c1f594fc1801377ff5a`. |
 | Commit trailer count | PASS | Python check found exactly one required co-author trailer in each of 5 branch commits. |
+
+## Reproducibility Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| #24 latest remote checks | PASS | Latest `markdown-lint` and `links` checks concluded `SUCCESS` after boundary audit push. |
+| EverCore quick-start files | FLAG | `docker-compose.yaml`, `pyproject.toml`, `uv.lock`, and `Makefile` exist; `.env.example` absent, `env.template` present. |
+| Compose config | PASS | `docker-compose -f docker-compose.yaml config` passes with an obsolete `version` warning. |
+| Local compose command | FLAG | `docker compose` subcommand is unavailable locally; standalone `docker-compose` exists. |
+| `uv sync --locked --dry-run` | PASS | Dry-run resolves 204 packages without installing; full sync skipped because it would install 193 packages. |
+| `make -n test` / `make -n lint` | PASS | Make dry-runs expand to pytest, black, and i18n check commands. |

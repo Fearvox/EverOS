@@ -2,17 +2,17 @@
 
 ## Current Verdict
 
-FLAG: Docs repair is locally green, but the run is not exit-ready until remote checks, queue normalization, and the 30-iteration contract are complete.
+FLAG: Docs repair is green remotely and the queue is normalized to draft, but the run is not exit-ready until #23 triage and the 30-iteration contract are complete.
 
 ## Owner-Relevant Queue State
 
 | Action | PR | Why |
 |--------|----|-----|
-| Repair first | #7 | Fails docs link check from one bad Markdown link target. |
-| Repair first | #12 | Adds markdownlint too broadly and blocks on 1218 legacy errors. |
-| Review/normalize | #21, #22 | Both are green but non-draft, unlike the rest of the May Agent packet. |
+| Covered by #24 | #7 | Draft repair PR removes the bad Markdown link target and passes Docs checks. |
+| Covered by #24 | #12 | Draft repair PR scopes markdownlint to changed Markdown and passes Docs checks. |
+| Normalized | #21, #22 | Both are now draft and still have green link checks. |
 | Defer/review carefully | #23 | Dependabot uv group update with 21 updates and no current checks. |
 
 ## Next Captain Move
 
-Commit and push the scoped docs gate repair branch, then open a draft curator PR and continue the 30-iteration evidence loop.
+Triage #23 without merging, then continue the 30-iteration evidence loop and final audit.

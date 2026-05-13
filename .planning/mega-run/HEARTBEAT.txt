@@ -1,1 +1,1 @@
-2026-05-13T09:20:39Z iter=2 slug=repair-docs-gates gate=PASS
+2026-05-13T09:23:46Z iter=4 slug=normalize-draft-queue gate=PASS

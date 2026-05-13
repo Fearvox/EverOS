@@ -29,3 +29,18 @@
 | Markdownlint scope repair | PASS | `.github/workflows/docs.yml` now collects changed Markdown files and passes them to `markdownlint-cli2-action@v19` instead of linting `**/*.md`. |
 | Local markdownlint | PASS | `npx --yes markdownlint-cli2 .github/CONTRIBUTING.md .planning/mega-run/*.md` reports `Summary: 0 error(s)`. |
 | Workflow YAML parse | PASS | Ruby YAML parser reports `workflow YAML ok`. |
+
+## Remote Repair Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Draft PR #24 | PASS | `isDraft: true`, base `main`, head `mega-24h-curator-2026-05-13`, merge state `CLEAN`. |
+| Docs `markdown-lint` | PASS | #24 check run concluded `SUCCESS` at `2026-05-13T09:23:18Z`. |
+| Docs `links` | PASS | #24 check run concluded `SUCCESS` at `2026-05-13T09:23:16Z`. |
+
+## Draft Queue Normalization
+
+| PR | Result | Evidence |
+|----|--------|----------|
+| #21 | PASS | Converted with `gh pr ready 21 --repo Fearvox/EverOS --undo`; reverified `isDraft: true`. |
+| #22 | PASS | Converted with `gh pr ready 22 --repo Fearvox/EverOS --undo`; reverified `isDraft: true`. |

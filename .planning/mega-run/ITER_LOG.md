@@ -21,3 +21,25 @@
 - Score delta: +4
 - Evidence: markdownlint reports `Summary: 0 error(s)` for changed contribution/planning docs; link check reports `Active relative Markdown links resolve.`; workflow YAML parses; changed tracked Markdown files are limited to `.github/CONTRIBUTING.md` and `.github/workflows/docs.yml`.
 - Next decision: Commit scoped repair artifacts, push `mega-24h-curator-2026-05-13` to `origin`, then continue queue normalization and 30-iteration evidence logging.
+
+## Iter 3 - draft-pr-remote-gates - 2026-05-13T09:23:18Z
+
+- Intent: Publish the scoped repair branch as a draft PR against the fork and wait for real remote docs checks.
+- Scope bucket: github-pr
+- Files touched: none after commit `faff667c46d026b58e7d7a938c7d8dfa34e62eaa`
+- Commands run: `git push -u origin mega-24h-curator-2026-05-13`; `gh pr create --repo Fearvox/EverOS --draft --base main --head mega-24h-curator-2026-05-13`; `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,headRefName,baseRefName,url`
+- Gate result: PASS
+- Score delta: +3
+- Evidence: draft PR #24 exists at `https://github.com/Fearvox/EverOS/pull/24`; `markdown-lint` and `links` check runs both concluded `SUCCESS`; PR is `isDraft: true` and targets fork `main`.
+- Next decision: Normalize #21/#22 to draft, then review dependabot #23 without merging.
+
+## Iter 4 - normalize-draft-queue - 2026-05-13T09:23:46Z
+
+- Intent: Fix the queue-shape mismatch where #21/#22 were ready-for-review while the runbook requires draft-only handling.
+- Scope bucket: github-pr
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/OWNER_BRIEF.md`
+- Commands run: `gh pr ready 21 --repo Fearvox/EverOS --undo`; `gh pr ready 22 --repo Fearvox/EverOS --undo`; `gh pr view 21 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,url`; `gh pr view 22 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,url`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: #21 and #22 now report `isDraft: true`; both remain `CLEAN` with prior `links` check success.
+- Next decision: Inspect #23 dependency scope and record a no-blind-merge triage verdict.

@@ -70,3 +70,10 @@ PR: #13
 Score: +4 [CI/CD workflow addition: created .github/workflows/stale.yml using actions/stale@v9. Issues stale after 60d, closed after 30d more. PRs stale after 45d but never auto-closed. Exempts all 5 fork labels (tracking, security, urgent, pr-mirror, sync-failed). Daily at 09:30 CST + workflow_dispatch. No run: commands — pure config, zero injection surface.]
 Cumulative: +21 (31%)
 Next planned: issue-pr-triage
+
+## Iter 9 [2026-05-13T06:54Z–06:56Z] tier=T3 task=issue-pr-triage
+Branch: sleep-iter-9-triage
+PR: #14
+Score: +2 [Triage of 3 fork issues + 1 non-sleep-run PR. Closed issue #4 (smoke test completed, --reason completed). Confirmed issue #6 as active tracking (labels correct, exempt from stale bot). Flagged PR #1 (2-week-old dependabot vite bump) for human review. Wrote triage-summary.md with before/after counts. 3 actionable items = +2 per rubric.]
+Cumulative: +23 (32%)
+Next planned: hermes-recon

@@ -76,3 +76,13 @@
 | Base target | PASS | PR body and `gh pr view` confirm target is `Fearvox/EverOS:main`. |
 | Required body sections | PASS | Python assertion found `Changed Files`, `Validation`, `Risks`, and `Rollback` sections. |
 | Latest remote checks | PASS | #24 latest `markdown-lint` and `links` checks concluded `SUCCESS` after commit `2174b39`. |
+
+## Public-Surface And Boundary Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Token/local-path scan | PASS | Branch artifacts have no GitHub token, API key, local absolute path, or private home-directory memory path patterns. |
+| Branch path boundary | PASS | Branch diff contains 10 intended files and excludes `.codex`, `.claude`, and `docs/goal.md`. |
+| origin/main unchanged | PASS | `fe80ca1fd86f64ac27664aa58b41da73b3b2d00c`. |
+| upstream/main unchanged | PASS | `29d555c6e94de3630f314c1f594fc1801377ff5a`. |
+| Commit trailer count | PASS | Python check found exactly one required co-author trailer in each of 5 branch commits. |

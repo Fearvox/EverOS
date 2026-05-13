@@ -15,6 +15,9 @@
 | 11 | post-review-remote-checks | +2 | +23 | #24 checks green after review artifact push. |
 | 12 | pr-body-update | +1 | +24 | #24 body updated with required PR-gate sections. |
 | 13 | pr-body-gate-proof | +2 | +26 | PR body sections verified from GitHub. |
+| 14 | public-surface-scan | +2 | +28 | Branch artifacts clean for token/local-path patterns. |
+| 15 | branch-path-boundary | +1 | +29 | Branch diff contains only intended files. |
+| 16 | commit-trailer-gate | +2 | +31 | origin/upstream main unchanged; trailers verified. |
 
 ## Current Assessment
 
@@ -24,3 +27,4 @@
 - New dependency risk: #23 is quarantined draft; older dependabot #1 is a separate non-draft/no-checks risk for owner review.
 - May Agent packet: do not merge as-is; review artifact lists exact blockers and safe order.
 - PR gate: #24 is draft, targets `Fearvox/EverOS:main`, and has changed files, validation, risks, and rollback in the body.
+- Hard-boundary gate: origin/main and upstream/main SHA values remain unchanged from baseline.

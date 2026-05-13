@@ -142,3 +142,36 @@
 - Score delta: +2
 - Evidence: command printed `PR body gate ok.`; #24 remains draft and `CLEAN` with Docs checks green.
 - Next decision: Run public-surface safety and hard-boundary checks over branch artifacts.
+
+## Iter 14 - public-surface-scan - 2026-05-13T09:39:20Z
+
+- Intent: Verify branch artifacts do not leak tokens, local absolute paths, or private home-directory memory paths.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: Python regex scan over `.github/CONTRIBUTING.md`, `.github/workflows/docs.yml`, `.markdownlint.json`, and `.planning/mega-run/*.md`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: scan printed `Public-surface scan clean for branch artifacts.`
+- Next decision: Verify branch diff path boundary excludes local config and runbook input files.
+
+## Iter 15 - branch-path-boundary - 2026-05-13T09:39:20Z
+
+- Intent: Confirm the pushed branch only changes intended repo artifacts.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `git diff --name-only origin/main...HEAD | sort`; path boundary scan for `.claude`, `.codex`, and `docs/goal.md`
+- Gate result: PASS
+- Score delta: +1
+- Evidence: branch diff lists 10 intended files; scan printed `Branch path boundary ok.`
+- Next decision: Confirm origin/main and upstream/main were not written.
+
+## Iter 16 - commit-trailer-gate - 2026-05-13T09:39:20Z
+
+- Intent: Verify hard-boundary and commit-message hygiene after five commits.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `git ls-remote origin refs/heads/main`; `git ls-remote upstream refs/heads/main`; `git rev-parse HEAD`; `git branch --show-current`; Python `git log origin/main..HEAD` trailer count check
+- Gate result: PASS
+- Score delta: +2
+- Evidence: origin/main remains `fe80ca1fd86f64ac27664aa58b41da73b3b2d00c`; upstream/main remains `29d555c6e94de3630f314c1f594fc1801377ff5a`; current branch is `mega-24h-curator-2026-05-13`; trailer check printed `Commit trailer gate ok: 5 commits.`
+- Next decision: Re-run #24 remote checks after latest pushed audit commit.

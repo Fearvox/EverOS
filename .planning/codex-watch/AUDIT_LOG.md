@@ -50,3 +50,17 @@ fork/main:     fe80ca1fd86f64ac27664aa58b41da73b3b2d00c
 - upstream/main: 29d555c6e94de3630f314c1f594fc1801377ff5a (baseline unchanged).
 - Concerns: score drift is now actionable. PR #7 remains red and PR #12 banks +4 despite red CI. This risks morning owner review noise.
 - Action: INTERVENTION_QUEUED:DRIFT_DETECTED.
+
+## 2026-05-13T07:08:13Z Watch checkpoint
+- Heartbeat: fresh, iter 13, task=rust-runtime-scaffold, tier=T5.
+- Latest logged iter: Iter 12 `may-agent-architecture`, PR #17.
+- Latest iter self-score: +5.
+- Independent latest score: +4 to +5 provisional. PR #17 is a substantial 264-line architecture doc and Docs links passed; full score depends on owner review of technical fit.
+- Cumulative self-score: +35 (45%); still uses mixed score/percent accounting.
+- Open draft PRs: 11 (#7 red, #8 green, #9 green, #10 no checks, #11 green, #12 red, #13 no checks, #14 green, #15 green, #16 green, #17 green).
+- sync-failed issues: 0.
+- fork/main: fe80ca1fd86f64ac27664aa58b41da73b3b2d00c (baseline unchanged).
+- upstream/main: 29d555c6e94de3630f314c1f594fc1801377ff5a (baseline unchanged).
+- Intervention status: DRIFT_DETECTED intervention is present in `.planning/CODEX_INTERVENTION.md`, but no `chore(codex): acknowledged intervention` commit appears on `origin/sleep-log` yet.
+- Concerns: Claude continues producing strong T5 architecture artifacts, but unresolved red PRs #7/#12 and unacknowledged intervention remain. PR #12 markdownlint is especially non-mergeable because it fails on 1218 existing-repo lint errors.
+- Action: NONE due 1h intervention cooldown. Keep monitoring for acknowledgement or repair before escalating.

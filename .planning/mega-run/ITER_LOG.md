@@ -241,3 +241,36 @@
 - Score delta: +2
 - Evidence: #24 reports `CLEAN`; latest `markdown-lint` and `links` checks both concluded `SUCCESS`.
 - Next decision: Reduce owner brief to a 10-line morning action list.
+
+## Iter 23 - owner-brief-reduction - 2026-05-13T09:45:05Z
+
+- Intent: Reduce owner handoff into the required 10-line maximum.
+- Scope bucket: reduction
+- Files touched: `.planning/mega-run/OWNER_BRIEF.md`, `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: manual reduction based on current PR matrix, #24 check state, and May Agent review artifact
+- Gate result: PASS
+- Score delta: +2
+- Evidence: owner brief now separates merge now, review first, close/rework, defer, risk, repro, boundaries, and next action.
+- Next decision: Verify the brief line count and public-surface safety.
+
+## Iter 24 - owner-flow-validation - 2026-05-13T09:45:05Z
+
+- Intent: Confirm the owner can make the morning decision from #24 plus the compressed brief.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: reviewed `.planning/mega-run/OWNER_BRIEF.md` against current `GATE_RESULTS.md`, `SCOREBOARD.md`, and `MAY_AGENT_REVIEW.md`
+- Gate result: PASS
+- Score delta: +1
+- Evidence: brief has explicit `Merge now`, `Review first`, `Close/rework`, `Defer`, and `Risk` decisions.
+- Next decision: Run mechanical checks for line count, markdownlint, and public-surface patterns.
+
+## Iter 25 - owner-brief-line-gate - 2026-05-13T09:45:05Z
+
+- Intent: Mechanically verify the reduced owner brief meets format and safety expectations.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: `wc -l .planning/mega-run/OWNER_BRIEF.md`; `npx --yes markdownlint-cli2 .planning/mega-run/*.md`; public-surface pattern scan for mega-run markdown; `git diff --check`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: owner brief is exactly 10 lines; markdownlint passes; no token/local-path patterns found; diff check passes.
+- Next decision: Start final reduction and report preparation.

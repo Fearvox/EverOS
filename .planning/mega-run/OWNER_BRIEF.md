@@ -1,20 +1,10 @@
-# Mega Run Owner Brief
-
-## Current Verdict
-
-FLAG: Docs repair is green remotely and the named queue is normalized/quarantined, but the run is not exit-ready until the 30-iteration contract and final audit are complete.
-
-## Owner-Relevant Queue State
-
-| Action | PR | Why |
-|--------|----|-----|
-| Covered by #24 | #7 | Draft repair PR removes the bad Markdown link target and passes Docs checks. |
-| Covered by #24 | #12 | Draft repair PR scopes markdownlint to changed Markdown and passes Docs checks. |
-| Normalized | #21, #22 | Both are now draft and still have green link checks. |
-| Quarantined draft | #23 | Dependabot uv group update with 21 updates and zero checks; no merge attempted. |
-| Review artifact | #16-#22 | May Agent packet is coherent but should not merge as-is; see `.planning/mega-run/MAY_AGENT_REVIEW.md`. |
-| Extra owner review | #1 | Older dependabot Vite PR is non-draft with zero checks; outside the named queue but still visible in open PR matrix. |
-
-## Next Captain Move
-
-Continue the evidence loop through workflow, safety, and final audit gates; do not merge dependency PRs without checks.
+Mega Run Owner Brief
+Verdict: FLAG, owner-reviewable but not auto-merge-all.
+Merge now: #24 is the curated draft PR; Docs checks are green.
+Review first: read `.planning/mega-run/MAY_AGENT_REVIEW.md` before #16-#22.
+Close/rework: #7/#12 can be superseded by #24 if owner accepts the repair.
+Defer: #23 stays draft; zero checks for a 21-update uv bundle.
+Risk: #1 remains non-draft with zero checks outside the named queue.
+Repro: EverCore dry-runs pass; full install/test skipped as heavy.
+Boundaries: origin/main and upstream/main unchanged; no secret/local-path hits.
+Next: #24 plus this brief should support a sub-15-minute merge/reject decision.

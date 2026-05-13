@@ -1,1 +1,1 @@
-2026-05-13T09:42:20Z iter=22 slug=owner-gate-checks gate=PASS
+2026-05-13T09:45:05Z iter=25 slug=owner-brief-line-gate gate=PASS

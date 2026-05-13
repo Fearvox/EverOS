@@ -105,3 +105,11 @@
 | Open `sync-failed` issues | PASS | `gh issue list --label sync-failed` returned `[]`. |
 | Open PR matrix | FLAG | Named queue is handled, but #1 remains an older non-draft dependency PR with zero checks. |
 | #24 latest checks | PASS | Latest `markdown-lint` and `links` checks both concluded `SUCCESS`; PR is `CLEAN` and draft. |
+
+## Owner Brief Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Line count | PASS | `OWNER_BRIEF.md` is 10 lines. |
+| Decision categories | PASS | Brief includes merge now, review first, close/rework, defer, risk, repro, boundaries, and next action. |
+| Safety | PASS | No token/local-path patterns in mega-run markdown after reduction. |

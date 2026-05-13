@@ -24,6 +24,9 @@
 | 20 | sync-failed-issue-check | +1 | +36 | No open `sync-failed` issues. |
 | 21 | open-pr-matrix-final-prep | +1 | +37 | Full PR matrix captured; #1 remains extra unchecked dependency risk. |
 | 22 | owner-gate-checks | +2 | +39 | #24 latest checks green after reproducibility commit. |
+| 23 | owner-brief-reduction | +2 | +41 | Owner brief compressed to decision actions. |
+| 24 | owner-flow-validation | +1 | +42 | Owner brief maps merge/review/close/defer/risk. |
+| 25 | owner-brief-line-gate | +2 | +44 | Owner brief line count and safety checks pass. |
 
 ## Current Assessment
 
@@ -36,3 +39,4 @@
 - Hard-boundary gate: origin/main and upstream/main SHA values remain unchanged from baseline.
 - Reproducibility gate: EverCore quick-start is mostly checkable, but local Docker uses `docker-compose` rather than `docker compose`, and full install/test is heavy.
 - Owner handoff prep: no open `sync-failed` issues; PR matrix refreshed.
+- Owner brief: compressed to 10 lines with explicit morning actions.

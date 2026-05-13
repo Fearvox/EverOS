@@ -43,3 +43,36 @@
 - Score delta: +2
 - Evidence: #21 and #22 now report `isDraft: true`; both remain `CLEAN` with prior `links` check success.
 - Next decision: Inspect #23 dependency scope and record a no-blind-merge triage verdict.
+
+## Iter 5 - dependabot-23-quarantine - 2026-05-13T09:26:12Z
+
+- Intent: Triage the named new dependabot PR #23 without merging a 21-update dependency bundle blindly.
+- Scope bucket: dependency-pr
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/OWNER_BRIEF.md`
+- Commands run: `gh pr view 23 --repo Fearvox/EverOS --json number,title,isDraft,mergeStateStatus,statusCheckRollup,headRefName,baseRefName,author,labels,updatedAt,url`; `gh pr diff 23 --repo Fearvox/EverOS --name-only`; `gh pr ready 23 --repo Fearvox/EverOS --undo`; `gh pr view 23 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,headRefName,title,url`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: #23 touches `methods/EverCore/pyproject.toml` and `methods/EverCore/uv.lock`; it has zero checks; it is now `isDraft: true`; no merge attempted.
+- Next decision: Re-run open PR matrix to find any remaining queue anomalies.
+
+## Iter 6 - open-pr-matrix-refresh - 2026-05-13T09:26:12Z
+
+- Intent: Refresh the full open PR queue after #21/#22/#23 normalization.
+- Scope bucket: github-pr
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/OWNER_BRIEF.md`
+- Commands run: `gh pr list --repo Fearvox/EverOS --state open --limit 40 --json number,title,isDraft,headRefName,mergeStateStatus,statusCheckRollup,updatedAt,url`; `gh pr view 1 --repo Fearvox/EverOS --json number,title,isDraft,mergeStateStatus,statusCheckRollup,headRefName,baseRefName,author,labels,updatedAt,url`; `gh pr diff 1 --repo Fearvox/EverOS --name-only`
+- Gate result: FLAG
+- Score delta: +1
+- Evidence: #24 is draft with green Docs checks; #21/#22/#23 are draft; #7/#12 remain red as historical PRs but are covered by #24; old dependabot #1 is also non-draft with no checks and touches `use-cases/game-of-throne-demo/frontend/package.json`.
+- Next decision: Keep #1 in owner brief as extra dependency risk, but avoid unrequested mutation outside the named runbook queue.
+
+## Iter 7 - collector-scope-proof - 2026-05-13T09:27:40Z
+
+- Intent: Prove the new markdownlint workflow checks the PR Markdown diff rather than the full repository.
+- Scope bucket: docs-gates
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: local Python simulation of `.github/workflows/docs.yml` changed-Markdown collector using `origin/main...HEAD`; `git diff --name-only origin/main...HEAD | sort`; `npx --yes markdownlint-cli2 $(git diff --name-only origin/main...HEAD -- '*.md')`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: collector returns six Markdown files and `count=6`; full branch diff is nine files; markdownlint over the six Markdown files reports `Summary: 0 error(s)`.
+- Next decision: Verify public-surface safety and workflow coverage scripts.

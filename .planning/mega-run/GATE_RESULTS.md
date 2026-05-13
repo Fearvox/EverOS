@@ -44,3 +44,18 @@
 |----|--------|----------|
 | #21 | PASS | Converted with `gh pr ready 21 --repo Fearvox/EverOS --undo`; reverified `isDraft: true`. |
 | #22 | PASS | Converted with `gh pr ready 22 --repo Fearvox/EverOS --undo`; reverified `isDraft: true`. |
+
+## Dependency PR Quarantine
+
+| PR | Result | Evidence |
+|----|--------|----------|
+| #23 | PASS | Touched `methods/EverCore/pyproject.toml` and `methods/EverCore/uv.lock`; had zero checks; converted to draft; no merge attempted. |
+| #1 | FLAG | Older dependabot PR touches `use-cases/game-of-throne-demo/frontend/package.json`; still non-draft with zero checks; outside named repair queue. |
+
+## Workflow Scope Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Changed Markdown collector | PASS | Local simulation against `origin/main...HEAD` returned six Markdown files, not the full legacy tree. |
+| Branch diff boundary | PASS | `git diff --name-only origin/main...HEAD` lists nine files total: `.github`, `.markdownlint.json`, and `.planning/mega-run` only. |
+| Markdownlint diff set | PASS | Running markdownlint on the PR Markdown diff reports `Summary: 0 error(s)`. |

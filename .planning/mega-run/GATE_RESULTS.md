@@ -113,3 +113,14 @@
 | Line count | PASS | `OWNER_BRIEF.md` is 10 lines. |
 | Decision categories | PASS | Brief includes merge now, review first, close/rework, defer, risk, repro, boundaries, and next action. |
 | Safety | PASS | No token/local-path patterns in mega-run markdown after reduction. |
+
+## Final Artifact Gate
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Iteration count | PASS | `ITER_LOG.md` contains iterations 1-30. |
+| Final report | PASS | `.planning/mega-run/FINAL_REPORT.md` written with required fields. |
+| Owner brief | PASS | `.planning/mega-run/OWNER_BRIEF.md` remains 10 lines. |
+| Local markdownlint | PASS | Mega-run markdown passes local markdownlint. |
+| Public-surface safety | PASS | Mega-run markdown has no token/local-path pattern hits. |
+| Residual queue flags | FLAG | #1 has zero checks; #7/#12 remain red historical PRs; #16-#22 require review before merge. |

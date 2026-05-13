@@ -27,6 +27,11 @@
 | 23 | owner-brief-reduction | +2 | +41 | Owner brief compressed to decision actions. |
 | 24 | owner-flow-validation | +1 | +42 | Owner brief maps merge/review/close/defer/risk. |
 | 25 | owner-brief-line-gate | +2 | +44 | Owner brief line count and safety checks pass. |
+| 26 | final-diff-inventory | +1 | +45 | Final branch diff and dirty state captured. |
+| 27 | final-pr-check-wait | +2 | +47 | #24 checks green after owner brief commit. |
+| 28 | final-pr-matrix | +1 | +48 | Final PR matrix captured with residual #1/#7/#12 flags. |
+| 29 | final-report-written | +2 | +50 | Final report created with explicit FLAG accounting. |
+| 30 | completion-audit-artifacts | +2 | +52 | Final artifacts pass local lint/safety checks. |
 
 ## Current Assessment
 
@@ -40,3 +45,4 @@
 - Reproducibility gate: EverCore quick-start is mostly checkable, but local Docker uses `docker-compose` rather than `docker compose`, and full install/test is heavy.
 - Owner handoff prep: no open `sync-failed` issues; PR matrix refreshed.
 - Owner brief: compressed to 10 lines with explicit morning actions.
+- Exit status: 30 iterations logged; final score +52; final live checks still must be verified after final push.

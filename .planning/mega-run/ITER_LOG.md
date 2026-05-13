@@ -274,3 +274,58 @@
 - Score delta: +2
 - Evidence: owner brief is exactly 10 lines; markdownlint passes; no token/local-path patterns found; diff check passes.
 - Next decision: Start final reduction and report preparation.
+
+## Iter 26 - final-diff-inventory - 2026-05-13T09:46:32Z
+
+- Intent: Capture the final branch diff and dirty state before writing the final report.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/FINAL_REPORT.md`
+- Commands run: `git diff --name-only origin/main...HEAD | sort`; `git status --short --branch`
+- Gate result: PASS
+- Score delta: +1
+- Evidence: branch diff contained the intended docs/workflow/planning files; worktree only had untracked `.codex/` and `docs/goal.md` outside branch scope before final report edits.
+- Next decision: Verify #24 latest checks after owner brief push.
+
+## Iter 27 - final-pr-check-wait - 2026-05-13T09:46:32Z
+
+- Intent: Wait for #24 checks triggered by the owner brief commit to finish.
+- Scope bucket: ci
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/FINAL_REPORT.md`
+- Commands run: `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,updatedAt,url`; `sleep 8`; repeated `gh pr view 24 --repo Fearvox/EverOS --json number,isDraft,mergeStateStatus,statusCheckRollup,updatedAt,url`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: #24 returned to `CLEAN`; latest `markdown-lint` and `links` checks both concluded `SUCCESS`.
+- Next decision: Re-run final open PR matrix and main-branch SHA checks.
+
+## Iter 28 - final-pr-matrix - 2026-05-13T09:46:32Z
+
+- Intent: Capture final queue state and hard-boundary SHA evidence for the report.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/FINAL_REPORT.md`
+- Commands run: `gh pr list --repo Fearvox/EverOS --state open --limit 50 --json number,title,isDraft,headRefName,mergeStateStatus,statusCheckRollup,updatedAt,url`; `git ls-remote origin refs/heads/main`; `git ls-remote upstream refs/heads/main`
+- Gate result: FLAG
+- Score delta: +1
+- Evidence: #24 is draft and green; #23 is draft with zero checks; #16-#22 are draft; #7/#12 are still red but covered by #24; #1 remains non-draft with zero checks; origin/main and upstream/main SHAs are unchanged.
+- Next decision: Write final report with explicit PASS/FLAG/BLOCK accounting.
+
+## Iter 29 - final-report-written - 2026-05-13T09:49:10Z
+
+- Intent: Write `.planning/mega-run/FINAL_REPORT.md` with verdict, score, PR URLs, changed files, commands, failed/skipped gates, and owner actions.
+- Scope bucket: reduction
+- Files touched: `.planning/mega-run/FINAL_REPORT.md`, `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`
+- Commands run: final report drafted from `ITER_LOG.md`, `SCOREBOARD.md`, `GATE_RESULTS.md`, `OWNER_BRIEF.md`, and live GitHub command outputs
+- Gate result: PASS
+- Score delta: +2
+- Evidence: `FINAL_REPORT.md` contains required exit fields and keeps unresolved items as FLAG.
+- Next decision: Run mechanical completion artifact checks.
+
+## Iter 30 - completion-audit-artifacts - 2026-05-13T09:49:10Z
+
+- Intent: Verify the completion artifacts before final push and live completion audit.
+- Scope bucket: evidence
+- Files touched: `.planning/mega-run/HEARTBEAT.txt`, `.planning/mega-run/ITER_LOG.md`, `.planning/mega-run/SCOREBOARD.md`, `.planning/mega-run/GATE_RESULTS.md`, `.planning/mega-run/FINAL_REPORT.md`
+- Commands run: `npx --yes markdownlint-cli2 .planning/mega-run/*.md`; public-surface pattern scan for mega-run markdown; `git diff --check`; `wc -l .planning/mega-run/OWNER_BRIEF.md`
+- Gate result: PASS
+- Score delta: +2
+- Evidence: markdownlint passes; no token/local-path patterns found; diff check passes; owner brief remains 10 lines.
+- Next decision: Commit and push final artifacts, update #24 body with `FINAL_REPORT.md`, wait for final Docs checks, then run completion audit.

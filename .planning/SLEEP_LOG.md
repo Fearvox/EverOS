@@ -34,4 +34,11 @@ Branch: sleep-iter-3-security
 PR: #8
 Score: +3 [SECURITY.md expanded from 34 to 111 lines with 8 sections: Supported Versions, In-Scope/Out-of-Scope boundaries, Security Workflow diagram (Report → Tracker → Linear → Slack), label routing table, Dependabot alert SLA by severity, and Disclosure Timeline. References actual security_tracker.yml template, linear-sync.yml integration, and Dependabot dashboard URL.]
 Cumulative: +6 (16%)
-Next planned: agents-md-fork-addendum
+Next planned: codeowners-dependabot-config
+
+## Iter 4 [2026-05-13T06:42Z–06:43Z] tier=T1 task=agents-md-fork-addendum
+Branch: sleep-iter-4-agents
+PR: #9
+Score: +3 [AGENTS.md expanded from 74 to 138 lines with "Fork-Side Addendum" section (7 subsections): Fork Identity table (origin vs upstream roles), dual-remote gh CLI rule, branch conventions for agents (sleep-iter/codex-watch/sleep-log/feature), planning directory layout, label usage policy, 8 hard bans aligned with sleep run H1-H11 constraints, and CI/CD awareness (sync-upstream/linear-sync/overnight-watch). Aligns with upstream #208 (merged AGENTS.md foundation).]
+Cumulative: +9 (22%)
+Next planned: codeowners-dependabot-config

@@ -28,3 +28,10 @@ PR: #7
 Score: +3 [CONTRIBUTING.md expanded from 84 to 167 lines with new "Fork-as-Lab Workflow" section covering: staying current with upstream rebase, branch strategy (sleep-iter/codex-watch/feature/sleep-log), label conventions (5 labels with hex colors and usage), issue template usage (PR Tracker + Security Tracker with trigger behavior), Linear sync flow, and upstream promotion commands. Eight sections total, fork-specific operational knowledge codified.]
 Cumulative: +3 (13%)
 Next planned: security-md-expansion
+
+## Iter 3 [2026-05-13T06:40Z–06:41Z] tier=T1 task=security-md-expansion
+Branch: sleep-iter-3-security
+PR: #8
+Score: +3 [SECURITY.md expanded from 34 to 111 lines with 8 sections: Supported Versions, In-Scope/Out-of-Scope boundaries, Security Workflow diagram (Report → Tracker → Linear → Slack), label routing table, Dependabot alert SLA by severity, and Disclosure Timeline. References actual security_tracker.yml template, linear-sync.yml integration, and Dependabot dashboard URL.]
+Cumulative: +6 (16%)
+Next planned: agents-md-fork-addendum

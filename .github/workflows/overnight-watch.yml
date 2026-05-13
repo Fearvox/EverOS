@@ -1,0 +1,56 @@
+name: Fork overnight watch
+
+on:
+  schedule:
+    # 02:13 America/Los_Angeles during daylight time. GitHub cron is UTC.
+    - cron: "13 9 * * *"
+  workflow_dispatch:
+    inputs:
+      create_tracking_issue:
+        description: "Open/update a tracking issue when the watch verdict is FLAG"
+        required: false
+        type: boolean
+        default: true
+      watch_branch:
+        description: "Fork playground branch to verify on origin"
+        required: false
+        type: string
+        default: "codex-watch-overnight-2026-05-13"
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: read
+
+concurrency:
+  group: overnight-watch-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    if: github.repository == 'Fearvox/EverOS'
+    runs-on: ubuntu-latest
+    env:
+      REPO_OWNER: ${{ vars.REPO_OWNER || 'Fearvox' }}
+      REPO_NAME: ${{ vars.REPO_NAME || 'EverOS' }}
+      UPSTREAM_REPO: EverMind-AI/EverOS
+      WATCH_BRANCH: ${{ inputs.watch_branch || vars.WATCH_BRANCH || 'codex-watch-overnight-2026-05-13' }}
+      OWNER_TIMEZONE: ${{ vars.OWNER_TIMEZONE || 'America/Los_Angeles' }}
+      LINEAR_TEAM_ID: ${{ vars.LINEAR_TEAM_ID || '233391d6-ec9e-4aa8-b534-16a221b8119a' }}
+      LINEAR_PROJECT_ID: ${{ vars.LINEAR_PROJECT_ID || '39aa3865-345c-4313-9dc0-ab3b509c5d21' }}
+      LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
+      CREATE_TRACKING_ISSUE: ${{ inputs.create_tracking_issue || github.event_name == 'schedule' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run overnight watch
+        run: node .github/scripts/overnight-watch.mjs

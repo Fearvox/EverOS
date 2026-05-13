@@ -100,11 +100,14 @@ jobs:
               for index, cell in enumerate(cells, start=1):
                   title_match = re.search(r"####\s+(.+)", cell)
                   title = title_match.group(1).strip() if title_match else f"use case {index}"
-                  banner_match = re.search(r"\[!\[[^\]]*\]\([^)]+\)\]\(([^)]+)\)", cell)
-                  primary_match = re.search(r"^\[(?:Code|Plugin|Live Demo)\]\(([^)]+)\)", cell, flags=re.M)
+              banner_match = re.search(r"\[!\[[^\]]*\]\([^)]+\)\]\(([^)]+)\)", cell)
+              primary_match = re.search(r"^\[(?:Code|Plugin|Live Demo)\]\(([^)]+)\)", cell, flags=re.M)
 
-                  if not banner_match:
-                      failures.append(f"{path}: {title}: missing linked banner")
+              if "Coming soon" in cell and not primary_match:
+                  continue
+
+              if not banner_match:
+                  failures.append(f"{path}: {title}: missing linked banner")
                   elif not primary_match:
                       failures.append(f"{path}: {title}: missing primary link")
                   elif banner_match.group(1) != primary_match.group(1):

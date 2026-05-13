@@ -1,0 +1,109 @@
+name: PR tracker (mirror)
+description: Mirror an in-flight pull request as a tracking issue for Linear and Slack sync / 镜像一个进行中的 PR 作为追踪 issue
+title: "[PR Track] #<number>: <short summary>"
+labels: ["pr-mirror", "tracking"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when you want a long-lived, auditable record of an upstream PR.
+        Linear and Slack subscribe to issues with the `pr-mirror` label.
+        镜像一个 PR 用于 Linear / Slack 长期可审计追踪。带 `pr-mirror` 标签的 issue 会被订阅。
+  - type: input
+    id: pr_number
+    attributes:
+      label: PR number
+      placeholder: "e.g. 196"
+    validations:
+      required: true
+  - type: input
+    id: pr_url
+    attributes:
+      label: PR URL
+      placeholder: https://github.com/EverMind-AI/EverOS/pull/<number>
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author handle
+      placeholder: "@github-login"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - methods/EverCore
+        - methods/HyperMem
+        - benchmarks/EverMemBench
+        - benchmarks/EvoAgentBench
+        - use-cases
+        - documentation
+        - CI / build / release
+        - other
+    validations:
+      required: true
+  - type: dropdown
+    id: lane
+    attributes:
+      label: Review lane
+      description: How this PR should be triaged. / 该 PR 的优先级处理通道。
+      options:
+        - hotfix (block release until merged)
+        - normal (standard review)
+        - docs-only (light review)
+        - exploratory (no merge intent)
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope summary
+      description: One paragraph. What does the PR change, and what is intentionally left out?
+      placeholder: |
+        Changes:
+        - ...
+        Out of scope:
+        - ...
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence snapshot
+      description: |
+        Required before this mirror can be closed. Paste the CI summary, test command output,
+        or the link to the run. "No mirror closes without evidence."
+        关闭镜像 issue 前必填。粘贴 CI 摘要、测试命令输出或 run 链接。
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Decision log
+      description: Notable review decisions (approvals, requested changes, deferrals).
+      placeholder: |
+        - 2026-05-13 @reviewer: requested change on tests/test_x.py
+        - 2026-05-13 @author: scoped follow-up to PR #...
+  - type: input
+    id: linear_issue
+    attributes:
+      label: Linear issue (optional)
+      placeholder: "EVE-123"
+  - type: input
+    id: slack_thread
+    attributes:
+      label: Slack thread (optional)
+      placeholder: "https://everminddash.slack.com/archives/.../p..."
+  - type: checkboxes
+    id: closure
+    attributes:
+      label: Closure criteria
+      description: Check all that apply before closing this mirror.
+      options:
+        - label: PR is merged, closed, or marked won't-fix upstream.
+        - label: Evidence snapshot above reflects the final state.
+        - label: Linear and Slack records have been updated (if linked).

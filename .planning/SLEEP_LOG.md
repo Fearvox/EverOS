@@ -8,7 +8,7 @@ Starting state: fork pipeline operational (sync-upstream.yml + linear-sync.yml),
 
 Target final score: >= baseline + 48% (min 58% / ~23 pts). Stretch: +60% (70% / ~28 pts).
 
-## Iteration plan (2-10)
+## Iteration plan (2-16)
 
 | Iter | Tier | Task | Target Score |
 |------|------|------|-------------|
@@ -21,6 +21,12 @@ Target final score: >= baseline + 48% (min 58% / ~23 pts). Stretch: +60% (70% / 
 | 8 | T2 | Stale issue bot workflow | +4 |
 | 9 | T3 | Issue/PR triage pass | +3 |
 | 10 | T5 | may-agent/00-vision.md | +5 |
+| 11 | T5 | may-agent/10-architecture.md | +5 |
+| 12 | T5 | may-agent/20-rust-runtime-scaffold.md | +5 |
+| 13 | T5 | may-agent/30-evercore-integration-contract.md | +5 |
+| 14 | T5 | may-agent/40-benchmark-strategy.md | +5 |
+| 15 | T5 | may-agent/90-risk-log.md | +5 |
+| 16 | T5 | may-agent/INDEX.md | +5 |
 
 ## Iter 2 [2026-05-13T06:38Z–06:39Z] tier=T1 task=contributing-fork-lab
 Branch: sleep-iter-2-contributing
@@ -112,3 +118,17 @@ PR: #19
 Score: +5 [30-evercore-integration-contract.md (266 lines, 8 sections). API surface mapped from live EverCore controllers (10 endpoints). Wire format examples (JSON). 8 error codes with retry strategy. Circuit breaker + graceful degradation pseudocode. Tenant model mapping for 5 platforms. curl-based integration test plan.]
 Cumulative: +45 (55%)
 Next planned: benchmark-strategy
+
+## Iter 15 [2026-05-13T07:14Z–07:17Z] tier=T5 task=benchmark-strategy
+Branch: sleep-iter-15-benchmark-strategy
+PR: #20
+Score: +5 [40-benchmark-strategy.md (185 lines, 7 sections). 3-benchmark strategy: EverMem Bench (quality + recall@k for memory retrieval), EvoAgent Bench (self-evolution + metric trajectory tracking), Evil Agent Bench (adversarial security evaluation with sandbox escape/jailbreak/prompt injection/connector abuse). Success criteria with threshold/stretch for each. Publication strategy for arXiv + GitHub pages. Integration points with CI/CD for nightly benchmark runs.]
+Cumulative: +50 (60%)
+Next planned: risk-log
+
+## Iter 16 [2026-05-13T07:18Z–07:20Z] tier=T5 task=risk-log
+Branch: sleep-iter-16-risk-log
+PR: #21
+Score: +5 [90-risk-log.md (216 lines, 7 sections). 7 risks with severity matrix, likelihood, owner, status, detailed mitigations, and escalation triggers: R1 Rust team buy-in (high/medium), R2 Hermes upstream churn (high/high), R3 邓Sir bandwidth (medium/high), R4 Python GIL contention (medium/medium), R5 cross-platform sandbox (medium/high), R6 May 31 deadline (high/high), R7 Hermes community reaction (low/low). Risk heatmap. Weekly review cadence through May 31.]
+Cumulative: +55 (65%)
+Next planned: may-agent-INDEX

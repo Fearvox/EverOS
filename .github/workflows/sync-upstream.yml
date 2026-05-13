@@ -1,0 +1,61 @@
+name: Sync fork from upstream
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'   # 每 6 小时跑一次，分钟 17 错开高峰
+  workflow_dispatch:          # 也支持手动触发
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/EverMind-AI/EverOS.git
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Rebase fork main onto upstream/main
+        id: rebase
+        run: |
+          git checkout main
+          set +e
+          git rebase upstream/main
+          rc=$?
+          if [ $rc -ne 0 ]; then
+            git rebase --abort
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+            exit $rc
+          fi
+          echo "conflict=false" >> "$GITHUB_OUTPUT"
+
+      - name: Push to fork main
+        if: steps.rebase.outputs.conflict == 'false'
+        run: git push origin main --force-with-lease
+
+      - name: Open issue on conflict
+        if: failure() && steps.rebase.outputs.conflict == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[sync] Rebase conflict syncing fork from upstream (${new Date().toISOString().slice(0,10)})`,
+              body: `Auto-sync from \`upstream/main\` failed due to rebase conflicts.\n\nRun id: ${context.runId}\nWorkflow: ${context.workflow}\n\nResolve manually:\n\n\`\`\`\ncd ~/EverOS && git fetch upstream && git rebase upstream/main\n# resolve conflicts, then:\ngit push origin main --force-with-lease\n\`\`\``,
+              labels: ['tracking']
+            });

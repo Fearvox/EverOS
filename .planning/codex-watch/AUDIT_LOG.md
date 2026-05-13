@@ -64,3 +64,18 @@ fork/main:     fe80ca1fd86f64ac27664aa58b41da73b3b2d00c
 - Intervention status: DRIFT_DETECTED intervention is present in `.planning/CODEX_INTERVENTION.md`, but no `chore(codex): acknowledged intervention` commit appears on `origin/sleep-log` yet.
 - Concerns: Claude continues producing strong T5 architecture artifacts, but unresolved red PRs #7/#12 and unacknowledged intervention remain. PR #12 markdownlint is especially non-mergeable because it fails on 1218 existing-repo lint errors.
 - Action: NONE due 1h intervention cooldown. Keep monitoring for acknowledgement or repair before escalating.
+
+## 2026-05-13T07:25:56Z Watch checkpoint
+- Heartbeat: fresh by content timestamp, iter 16, task=risk-log, tier=T5; `HEARTBEAT.txt` reports `2026-05-13T07:15:47Z`, about 10m old.
+- Latest logged iter: Iter 16 `risk-log`, PR #21. A newer PR #22 `may-agent-index` already exists ahead of the sleep-log entry.
+- Latest iter self-score: +5.
+- Independent latest score: +4 to +5 provisional. PR #21 adds a 216-line May 31 risk register with owners, mitigations, and escalation triggers; Docs links passed. PR #22 adds a 153-line index/status dashboard and also passes Docs links.
+- Cumulative self-score: +55 (65%); still uses mixed score/percent accounting.
+- Open draft PRs: 14 (#7 red, #8 green, #9 green, #10 no checks, #11 green, #12 red, #13 no checks, #14-#20 green).
+- Open non-draft sleep PRs: 2 (#21 green, #22 green). Total open sleep PRs observed: 16.
+- sync-failed issues: 0.
+- fork/main: fe80ca1fd86f64ac27664aa58b41da73b3b2d00c (baseline unchanged).
+- upstream/main: 29d555c6e94de3630f314c1f594fc1801377ff5a (baseline unchanged).
+- Intervention status: DRIFT_DETECTED intervention remains unacknowledged; no `chore(codex): acknowledged intervention` commit appears on `origin/sleep-log`.
+- Concerns: red PRs #7/#12 remain unresolved, and PRs #21/#22 were opened ready-for-review rather than draft, which weakens the sleep-run queue shape even though the artifacts are strong. No new hard fail detected.
+- Action: NONE due 1h intervention cooldown. Continue monitoring for acknowledgement, red PR repair, and whether future sleep PRs stay non-draft.

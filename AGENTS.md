@@ -71,3 +71,14 @@ uv run pyright                # Type check, if pyright is installed
   variants.
 - Prefer existing repo patterns and component boundaries before adding new
   abstractions.
+
+## GitHub Agent Review Contract
+
+- GitHub Copilot, Codex, and other review agents should follow
+  `.github/copilot-instructions.md`.
+- Start PR reviews with the MUW block:
+  `VERDICT: PASS / FLAG / BLOCK`, `VERDICT_SUMMARY:`, and `EVIDENCE:`.
+- Do not mark a PR `PASS` from author summary alone; inspect the actual diff,
+  linked issue, and available checks first.
+- Report actionable findings first, ordered by severity, with file/path,
+  evidence, impact, and fix guidance.

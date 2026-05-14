@@ -75,7 +75,7 @@ Automatic lifecycle behavior:
 | `bootstrap()` | Session starts | Backend health check and session state init |
 | `assemble()` | Before each turn | Searches relevant memory and injects it as context |
 | `afterTurn()` | After each turn | Saves new messages from the turn |
-| `compact()` | Compaction check | Participates in token-budget decisions |
+| Compaction | Not owned | Leaves host token-budget compaction untouched |
 | `dispose()` | Session ends | Clears in-memory session state |
 
 User-facing result:

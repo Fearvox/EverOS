@@ -4,6 +4,9 @@
   "description": "EverOS OpenClaw Plugin — persistent memory through natural conversation",
   "type": "module",
   "main": "./index.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
   "bin": {
     "everos-install": "./bin/install.js"
   },

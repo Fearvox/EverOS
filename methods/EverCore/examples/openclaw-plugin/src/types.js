@@ -51,24 +51,7 @@
  */
 
 /**
- * @typedef {Object} CompactContext
- * @property {Array} messages - Current session messages
- * @property {number} tokenCount - Estimated token count of context
- * @property {string} [sessionId] - Optional session identifier
- */
-
-/**
- * @typedef {Object} CompactResult
- * @property {boolean} shouldCompact - Whether compaction is recommended
- * @property {string} reason - Explanation of the decision
- * @property {Object} [metadata] - Additional metadata
- * @property {string} [metadata.memoryStrategy] - Suggested memory consolidation strategy
- * @property {number} [metadata.turnCount] - Turn count at evaluation time
- */
-
-/**
  * @typedef {Object} ParsedMemoryResponse
  * @property {Array<{text: string, timestamp: number|string|null}>} episodic - Episodic memories
  * @property {Array<{text: string, timestamp: number|string|null}>} pending - Recent unconsolidated messages
  */
-

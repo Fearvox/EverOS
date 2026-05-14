@@ -184,26 +184,6 @@ export function createContextEngine(pluginMeta, pluginConfig, logger) {
       }
     },
 
-    async compact({ sessionId, sessionKey, tokenBudget, currentTokenCount }) {
-      const state = sessionState.get(sessionKey);
-      if (!state) {
-        return { ok: true, compacted: false, reason: "no session state" };
-      }
-
-      state.savedUpTo = 0;
-
-      const threshold = tokenBudget ? tokenBudget * 0.8 : 8000;
-      const overBudget = currentTokenCount && currentTokenCount > threshold;
-
-      return {
-        ok: true,
-        compacted: false,
-        reason: overBudget
-          ? `token count (${currentTokenCount}) exceeds 80% of budget (${tokenBudget}), host should compact`
-          : "within threshold",
-      };
-    },
-
     async dispose({ sessionKey } = {}) {
       if (sessionKey) {
         sessionState.delete(sessionKey);

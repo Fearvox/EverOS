@@ -1,0 +1,45 @@
+# Upstream PR Matrix
+
+Live source: `EverMind-AI/EverOS` open PRs fetched on 2026-05-14. GitHub reported 37 open PRs: 1 `CLEAN`, 4 `BLOCKED`, and 32 `DIRTY`.
+
+This matrix treats `DIRTY` as needing rebase before merge review. `BLOCKED` means GitHub does not currently report the branch as cleanly mergeable; owner review is still required to distinguish checks, conflicts, and policy gates.
+
+| PR | Merge state | Family | File surface | Related issues | Verdict | Owner action |
+|---|---|---|---|---|---|---|
+| [#213](https://github.com/EverMind-AI/EverOS/pull/213) docs links to project repos | DIRTY | README docs | `README.md` | none | needs rebase | Rebase against current README or close if superseded by local README restructuring. |
+| [#211](https://github.com/EverMind-AI/EverOS/pull/211) handle 202 Accepted in demo store | BLOCKED | Demo/API UX | `methods/EverCore/demo/utils/simple_memory_manager.py` | #93 | needs review | High-value small fix; inspect checks/conflict and merge after demo smoke. |
+| [#206](https://github.com/EverMind-AI/EverOS/pull/206) MinIO credentials from env | BLOCKED | Security/config | `methods/EverCore/docker-compose.yaml`, `methods/EverCore/env.template` | infra/security | needs review | Security-positive, but owner must verify default DX and env template migration. |
+| [#202](https://github.com/EverMind-AI/EverOS/pull/202) OpenClaw endpoint docs | BLOCKED | OpenClaw docs | `methods/EverCore/examples/openclaw-plugin/SKILL.md` | #150, #139 | needs review | Current-path doc PR; compare against local fork OpenClaw packet before merge. |
+| [#196](https://github.com/EverMind-AI/EverOS/pull/196) v0 -> v1 API migration | DIRTY | API/docs migration | broad `methods/evermemos/...` surface | #191 | close/rework | Old path and broad scope; replace with narrow current-tree migration. |
+| [#189](https://github.com/EverMind-AI/EverOS/pull/189) OpenClaw plugin call API fail | DIRTY | OpenClaw plugin | `methods/evermemos/examples/openclaw-plugin/src/api.js` | #150, #139 | close/rework | Old path surface; supersede with current `methods/EverCore` plugin work. |
+| [#185](https://github.com/EverMind-AI/EverOS/pull/185) README search example | BLOCKED | README docs | `README.md` | #191 | needs review | Prefer this narrow docs fix if conflict is small; compare with #196. |
+| [#159](https://github.com/EverMind-AI/EverOS/pull/159) query expansion rewrite | DIRTY | Memory retrieval | `src/agentic_layer/memory_manager.py`, `src/memory_layer/query_expansion.py` | #65/#34 class | needs maintainer decision | Architecture-level retrieval change; needs design review before rebase spend. |
+| [#157](https://github.com/EverMind-AI/EverOS/pull/157) production Dockerfile | DIRTY | Infra/Docker | `.dockerignore`, `Dockerfile` | #21 | needs maintainer decision | Decide official Docker support shape first. |
+| [#154](https://github.com/EverMind-AI/EverOS/pull/154) anti-pattern cleanup / duplicate RRF | DIRTY | Code quality | demo, biz, repository files | #50 | needs rebase | Candidate canonical cleanup if narrowed; overlaps #97/#141/#137. |
+| [#144](https://github.com/EverMind-AI/EverOS/pull/144) MiniMax provider | DIRTY | Provider config | env/provider/test files under `methods/evermemos` | #29/#23 class | close/rework | Old path and provider-specific; decide provider roadmap before patch. |
+| [#141](https://github.com/EverMind-AI/EverOS/pull/141) duplicate RRF in demo | DIRTY | Code quality | `demo/utils/simple_memory_manager.py` | #50 | duplicate | Close after selecting #154 or a new narrow PR. |
+| [#140](https://github.com/EverMind-AI/EverOS/pull/140) normalize plugin-wrapped content | DIRTY | Memory extraction | extractor + test | memory quality | needs rebase | Potentially useful; requires focused extractor test. |
+| [#138](https://github.com/EverMind-AI/EverOS/pull/138) multiple memory types search | DIRTY | Memory API bug | API DTO/controller/service/search files | #78 | needs rebase | Best canonical candidate for #78 if rebased and tested. |
+| [#137](https://github.com/EverMind-AI/EverOS/pull/137) Python anti-patterns | DIRTY | Code quality | biz/repository files | code quality | duplicate | Overlaps #154/#126/#112/#110; close or split into targeted lint PR. |
+| [#136](https://github.com/EverMind-AI/EverOS/pull/136) BM25/Embedding filename mismatch | DIRTY | Benchmark correctness | broad demo/docs/eval/src/tests | #127 | close/rework | The bug is high priority, but PR is too broad; request focused patch and repro. |
+| [#135](https://github.com/EverMind-AI/EverOS/pull/135) AP Memory Agent demo | DIRTY | Demo/use case | demo app, pyproject, lockfile, memorize path | use cases | needs maintainer decision | Large demo + lockfile impact; owner must decide product fit. |
+| [#132](https://github.com/EverMind-AI/EverOS/pull/132) full episode param | DIRTY | Memory API | broad demo/docs/eval/src/tests | #131 | close/rework | Too broad for #131; ask for narrow API/test patch. |
+| [#129](https://github.com/EverMind-AI/EverOS/pull/129) dedup and foresight cleanup | BLOCKED | Memory lifecycle | cleanup/memorize/repository files | #95 | needs review | Semantically important; require tenant-scope and retention tests before merge. |
+| [#128](https://github.com/EverMind-AI/EverOS/pull/128) OpenClaw plugin API compatibility | CLEAN | OpenClaw plugin | `evermemos-openclaw-plugin/*` | #150, #139 | needs review | GitHub-clean, but file path looks legacy; verify relevance before merge. |
+| [#126](https://github.com/EverMind-AI/EverOS/pull/126) typos / None / bare except | DIRTY | Code quality | evaluation + biz/repository/tests | code quality | duplicate | Close or harvest tiny fixes into selected cleanup PR. |
+| [#124](https://github.com/EverMind-AI/EverOS/pull/124) force_boundary | DIRTY | Memory behavior/API | API DTO/converter/memorize/extractor | #16 class | needs maintainer decision | API contract change; needs owner decision before rebase. |
+| [#118](https://github.com/EverMind-AI/EverOS/pull/118) datetime conversion | DIRTY | Data consistency | memory_manager + Mongo base | #48 class | needs rebase | Candidate only if canonical timestamp contract is accepted. |
+| [#115](https://github.com/EverMind-AI/EverOS/pull/115) retrieval filename typo | DIRTY | Benchmark correctness | evaluation adapter file | #127 class | duplicate | Likely superseded by #136 or a new focused #127 fix. |
+| [#113](https://github.com/EverMind-AI/EverOS/pull/113) bool comparison | DIRTY | Code quality | biz/repository files | code quality | duplicate | Low-risk but overlaps cleanup wave; close or batch. |
+| [#112](https://github.com/EverMind-AI/EverOS/pull/112) docstring/bare except/timestamp | DIRTY | Code quality/data consistency | demo, memory manager, biz, repo, prompt | #48 class | duplicate | Overlaps #108/#110/#126/#154. |
+| [#110](https://github.com/EverMind-AI/EverOS/pull/110) bare except/ISO timestamp/docstring | DIRTY | Code quality/data consistency | demo, db ops, repo, prompt | #48 class | duplicate | Close after canonical timestamp/cleanup path chosen. |
+| [#109](https://github.com/EverMind-AI/EverOS/pull/109) multiple memory_types search | DIRTY | Memory API bug | `src/agentic_layer/memory_manager.py` | #78 | duplicate | Superseded by broader #138 candidate. |
+| [#108](https://github.com/EverMind-AI/EverOS/pull/108) ISO 8601 timestamp | DIRTY | Data consistency | demo, docker, db ops, repo, prompts | #48 | duplicate | Too broad; keep timestamp contract then reimplement narrow. |
+| [#107](https://github.com/EverMind-AI/EverOS/pull/107) bare except | DIRTY | Code quality | demo, docker, db ops, repo, tests | code quality | duplicate | Close or batch into cleanup PR. |
+| [#106](https://github.com/EverMind-AI/EverOS/pull/106) two phase memory extraction | DIRTY | Memory lifecycle | docs/env/worker/memorize/delete service | lifecycle | needs maintainer decision | Architecture change; needs design review. |
+| [#98](https://github.com/EverMind-AI/EverOS/pull/98) bare excepts | DIRTY | Code quality | config/demo/docker/db/repo | code quality | duplicate | Close as stale cleanup duplicate. |
+| [#97](https://github.com/EverMind-AI/EverOS/pull/97) duplicate RRF | DIRTY | Code quality | config/demo/docker | #50 | duplicate | Superseded by #141/#154 or a new narrow fix. |
+| [#91](https://github.com/EverMind-AI/EverOS/pull/91) bare excepts | DIRTY | Code quality | db ops/repo/tests | code quality | duplicate | Close as stale cleanup duplicate. |
+| [#90](https://github.com/EverMind-AI/EverOS/pull/90) remove unused Mongo init volume | DIRTY | Infra/Docker | `docker-compose.yaml` | #21/#1 class | needs maintainer decision | Small infra cleanup, but should follow Docker support decision. |
+| [#89](https://github.com/EverMind-AI/EverOS/pull/89) multi-memory-type search | DIRTY | Memory API bug | `src/agentic_layer/memory_manager.py` | #78 | duplicate | Superseded by #138 candidate. |
+| [#86](https://github.com/EverMind-AI/EverOS/pull/86) STARTER_KIT quick start | DIRTY | Docs/community | `docs/STARTER_KIT.md` | #57 | needs rebase | Rebase and verify links, or replace with narrow link-only PR. |

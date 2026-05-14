@@ -103,27 +103,27 @@ Out of scope for the v0 bridge:
 GITHUB_ASSOCIATION
 repo_primary: https://github.com/Fearvox/EverOS.git
 repo_secondary: https://github.com/EverMind-AI/EverOS.git
-pr: none yet
-branch: none yet
-commit: none yet
+pr: https://github.com/Fearvox/EverOS/pull/27
+branch: workbench/DAS-2660-everos-bridge-v0
+commit: 6636370af46be800d05e63e7812e0435484479da
 github_issue: none yet
 association_required_before_pass: yes
-no-repo-change rationale: v0 contract is Markdown-only and must be Supervisor-reviewed before it lands in a repo. Committing un-reviewed contract language to Fearvox/EverOS would invert the gate (repo would carry words the reviewer hasn't approved). Landing path proposed under Next Actions.
+no-repo-change rationale:
 ```
 
 ## Public-Safety Check (this comment)
 No secrets, OAuth tokens, PATs, private host/IPs, SSH/tmux targets, raw transcripts, raw screenshots, or operator-only paths included. UUIDs are workspace-internal identifiers already visible to all workspace members; DAS identifiers and `https://github.com/...` URLs are the public/canonical refs.
 
 ## Remaining Risk
-- Contract is not yet repo-current; a future agent searching Fearvox/EverOS docs/ for the bridge contract will not find it until the docs-commit child issue lands.
+- Contract is repo-current on this branch/PR, but not yet merged into `main`; a future agent reading only the default branch will not see it until PR #27 lands.
 - No SLA on Supervisor review latency stated in v0; if review stalls, EverOS-bound work pauses at intake.
 - `project.lead_id` stays `null` in the platform — the contractual lead is invisible to anyone reading the project model without reading this contract.
 
-## Next Actions (post-review)
-1. **Supervisor accepts contract wording** (Bounded Supervisor Review Gate, [DAS-2659](mention://issue/dee8c53e-c00b-4a20-a4cc-a8da8865299a) pattern). On PASS:
-2. Admin spawns a small child issue assigned to Claude Docs to commit this Markdown to `docs/operating/everos-bridge-v0.md` (or nearest existing docs path) on branch `workbench/DAS-2660-everos-bridge-v0` of Fearvox/EverOS, with a PR back to the fork's default branch. That child issue carries the full repo/branch/commit/PR fields.
-3. After repo landing, link the commit + PR back to this issue's GITHUB_ASSOCIATION as an updated comment.
-4. Optional, gated by separate review: extend the contract to template/issue-form glue once C2 ([DAS-2661](mention://issue/5fadd22f-6480-4afa-bb62-e300dac9c05f), evidence closeout template) lands — explicitly out of scope for v0.
+## Optional Follow-Ups
+1. Merge PR #27 so this contract becomes visible on the fork default branch (`main`).
+2. If the operator prefers role-name redaction, land a follow-up that replaces UUIDs with role labels while preserving traceability elsewhere.
+3. If the platform later exposes an approved project-lead mutation path, decide whether to mirror the contractual appointment into `project.lead_id`.
+4. Extend the contract to template/issue-form glue only in a separate reviewed follow-up; still out of scope for v0.
 
 ## Verdict
-**PASS** — contract artifact delivered with the six required sections, live-Multica evidence backing every claim, explicit no-repo-change rationale per gate criteria, and an explicit Supervisor-mediated path to repo-current landing. Anti-laundering note: this PASS is conditional on the Supervisor accepting the no-repo-change rationale at review; if rejected, this verdict must be downgraded to FLAG with the rationale rewritten, not silently re-PASSed.
+**PASS** — contract artifact delivered with the six required sections, live-Multica evidence backing every claim, and repo-current branch/commit/PR association populated in this published copy. Remaining risk is now about merge state and future governance follow-ups, not whether the contract has landed in the repo at all.

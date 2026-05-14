@@ -19,6 +19,63 @@ permissions:
   contents: read
 
 jobs:
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect changed Markdown files
+        id: changed-markdown
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          from pathlib import Path
+          import os
+          import subprocess
+
+          event_name = os.environ["EVENT_NAME"]
+          if event_name == "pull_request":
+              base_ref = os.environ["BASE_REF"]
+              subprocess.run(["git", "fetch", "origin", base_ref, "--depth=1"], check=True)
+              diff_range = f"origin/{base_ref}...HEAD"
+          else:
+              before = os.environ.get("BEFORE_SHA", "")
+              after = os.environ["AFTER_SHA"]
+              if before and set(before) != {"0"}:
+                  diff_range = f"{before}..{after}"
+              else:
+                  diff_range = f"{after}^..{after}"
+
+          result = subprocess.run(
+              ["git", "diff", "--name-only", "--diff-filter=ACMRT", diff_range],
+              check=True,
+              text=True,
+              stdout=subprocess.PIPE,
+          )
+          files = [
+              path
+              for path in result.stdout.splitlines()
+              if path.endswith(".md") and Path(path).is_file()
+          ]
+
+          print("files<<EOF")
+          print("\n".join(files))
+          print("EOF")
+          print(f"count={len(files)}")
+          PY
+
+      - uses: DavidAnson/markdownlint-cli2-action@v19
+        if: steps.changed-markdown.outputs.count != '0'
+        with:
+          globs: ${{ steps.changed-markdown.outputs.files }}
+          config: .markdownlint.json
+
   links:
     runs-on: ubuntu-latest
     steps:

@@ -223,3 +223,7 @@ evaluation/locomo_evaluation/results_ref/demo/results/
 
 # Use-cases: exclude lock files to keep repo lean
 use-cases/**/package-lock.json
+
+# Local playwright + goal state traces
+.playwright-mcp/
+.goal/

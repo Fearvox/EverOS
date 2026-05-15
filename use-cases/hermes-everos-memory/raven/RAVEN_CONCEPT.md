@@ -1,26 +1,24 @@
-# Riven Concept Packet v0
+# Raven Concept Packet v0
 
 ## Verdict
 
-PASS for the Riven concept artifact.
+PASS for the Raven concept artifact.
 
-Riven is the operator-facing concept name for the memory-backed execution lane.
-The current repo-local implementation remains under the `raven` directory and
-`raven-run` command for v0 compatibility.
+Raven is the operator-facing name and the repo-local implementation namespace
+for the memory-backed execution lane.
 
-## Naming Boundary
+## Naming Contract
 
 | Name | Role | Status |
 | --- | --- | --- |
-| Riven | product/concept name for the operator surface | concept artifact |
-| Raven | current CLI, packet schema, fixtures, and SkillHub install target | implemented v0 surface |
+| Raven | operator surface, CLI, packet schema, fixtures, and SkillHub install target | implemented v0 surface |
 
-Do not rename files, commands, or install targets until there is a migration
-plan. The present contract treats Raven as the working codename for Riven v0.
+Use Raven everywhere. Do not introduce a second product/internal name unless a
+future migration plan explicitly changes the namespace.
 
 ## Product Thesis
 
-Riven is not a chat transcript viewer and not a generic dashboard. It is a
+Raven is not a chat transcript viewer and not a generic dashboard. It is a
 memory-backed operator surface for focused agent work:
 
 - capture one goal;
@@ -32,9 +30,9 @@ memory-backed operator surface for focused agent work:
 
 ## First Run Shape
 
-The first Riven run is the Doomsday EverOS lane:
+The first Raven run is the Doomsday EverOS lane:
 
-1. Riven concept exploration through the Raven command contract.
+1. Raven concept exploration through the Raven command contract.
 2. EverMe SkillHub MVP packet and read-only mock API.
 3. Hermes/EverOS provider dogfood with store, search, recall, and real Hermes
    profile verification.
@@ -44,11 +42,11 @@ The first Riven run is the Doomsday EverOS lane:
 The minimal useful UI is command-grade:
 
 ```text
-riven capture <goal>
-riven memory search <query>
-riven lane list
-riven gate verify
-riven export
+raven capture <goal>
+raven memory search <query>
+raven lane list
+raven gate verify
+raven export
 ```
 
 For v0, these map to the existing `raven-run` validator/renderer and the
@@ -61,7 +59,7 @@ For v0, these map to the existing `raven-run` validator/renderer and the
   credential paths.
 - Do not treat remote NixOS deploy as complete until the deploy smoke passes on
   the remote loopback service.
-- Do not widen Riven into a new major repo before the packet contract earns it.
+- Do not widen Raven into a new major repo before the packet contract earns it.
 
 ## Current Evidence
 

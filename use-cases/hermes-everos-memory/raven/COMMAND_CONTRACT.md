@@ -42,7 +42,7 @@ It does not own:
 | `raven repl` | slash commands | same handlers as CLI | piped smoke stays deterministic |
 | `raven chat send [--cwd <path>] [--json] [--receipt <path\|->] [--save] <prompt>` | bounded prompt text | sanitized `HermesChatTurn` or `RavenReceipt` | Hermes failure is `FLAG`, not UI crash; chat receipts cannot green remote deploy |
 | `raven packet show [--json]` | local packet/docs | packet summary | source docs resolve |
-| `raven packet export [--output <path|->]` | snapshot | sanitized owner packet markdown | public-safety sanitizer clean |
+| `raven packet export [--output <path\|->]` | snapshot | sanitized owner packet markdown | public-safety sanitizer clean |
 | `raven memory health [--json]` | EverOS bridge | health verdict | provider failure is `FLAG`, not crash |
 | `raven memory search <query> [--json]` | query text | bounded memory refs | empty query is `FLAG` |
 | `raven agents list [--json]` | Multica watch issues | agent/watch table | unavailable Multica falls back to `FLAG` |
@@ -51,8 +51,8 @@ It does not own:
 | `raven research packet <lane> [--json] [--output <path\|->]` | research ledger + live remote gates | `RavenResearchPacket` | live `DAS-2666/2669` red gates force `FLAG` context |
 | `raven research synthesize [--json] [--output <path\|->]` | completed research packets | synthesis readiness report | less than three packets stays `FLAG`; no architecture packet |
 | `raven runs list [--json]` | saved receipts or packet gates | run/receipt table | receipts read from gitignored local dir |
-| `raven sc [all|status|sessions|providers|worktree] [--json]` | Superconductor socket via thin CLI | `ScReport` or focused view | unavailable socket or merge-base failure is `FLAG`, never a crash |
-| `raven run verify [--receipt <path|->] [--save]` | local run packet | `RavenReceipt` or human output | local verifier cannot green remote deploy |
+| `raven sc [all\|status\|sessions\|providers\|worktree] [--json]` | Superconductor socket via thin CLI | `ScReport` or focused view | unavailable socket or merge-base failure is `FLAG`, never a crash |
+| `raven run verify [--receipt <path\|->] [--save]` | local run packet | `RavenReceipt` or human output | local verifier cannot green remote deploy |
 | `raven doctor [--json]` | toolchain/files/bridge | dependency report | missing hard local dependency blocks |
 | `raven native-audit [--json]` | source + audit doc | UX/safety gate report | hard UX/safety failure blocks `PASS` |
 

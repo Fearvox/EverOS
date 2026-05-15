@@ -1,8 +1,7 @@
 # Upstream PR Matrix
 
 Live source: `EverMind-AI/EverOS` open PRs fetched on 2026-05-14. GitHub reported 37 open PRs: 1 `CLEAN`, 4 `BLOCKED`, and 32 `DIRTY`.
-Targeted recheck on 2026-05-15 confirmed #185/#211 remain `BLOCKED` and
-#89/#109/#138 remain `DIRTY`.
+Targeted recheck on 2026-05-15 confirmed PRs #185/#211 remain `BLOCKED` and PRs #89/#109/#138 remain `DIRTY`.
 
 This matrix treats `DIRTY` as needing rebase before merge review. `BLOCKED` means GitHub does not currently report the branch as cleanly mergeable; owner review is still required to distinguish checks, conflicts, and policy gates.
 

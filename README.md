@@ -13,7 +13,6 @@
 
 </div>
 
-
 <br>
 
 <details open>
@@ -34,8 +33,6 @@
 <br>
 
 </details>
-
-
 
 ## Project Overview
 
@@ -61,6 +58,7 @@ Use cases show what persistent memory makes possible in real products and workfl
 
 ![banner-gif](https://github.com/user-attachments/assets/650b901b-c9ba-4001-bac7-626b009df830)
 
+<!-- markdownlint-disable-next-line MD001 -->
 #### Rokid AI Assistant with EverOS
 
 Connect to EverOS within Rokid Glasses enabling long-term memory for all of your smart activities.
@@ -94,7 +92,7 @@ Earth Online is a memory-aware productivity game that turns everyday planning in
 </td>
 <td width="50%" valign="top">
 
-[![banner-gif](https://github.com/user-attachments/assets/57d8cda7-35a5-4561-b794-5520dffc917b)](https://github.com/golutra/golutra) 
+[![banner-gif](https://github.com/user-attachments/assets/57d8cda7-35a5-4561-b794-5520dffc917b)](https://github.com/golutra/golutra)
 
 #### Multi-Agent Orchestration Platform
 
@@ -118,7 +116,7 @@ Record, visualize, and explore your tasting journey through an immersive 3D star
 </td>
 <td width="50%" valign="top">
 
-[![banner-gif](https://github.com/user-attachments/assets/93ac2a68-4f18-4fcb-8d87-80aeb00a9d7c)](https://github.com/kellyvv/OpenHer) 
+[![banner-gif](https://github.com/user-attachments/assets/93ac2a68-4f18-4fcb-8d87-80aeb00a9d7c)](https://github.com/kellyvv/OpenHer)
 
 #### EverOS Open Her
 
@@ -143,7 +141,7 @@ Ruminer brings persistent memory to a browser agent so it can carry personal con
 </td>
 <td width="50%" valign="top">
 
-[![banner-gif](https://github.com/user-attachments/assets/c258a6c4-fe70-497a-98d1-3dade4a932f6)](https://github.com/nanxingw/EverMem) 
+[![banner-gif](https://github.com/user-attachments/assets/c258a6c4-fe70-497a-98d1-3dade4a932f6)](https://github.com/nanxingw/EverMem)
 
 #### EverMem Sync with EverOS
 
@@ -168,7 +166,7 @@ MCO equips your primary agent with an agent team that can work together to solve
 </td>
 <td width="50%" valign="top">
 
-[![banner-gif](https://github.com/user-attachments/assets/314c9126-8e08-4688-bbbb-8555ad58cf67)](https://github.com/onenewborn/StudyBuddy-public) 
+[![banner-gif](https://github.com/user-attachments/assets/314c9126-8e08-4688-bbbb-8555ad58cf67)](https://github.com/onenewborn/StudyBuddy-public)
 
 #### Study Buddy with Self-Evolving Memory
 
@@ -193,7 +191,7 @@ Empowering individuals with advanced memory support and daily assistance.
 </td>
 <td width="50%" valign="top">
 
-[![banner-gif](https://github.com/user-attachments/assets/e2428df3-ea11-4e88-8f9c-dad437dd8998)](https://github.com/AlexL1024/NeuralConnect) 
+[![banner-gif](https://github.com/user-attachments/assets/e2428df3-ea11-4e88-8f9c-dad437dd8998)](https://github.com/AlexL1024/NeuralConnect)
 
 #### Memory-Driven Multi-Agent NPC Experience
 
@@ -305,7 +303,7 @@ Explore stored entities and relationships in a graph interface. Frontend demo; b
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -393,7 +391,7 @@ for memory_group in result.get("memories", []):
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -431,7 +429,7 @@ LoCoMo **92.73%**
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -465,7 +463,7 @@ Agent self-evolution evaluation through longitudinal growth curves, transfer eff
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -506,7 +504,7 @@ cat evaluation/results/locomo-everos/report.txt
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -540,7 +538,7 @@ If EverOS helps your research, please cite the relevant paper:
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -553,7 +551,7 @@ Star the repo or join the community links above to follow new architecture metho
 <br>
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>
 
@@ -596,6 +594,6 @@ Read the [Contribution Guidelines](.github/CONTRIBUTING.md) for setup, pull requ
 
 <div align="right">
 
-[![](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
+[![Back to top](https://img.shields.io/badge/-Back_to_top-gray?style=flat-square)](#readme-top)
 
 </div>

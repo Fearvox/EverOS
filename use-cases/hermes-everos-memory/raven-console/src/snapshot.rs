@@ -5,8 +5,9 @@ use crate::constants::{
 };
 use crate::context::Context;
 use crate::model::{
-    AgentView, IssueView, LocalGateView, MemoryHealth, PacketSummary, PublicSafetyResult,
-    RavenSnapshot, RemoteGate, RunView, ScReport, Verdict,
+    AgentView, AgenticLoopPhase, AgenticLoopState, AgenticLoopStep, IssueView, LocalGateView,
+    MemoryHealth, PacketSummary, PublicSafetyResult, RavenSnapshot, RemoteGate, RunView, ScReport,
+    Verdict,
 };
 
 struct SnapshotParts {
@@ -86,6 +87,7 @@ fn assemble(ctx: &Context, parts: SnapshotParts) -> RavenSnapshot {
         sc,
     } = parts;
     let verdict = overall_verdict(packet_verdict, &remote_gates);
+    let loop_state = agentic_loop_state(ctx, packet_verdict, &remote_gates, &memory, &runs);
 
     let mut next_actions = ctx.packet.next_actions.clone();
     if remote_gates
@@ -125,6 +127,7 @@ fn assemble(ctx: &Context, parts: SnapshotParts) -> RavenSnapshot {
         memory,
         runs,
         sc,
+        loop_state,
         risks: vec![
             "Remote deploy remains separate from local packet PASS.".to_string(),
             "DAS-2675 adapter repair cannot change DAS-2666 verdict.".to_string(),
@@ -135,6 +138,131 @@ fn assemble(ctx: &Context, parts: SnapshotParts) -> RavenSnapshot {
             verdict: Verdict::Pass,
             evidence: "CLI/JSON output passes through Raven sanitizer before printing.".to_string(),
         },
+    }
+}
+
+fn agentic_loop_state(
+    ctx: &Context,
+    packet_verdict: Verdict,
+    remote_gates: &[RemoteGate],
+    memory: &MemoryHealth,
+    runs: &[RunView],
+) -> AgenticLoopState {
+    let remote_blocked = remote_gates
+        .iter()
+        .any(|gate| gate.hard_gate && gate.verdict == Verdict::Block);
+    let auth_repaired = remote_gates
+        .iter()
+        .any(|gate| gate.id == ISSUE_AUTH_BLOCKER && gate.verdict == Verdict::Pass);
+    let receipt_ready = runs.iter().any(|run| run.receipt_path.is_some());
+    let verify_verdict = if remote_blocked {
+        Verdict::Flag
+    } else if packet_verdict == Verdict::Pass {
+        Verdict::Pass
+    } else {
+        packet_verdict
+    };
+
+    let steps = vec![
+        AgenticLoopStep {
+            phase: AgenticLoopPhase::Capture,
+            label: "Goal captured".to_string(),
+            verdict: Verdict::Pass,
+            evidence: "Run packet, watchlist gates, and prompt surfaces are typed.".to_string(),
+        },
+        AgenticLoopStep {
+            phase: AgenticLoopPhase::Plan,
+            label: "One bounded objective".to_string(),
+            verdict: Verdict::Pass,
+            evidence: "Plan stays inside Raven packet scope and visible stop conditions."
+                .to_string(),
+        },
+        AgenticLoopStep {
+            phase: AgenticLoopPhase::Act,
+            label: "Hermes turn boundary".to_string(),
+            verdict: if memory.verdict == Verdict::Block {
+                Verdict::Block
+            } else {
+                Verdict::Flag
+            },
+            evidence: "CLI, REPL, and TUI execute one sanitized Hermes turn at a time.".to_string(),
+        },
+        AgenticLoopStep {
+            phase: AgenticLoopPhase::Observe,
+            label: "Evidence stays attached".to_string(),
+            verdict: Verdict::Pass,
+            evidence: "TUI evidence drawer, chat transcript, gates, and runs are stable panes."
+                .to_string(),
+        },
+        AgenticLoopStep {
+            phase: AgenticLoopPhase::Verify,
+            label: "Gates decide closure".to_string(),
+            verdict: verify_verdict,
+            evidence: if remote_blocked {
+                "Local packet may pass; remote deploy remains blocked by hard gate evidence."
+                    .to_string()
+            } else if auth_repaired {
+                "Auth repair is present; remaining verifier gates decide loop closure.".to_string()
+            } else {
+                "Verifier has no remote hard block in the current snapshot.".to_string()
+            },
+        },
+        AgenticLoopStep {
+            phase: AgenticLoopPhase::Receipt,
+            label: "Receipt is explicit".to_string(),
+            verdict: if receipt_ready {
+                Verdict::Pass
+            } else {
+                Verdict::Flag
+            },
+            evidence: "Use --receipt or --save to materialize sanitized run evidence.".to_string(),
+        },
+    ];
+
+    let verdict = if steps.iter().any(|step| step.verdict == Verdict::Block) {
+        Verdict::Block
+    } else if steps.iter().any(|step| step.verdict == Verdict::Flag) {
+        Verdict::Flag
+    } else {
+        Verdict::Pass
+    };
+
+    AgenticLoopState {
+        verdict,
+        objective: ctx.packet.goal.clone(),
+        active_phase: if remote_blocked {
+            AgenticLoopPhase::Verify
+        } else {
+            AgenticLoopPhase::Act
+        },
+        mode: "single-agent / human-in-the-loop".to_string(),
+        mutation_policy: "read-only by default; writes require explicit command scope or receipt target"
+            .to_string(),
+        allowed_actions: vec![
+            "status/gates refresh".to_string(),
+            "memory search".to_string(),
+            "Hermes chat turn".to_string(),
+            "run verify".to_string(),
+            "receipt save/export".to_string(),
+            "Superconductor inspect".to_string(),
+        ],
+        stop_conditions: vec![
+            "DAS-2666 BLOCK keeps remote deploy red".to_string(),
+            "Hermes failure or timeout returns FLAG, not console crash".to_string(),
+            "public-safety sanitizer failure blocks receipt publication".to_string(),
+            "operator approval required before remote deploy or external mutation".to_string(),
+        ],
+        evidence_required: vec![
+            "operator prompt".to_string(),
+            "Hermes response or stderr excerpt".to_string(),
+            "gate effects".to_string(),
+            "public-safety verdict".to_string(),
+            "receipt path or explicit no-save state".to_string(),
+        ],
+        output_contract:
+            "RavenReceipt plus visible loop transcript; local loop evidence never greens remote deploy"
+                .to_string(),
+        steps,
     }
 }
 

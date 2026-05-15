@@ -41,6 +41,36 @@ impl fmt::Display for Verdict {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum AgenticLoopPhase {
+    Capture,
+    Plan,
+    Act,
+    Observe,
+    Verify,
+    Receipt,
+}
+
+impl AgenticLoopPhase {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Capture => "CAPTURE",
+            Self::Plan => "PLAN",
+            Self::Act => "ACT",
+            Self::Observe => "OBSERVE",
+            Self::Verify => "VERIFY",
+            Self::Receipt => "RECEIPT",
+        }
+    }
+}
+
+impl fmt::Display for AgenticLoopPhase {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct RunPacket {
     pub id: String,
@@ -191,6 +221,28 @@ pub struct RunView {
 }
 
 #[derive(Clone, Debug, Serialize)]
+pub struct AgenticLoopStep {
+    pub phase: AgenticLoopPhase,
+    pub label: String,
+    pub verdict: Verdict,
+    pub evidence: String,
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct AgenticLoopState {
+    pub verdict: Verdict,
+    pub objective: String,
+    pub active_phase: AgenticLoopPhase,
+    pub mode: String,
+    pub mutation_policy: String,
+    pub allowed_actions: Vec<String>,
+    pub stop_conditions: Vec<String>,
+    pub evidence_required: Vec<String>,
+    pub output_contract: String,
+    pub steps: Vec<AgenticLoopStep>,
+}
+
+#[derive(Clone, Debug, Serialize)]
 pub struct ScStatusView {
     pub verdict: Verdict,
     pub ok: bool,
@@ -256,6 +308,7 @@ pub struct RavenSnapshot {
     pub memory: MemoryHealth,
     pub runs: Vec<RunView>,
     pub sc: ScReport,
+    pub loop_state: AgenticLoopState,
     pub risks: Vec<String>,
     pub next_actions: Vec<String>,
     pub public_safety: PublicSafetyResult,

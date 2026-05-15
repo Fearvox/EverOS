@@ -37,6 +37,8 @@ bin/raven status
 bin/raven status --json
 bin/raven packet show
 bin/raven packet export --output -
+bin/raven loop
+bin/raven loop --json
 bin/raven chat send "summarize current hard gates"
 bin/raven chat send --receipt - "summarize current hard gates"
 bin/raven chat send --save "summarize current hard gates"
@@ -63,6 +65,7 @@ Just targets:
 ```bash
 just raven-status
 just raven-packet
+just raven-loop
 just raven-gates
 just raven-agents
 just raven-research-lanes
@@ -121,6 +124,11 @@ same sanitized adapter. The adapter records the public-safe Raven workspace
 label, detected Hermes runtime, command shape, and sanitized transcript. Chat
 receipts can be printed with `--receipt -` or saved with `--save`; they never
 change remote deploy gate state.
+
+The single-agent loop is also explicit: `raven loop`, `/loop`, and the TUI `l`
+panel expose capture, plan, act, observe, verify, and receipt phases. Prompt
+turns add live loop breadcrumbs, but gate closure still requires verifier and
+remote hard-gate evidence.
 
 Superconductor state is visible through `raven sc`. The adapter is read-only,
 times out quickly, and turns socket or merge-base failures into `FLAG` evidence

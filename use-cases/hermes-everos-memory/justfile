@@ -63,6 +63,9 @@ raven-status:
 raven-packet:
   bin/raven packet show
 
+raven-loop:
+  bin/raven loop
+
 raven-gates:
   bin/raven gates
 
@@ -112,7 +115,7 @@ raven-chat-receipt-smoke:
   RAVEN_HERMES_BIN=/bin/echo bin/raven chat send --receipt - raven chat smoke
 
 raven-repl-smoke:
-  printf '/status\n/gates\n/research native-feel\n/chat raven chat smoke\n/memory raven\n/agents\n/runs\n/audit\n/quit\n' | RAVEN_HERMES_BIN=/bin/echo bin/raven repl
+  printf '/status\n/loop\n/gates\n/research native-feel\n/chat raven chat smoke\n/memory raven\n/agents\n/runs\n/audit\n/quit\n' | RAVEN_HERMES_BIN=/bin/echo bin/raven repl
 
 raven-tui-smoke:
   RAVEN_TUI_ONCE=1 bin/raven tui

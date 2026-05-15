@@ -1,7 +1,7 @@
 use crate::model::{
-    DoctorReport, HermesChatTurn, MemorySearchResult, NativeAuditReport, RavenReceipt,
-    RavenSnapshot, ResearchLane, ResearchPacket, ResearchSynthesis, ScProviderView, ScReport,
-    ScSessionView, ScStatusView, ScWorktreeView, Verdict,
+    AgenticLoopState, DoctorReport, HermesChatTurn, MemorySearchResult, NativeAuditReport,
+    RavenReceipt, RavenSnapshot, ResearchLane, ResearchPacket, ResearchSynthesis, ScProviderView,
+    ScReport, ScSessionView, ScStatusView, ScWorktreeView, Verdict,
 };
 use crate::sanitizer::{sanitize_json, sanitize_text};
 use crate::util::one_line;
@@ -28,6 +28,10 @@ pub fn status(snapshot: &RavenSnapshot) {
     line(&format!(
         "MEMORY: {} ({})",
         snapshot.memory.verdict, snapshot.memory.status
+    ));
+    line(&format!(
+        "LOOP: {} (phase {})",
+        snapshot.loop_state.verdict, snapshot.loop_state.active_phase
     ));
     line("");
     line("WATCHLIST:");
@@ -68,6 +72,35 @@ pub fn packet(snapshot: &RavenSnapshot) {
     for doc in &snapshot.packet.docs {
         line(&format!("- {}: {} {}", doc.path, doc.verdict, doc.evidence));
     }
+}
+
+pub fn agentic_loop(state: &AgenticLoopState) {
+    line("RAVEN_AGENTIC_LOOP");
+    line(&format!("VERDICT: {}", state.verdict));
+    line(&format!("OBJECTIVE: {}", state.objective));
+    line(&format!("ACTIVE_PHASE: {}", state.active_phase));
+    line(&format!("MODE: {}", state.mode));
+    line(&format!("MUTATION_POLICY: {}", state.mutation_policy));
+    line("ALLOWED_ACTIONS:");
+    for action in &state.allowed_actions {
+        line(&format!("- {action}"));
+    }
+    line("STOP_CONDITIONS:");
+    for condition in &state.stop_conditions {
+        line(&format!("- {condition}"));
+    }
+    line("EVIDENCE_REQUIRED:");
+    for item in &state.evidence_required {
+        line(&format!("- {item}"));
+    }
+    line("STEPS:");
+    for step in &state.steps {
+        line(&format!(
+            "- {}: {} {} evidence={}",
+            step.phase, step.verdict, step.label, step.evidence
+        ));
+    }
+    line(&format!("OUTPUT_CONTRACT: {}", state.output_contract));
 }
 
 pub fn packet_export_markdown(snapshot: &RavenSnapshot) -> String {

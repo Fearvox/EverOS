@@ -17,4 +17,3 @@
   ],
   "body_markdown": "# Operator Memory Recall\n\n## When to use\nBefore an agent run starts, search durable project memory for prior decisions, constraints, and open gates.\n\n## Technique\nUse a short query that includes the project name, the active goal, and the decision surface. Prefer evidence-backed memories over summary-only memories.\n\n## Anti-pattern\nDo not call memory recall a PASS unless the current run proves health, store, search, and recall."
 }
-

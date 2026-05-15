@@ -28,7 +28,7 @@ Before applying it remotely, confirm:
 
 - the target checkout is clean or intentionally dirty;
 - the remote env file exists outside git;
-- provider keys are installed only on the host;
+- DeepSeek/OpenRouter provider key is installed only on the host;
 - `bindHost` remains `127.0.0.1` unless the operator explicitly approves a
   private network exposure;
 - `nixos-rebuild test` passes before `switch`.
@@ -42,7 +42,8 @@ Before applying it remotely, confirm:
 4. Run the workhorse rebuild in test mode.
 5. Start or restart `evercore-compose.service`.
 6. Run `scripts/evercore-remote-smoke.sh --mode health`.
-7. After LLM/vector/rerank providers are configured, run
+7. After DeepSeek/OpenRouter LLM auth plus vector/rerank providers are
+   configured, run
    `scripts/evercore-remote-smoke.sh --mode full`.
 8. Point Hermes at `EVEROS_API_BASE_URL=http://127.0.0.1:1995` on the same host,
    or at an operator-controlled private route.
@@ -54,6 +55,7 @@ Keep deployment blocked if any of these are true:
 - the API binds to a public interface without explicit approval;
 - any data service port is exposed outside Docker/private host boundaries;
 - the env file contains placeholder secrets during full smoke;
+- DeepSeek/OpenRouter auth preflight fails;
 - `evercore-api` starts without a mounted `/app/.env`;
 - health passes but full write/search fails and the provider is marked `PASS`;
 - full smoke search returns zero retrievable memories after flush;
@@ -79,6 +81,7 @@ From this repo:
 
 ```bash
 bash -n use-cases/hermes-everos-memory/deploy/nixos/scripts/evercore-remote-smoke.sh
+cd use-cases/hermes-everos-memory && just deepseek-auth-preflight
 EVERCORE_REPO_ROOT=$PWD \
 EVERCORE_ENV_FILE=$PWD/use-cases/hermes-everos-memory/deploy/nixos/evercore.env.example \
   docker-compose --env-file use-cases/hermes-everos-memory/deploy/nixos/evercore.env.example \
@@ -88,6 +91,7 @@ EVERCORE_ENV_FILE=$PWD/use-cases/hermes-everos-memory/deploy/nixos/evercore.env.
 From the remote host after configuration:
 
 ```bash
+repo/use-cases/hermes-everos-memory/scripts/deepseek-auth-preflight.sh --env evercore.env --require-key
 systemctl status evercore-compose.service
 systemctl status evercore-health.timer
 scripts/evercore-remote-smoke.sh --mode health
@@ -96,6 +100,6 @@ scripts/evercore-remote-smoke.sh --mode full
 
 ## Next Concrete Action
 
-Stage this packet into the Windburn workhorse lane, add the EverCore module to
-the host config, and run `nixos-rebuild test` with the private env file present
-on the host. Keep `switch` blocked until `test` passes.
+Repair the runtime lane by using the DeepSeek/OpenRouter auth path, prove it
+with `deepseek-auth-preflight.sh --require-key`, then resume the guarded
+`nixos-rebuild test` path. Keep `switch` blocked until `test` passes.

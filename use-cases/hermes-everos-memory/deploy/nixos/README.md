@@ -18,6 +18,7 @@ Decision:
 | `evercore.env.example` | Sanitized remote env template; copy to `evercore.env` outside git |
 | `evercore-remote-workhorse.nix` | Optional NixOS module for the workhorse |
 | `scripts/evercore-remote-smoke.sh` | Public-safe health/write/search smoke helper |
+| `../../scripts/deepseek-auth-preflight.sh` | Public-safe DeepSeek/OpenRouter auth-shape check |
 
 ## Security Contract
 
@@ -57,6 +58,9 @@ On the remote host:
 ```bash
 cp evercore.env.example evercore.env
 $EDITOR evercore.env
+repo/use-cases/hermes-everos-memory/scripts/deepseek-auth-preflight.sh \
+  --env evercore.env \
+  --require-key
 
 export EVERCORE_REPO_ROOT=/srv/windburn/evercore/repo
 export EVERCORE_ENV_FILE=/srv/windburn/evercore/evercore.env
@@ -121,11 +125,13 @@ keep the provider config pointed at the local endpoint exposed by that route.
 `PASS` for deploy readiness requires:
 
 1. `docker-compose ps` shows every service healthy.
-2. `scripts/evercore-remote-smoke.sh --mode health` passes.
-3. `scripts/evercore-remote-smoke.sh --mode full` passes after provider keys are
+2. `deepseek-auth-preflight.sh --env <evercore.env> --require-key` passes
+   without printing secrets.
+3. `scripts/evercore-remote-smoke.sh --mode health` passes.
+4. `scripts/evercore-remote-smoke.sh --mode full` passes after provider keys are
    installed.
-4. Hermes provider `everos_health`, `everos_store`, and `everos_search` all pass.
-5. No public data ports are reachable from outside the private host boundary.
+5. Hermes provider `everos_health`, `everos_store`, and `everos_search` all pass.
+6. No public data ports are reachable from outside the private host boundary.
 
 ## Current Remote Disposition
 

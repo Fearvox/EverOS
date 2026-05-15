@@ -1,7 +1,7 @@
 {
   "id": "raven.everme-doomsday-run",
   "title": "Raven / EverMe Doomsday Run",
-  "goal": "Turn the Chenyifan call into a focused Raven, EverMe SkillHub, and Hermes/EverOS dogfood execution lane with auditable local artifacts.",
+  "goal": "Turn the source conversation into a focused Raven, EverMe SkillHub, and Hermes/EverOS dogfood execution lane with auditable local artifacts.",
   "status": "reviewing",
   "owners": ["codex", "pi", "opencode", "hermes"],
   "memory_providers": ["everos", "hermes"],
@@ -13,8 +13,8 @@
       "mutation_policy": "read_only",
       "verdict": "pass",
       "evidence_refs": [
-        ".planning/raven-everme-doomsday/RAVEN_FIELD_MANUAL.md",
-        "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md"
+        "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
+        "use-cases/hermes-everos-memory/raven/README.md"
       ]
     },
     {
@@ -38,8 +38,8 @@
       "verdict": "pass",
       "evidence_refs": [
         "use-cases/hermes-everos-memory/scripts/dogfood-smoke.sh",
-        ".planning/raven-everme-doomsday/HERMES_DOGFOOD_PLAN.md",
-        "use-cases/hermes-everos-memory/bin/mock-openai-compatible.mjs"
+        "use-cases/hermes-everos-memory/bin/mock-openai-compatible.mjs",
+        "use-cases/hermes-everos-memory/README.md"
       ]
     }
   ],
@@ -95,11 +95,6 @@
   ],
   "artifacts": [
     {
-      "path": ".planning/raven-everme-doomsday/RAVEN_FIELD_MANUAL.md",
-      "purpose": "Raven command and taste contract.",
-      "public_safe": false
-    },
-    {
       "path": "use-cases/hermes-everos-memory/skillhub/schema.json",
       "purpose": "EverMe SkillHub packet contract.",
       "public_safe": true
@@ -138,7 +133,7 @@
     "use-cases/hermes-everos-memory/bin/raven-run.mjs verify",
     "use-cases/hermes-everos-memory/scripts/skillhub-api-smoke.sh",
     "use-cases/hermes-everos-memory/scripts/dogfood-smoke.sh",
-    ".planning/raven-everme-doomsday/HERMES_DOGFOOD_PLAN.md"
+    "use-cases/hermes-everos-memory/README.md"
   ],
   "next_actions": [
     "Promote the NixOS EverCore packet to an observed remote smoke."

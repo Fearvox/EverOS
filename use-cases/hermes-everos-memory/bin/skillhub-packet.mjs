@@ -144,7 +144,7 @@ function valueOrUnknown(value) {
   return String(value);
 }
 
-function renderSkillViews(packet) {
+export function renderSkillViews(packet) {
   const evidence = packet.evidence_refs.length
     ? packet.evidence_refs.map((ref) => `- ${ref}`).join('\n')
     : '- no evidence refs yet';

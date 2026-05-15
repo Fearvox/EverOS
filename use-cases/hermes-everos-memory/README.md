@@ -18,6 +18,7 @@ The provider is intentionally split:
   direct smoke tests.
 - `scripts/install-local.sh` installs the provider into the active Hermes
   profile without activating it.
+- `OWNER_PACKET.md` summarizes the current PASS/FLAG evidence for review.
 
 ## Status
 

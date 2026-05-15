@@ -2,8 +2,8 @@
 
 ## Verdict
 
-FLAG: deploy packet is ready for review, but live remote deployment is not proven
-until the operator installs the secret env file and runs the NixOS/compose gates.
+FLAG: deploy packet is ready for review and the remote NixOS workhorse is
+reachable, but EverCore is not yet running on the workhorse loopback service.
 
 ## Decision
 
@@ -59,6 +59,20 @@ Keep deployment blocked if any of these are true:
 - full smoke search returns zero retrievable memories after flush;
 - host evidence includes raw public host/IP or credential paths.
 
+## Observed Remote Probe
+
+Latest read-only probe:
+
+- remote host is reachable through the existing workhorse SSH route;
+- remote OS is NixOS and system state is running;
+- failed systemd units reported as zero during the dry-run NixOS probe;
+- `evercore-compose.service` is inactive;
+- `evercore-health.timer` is inactive;
+- `http://127.0.0.1:1995/health` is unavailable on the remote host.
+
+Verdict: `FLAG`, because the target host is real and healthy enough for deploy
+work, but EverCore has not been applied or started there.
+
 ## Verification Commands
 
 From this repo:
@@ -82,5 +96,6 @@ scripts/evercore-remote-smoke.sh --mode full
 
 ## Next Concrete Action
 
-Stage this packet into the Windburn workhorse lane and run a test rebuild with a
-redacted env file present on the host.
+Stage this packet into the Windburn workhorse lane, add the EverCore module to
+the host config, and run `nixos-rebuild test` with the private env file present
+on the host. Keep `switch` blocked until `test` passes.

@@ -123,9 +123,15 @@
       "path": "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
       "purpose": "Raven command/state/gate contract.",
       "public_safe": true
+    },
+    {
+      "path": "use-cases/hermes-everos-memory/OWNER_PACKET.md",
+      "purpose": "Owner-readable PASS/FLAG review packet.",
+      "public_safe": true
     }
   ],
   "evidence_refs": [
+    "use-cases/hermes-everos-memory/OWNER_PACKET.md",
     "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
     "use-cases/hermes-everos-memory/skillhub/MVP_IMPLEMENTATION_PLAN.md",
     "use-cases/hermes-everos-memory/skillhub/fixtures/evoagentbench-musician-life-event.json",

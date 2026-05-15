@@ -126,3 +126,10 @@ keep the provider config pointed at the local endpoint exposed by that route.
    installed.
 4. Hermes provider `everos_health`, `everos_store`, and `everos_search` all pass.
 5. No public data ports are reachable from outside the private host boundary.
+
+## Current Remote Disposition
+
+The workhorse route has been probed read-only and is reachable as a NixOS host,
+but EverCore is not yet active there. Treat remote deployment as `FLAG` until
+`evercore-compose.service`, `evercore-health.timer`, and `--mode full` pass on
+the remote host.

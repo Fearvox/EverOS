@@ -6,12 +6,14 @@ use crate::RavenResult;
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::process::Command;
-use std::time::Instant;
+use std::process::{Command, Output, Stdio};
+use std::thread;
+use std::time::{Duration, Instant};
 
 const MAX_PROMPT_CHARS: usize = 4_000;
 const MAX_RESPONSE_CHARS: usize = 8_000;
 const MAX_EVIDENCE_CHARS: usize = 1_200;
+const HERMES_TURN_TIMEOUT: Duration = Duration::from_secs(30);
 
 #[derive(Default)]
 pub struct HermesOptions {
@@ -81,7 +83,8 @@ pub fn ask_with_options(
     };
 
     let start = Instant::now();
-    let output = Command::new(binary)
+    let mut command = Command::new(binary);
+    command
         .arg("-z")
         .arg(build_raven_prompt(
             &bounded_prompt,
@@ -91,11 +94,12 @@ pub fn ask_with_options(
         .current_dir(&cwd)
         .env("RAVEN_WORKSPACE_ROOT", &ctx.root)
         .env("RAVEN_OPERATOR_CWD", &cwd)
-        .env("RAVEN_HERMES_RUNTIME", &meta.runtime)
-        .output();
+        .env("RAVEN_HERMES_RUNTIME", &meta.runtime);
+
+    let output = output_with_timeout(&mut command, HERMES_TURN_TIMEOUT);
 
     match output {
-        Ok(output) => {
+        Ok(TurnOutput::Completed(output)) => {
             let exit_code = output.status.code().unwrap_or(1);
             Ok(turn_from_output(
                 &bounded_prompt,
@@ -106,6 +110,14 @@ pub fn ask_with_options(
                 meta,
             ))
         }
+        Ok(TurnOutput::TimedOut(output)) => Ok(turn_from_output(
+            &bounded_prompt,
+            124,
+            &String::from_utf8_lossy(&output.stdout),
+            "Hermes turn timed out after 30s.",
+            start.elapsed().as_millis(),
+            meta,
+        )),
         Err(err) => Ok(flag_turn(
             &bounded_prompt,
             meta,
@@ -114,6 +126,32 @@ pub fn ask_with_options(
             "Hermes is unavailable for this turn.",
             &format!("failed to launch Hermes: {err}"),
         )),
+    }
+}
+
+enum TurnOutput {
+    Completed(Output),
+    TimedOut(Output),
+}
+
+fn output_with_timeout(command: &mut Command, timeout: Duration) -> std::io::Result<TurnOutput> {
+    let start = Instant::now();
+    let mut child = command
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()?;
+
+    loop {
+        if child.try_wait()?.is_some() {
+            return child.wait_with_output().map(TurnOutput::Completed);
+        }
+
+        if start.elapsed() >= timeout {
+            let _ = child.kill();
+            return child.wait_with_output().map(TurnOutput::TimedOut);
+        }
+
+        thread::sleep(Duration::from_millis(25));
     }
 }
 

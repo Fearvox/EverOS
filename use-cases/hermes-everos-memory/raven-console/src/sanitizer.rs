@@ -40,7 +40,7 @@ pub fn sanitize_text(input: &str) -> String {
                 .get(0)
                 .map(|item| item.as_str())
                 .unwrap_or_default();
-            if is_private_or_public_ipv4(value) {
+            if is_ipv4_address(value) {
                 "[redacted-ip]".to_string()
             } else {
                 value.to_string()
@@ -83,7 +83,7 @@ fn contains_sensitive_shape(text: &str) -> bool {
         || localhost_re().is_match(text)
         || ipv4_re()
             .find_iter(text)
-            .any(|match_| is_private_or_public_ipv4(match_.as_str()))
+            .any(|match_| is_ipv4_address(match_.as_str()))
 }
 
 fn signed_url_re() -> &'static Regex {
@@ -139,7 +139,7 @@ fn product_name_re() -> &'static Regex {
     })
 }
 
-fn is_private_or_public_ipv4(value: &str) -> bool {
+fn is_ipv4_address(value: &str) -> bool {
     let host = value.split(':').next().unwrap_or(value);
     let parts = host.split('.').collect::<Vec<_>>();
     if parts.len() != 4 {
@@ -153,11 +153,7 @@ fn is_private_or_public_ipv4(value: &str) -> bool {
         return false;
     }
 
-    octets[0] == 10
-        || octets[0] == 127
-        || host == "0.0.0.0"
-        || (octets[0] == 172 && (16..=31).contains(&octets[1]))
-        || (octets[0] == 192 && octets[1] == 168)
+    true
 }
 
 #[cfg(test)]
@@ -187,10 +183,10 @@ mod tests {
 
     #[test]
     fn redacts_private_ips_and_localhost() {
-        let text = "http://192.168.1.5:9000 and localhost:3000";
+        let text = "http://192.168.1.5:9000 and localhost:3000 and 74.199.157.194";
         assert_eq!(
             sanitize_text(text),
-            "http://[redacted-ip] and [redacted-host]"
+            "http://[redacted-ip] and [redacted-host] and [redacted-ip]"
         );
     }
 

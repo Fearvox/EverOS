@@ -2,11 +2,10 @@
 
 ## Verdict
 
-FLAG overall.
+PASS for the local Raven, EverMe SkillHub, and Hermes/EverOS dogfood packet.
 
-Local artifacts are ready and verified. Remote NixOS deployment is not complete:
-the workhorse route is reachable, but EverCore is not yet active on the remote
-loopback service.
+FLAG remains for remote NixOS deployment. The deploy packet is ready for review,
+but EverCore is not yet proven active on the remote loopback service.
 
 ## What Shipped
 
@@ -22,20 +21,23 @@ loopback service.
 
 ## Verification
 
-Latest local verification set:
+Current local PASS verification set:
 
 ```bash
 bash -n use-cases/hermes-everos-memory/scripts/*.sh use-cases/hermes-everos-memory/deploy/nixos/scripts/*.sh
 cd use-cases/hermes-everos-memory && for f in bin/*.mjs; do node --check "$f"; done
 git diff --check -- use-cases/hermes-everos-memory
 cd use-cases/hermes-everos-memory && just provider-load
+cd use-cases/hermes-everos-memory && just dogfood-smoke provider-only
 cd use-cases/hermes-everos-memory && just skillhub-api-smoke
 cd use-cases/hermes-everos-memory && just skillhub-import-sample
+cd use-cases/hermes-everos-memory && just skillhub-views skillhub/fixtures/evoagentbench-musician-life-event.json
 cd use-cases/hermes-everos-memory && just raven-sample
+cd use-cases/hermes-everos-memory && just raven-render
 cd use-cases/hermes-everos-memory && just raven-verify
-cd use-cases/hermes-everos-memory && just remote-smoke full
 cd use-cases/hermes-everos-memory && just mock-openai-check
 cd use-cases/hermes-everos-memory && EVEROS_USER_ID="verify-raven-$(date +%s)" EVEROS_SEARCH_METHOD=hybrid EVEROS_MEMORY_TYPES=episodic_memory,raw_message,profile,agent_memory just dogfood-smoke full
+cd use-cases/hermes-everos-memory && MARKER="RAVEN_DOGFOOD_VERIFY_$(date +%s)" && hermes -z "Use the EverOS memory tool to store exactly this public verification marker: ${MARKER}." && node bin/everos-memory.mjs search "$MARKER"
 ```
 
 Hermes profile verification:
@@ -51,6 +53,15 @@ Provider: everos
 Plugin: installed
 Status: available
 ```
+
+Remote deploy verification remains separate:
+
+```bash
+cd use-cases/hermes-everos-memory && just remote-smoke full
+```
+
+Treat that command as `FLAG` until the NixOS module is applied and EverCore is
+running on the remote loopback service.
 
 ## Remote Disposition
 

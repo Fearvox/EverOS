@@ -2,7 +2,7 @@
   "id": "raven.everme-doomsday-run",
   "title": "Raven / EverMe Doomsday Run",
   "goal": "Turn the source conversation into a focused Raven, EverMe SkillHub, and Hermes/EverOS dogfood execution lane with auditable local artifacts.",
-  "status": "reviewing",
+  "status": "done",
   "owners": ["codex", "pi", "opencode", "hermes"],
   "memory_providers": ["everos", "hermes"],
   "lanes": [

@@ -168,6 +168,20 @@ Prefer a staged upstream return:
 The first artifact should help maintainers answer: "What should we merge, close,
 or ask for next?" before asking them to review new code.
 
+## 2026-05-15 Return Slice
+
+The first code slice is now narrowed to #191/#93/#78:
+
+- #191: update the README memory search example to call
+  `POST /api/v1/memories/search`.
+- #93: treat HTTP 202 Accepted as successful background extraction in
+  `SimpleMemoryManager.store()`.
+- #78: search all requested non-profile `memory_types` in keyword/vector paths
+  and dedupe hybrid hits by `(memory_type,id)`.
+
+Out of scope for this slice: OpenClaw, benchmark filename mismatches,
+delete/reset semantics, provider/deployment policy, and Raven/deploy work.
+
 ## Candidate High-Leverage Tracks
 
 ### Track A: Benchmark Truth Pack
@@ -225,4 +239,3 @@ Keep `OWNER_BRIEF.md` under 20 lines:
 - What not to touch yet
 - Highest-risk PRs/issues
 - Suggested next command or PR action
-

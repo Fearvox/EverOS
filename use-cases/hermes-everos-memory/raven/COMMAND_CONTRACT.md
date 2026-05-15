@@ -5,6 +5,11 @@ dashboard first and not a marketing page. It is a command contract that turns a
 goal, memory substrate, lanes, gates, and evidence into an owner-readable run
 packet.
 
+Naming note: Riven is the product/concept name for this operator surface. Raven
+is the current repo-local CLI and packet namespace. Keep the Raven namespace
+until a migration plan preserves existing verifiers and SkillHub install
+targets.
+
 ## Shape
 
 Raven v0 ships as a thin CLI/TUI contract over local files and Hermes/EverOS

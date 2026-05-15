@@ -132,15 +132,20 @@ class SimpleMemoryManager:
             "timestamp": int(now.timestamp() * 1000),
             "content": content,
         }
-        payload = {
-            "user_id": self.user_id,
-            "messages": [message_item],
-        }
+        payload = {"user_id": self.user_id, "messages": [message_item]}
 
         try:
             async with httpx.AsyncClient(timeout=500.0) as client:
                 response = await client.post(self.memorize_url, json=payload)
                 response.raise_for_status()
+
+                # Background mode returns 202 Accepted
+                if response.status_code == 202:
+                    print(
+                        f"  ⏳ Accepted: {content[:40]}... (Processing in background)"
+                    )
+                    return True
+
                 result = response.json()
 
                 # v1 response: {"data": {"status": "...", "count": N, ...}}
@@ -206,7 +211,11 @@ class SimpleMemoryManager:
             return False
 
     async def search(
-        self, query: str, top_k: int = 3, mode: str = "hybrid", show_details: bool = True
+        self,
+        query: str,
+        top_k: int = 3,
+        mode: str = "hybrid",
+        show_details: bool = True,
     ) -> List[Dict[str, Any]]:
         """Search memories
 

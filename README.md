@@ -376,7 +376,7 @@ requests.post(f"{API_BASE}/memories", json={
 })
 
 # 2. Search for relevant memories
-response = requests.get(f"{API_BASE}/memories/search", json={
+response = requests.post(f"{API_BASE}/memories/search", json={
     "query": "What sports does the user like?",
     "user_id": "user_001",
     "memory_types": ["episodic_memory"],

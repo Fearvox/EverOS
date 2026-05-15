@@ -37,3 +37,30 @@ Added the required local maintainer packet:
 - This pass did not inspect full PR diffs or run upstream test suites.
 - Dispositions are triage recommendations, not maintainer decisions.
 - `VALIDATION.md` was not added because this pass did not implement runtime behavior.
+
+## 2026-05-15 Slice Update
+
+Targeted live recheck:
+
+- Issues #191, #93, and #78 remain open.
+- PRs #185 and #211 remain `BLOCKED`.
+- PRs #89, #109, and #138 remain `DIRTY`.
+
+Local current-tree slice now covers:
+
+- #191: README search example uses `POST /api/v1/memories/search`.
+- #93: demo store treats HTTP 202 Accepted as background success.
+- #78: keyword/vector retrieval searches all requested non-profile memory types;
+  hybrid dedupe preserves same ids from different memory collections.
+
+Verification added for the slice:
+
+- `tests/test_memory_manager_multi_type_search.py`
+- `tests/test_simple_memory_manager.py`
+
+PR handoff added:
+
+- `docs/upstream-return/PR_191_93_78_PACKET.md`
+
+The slice is PR-ready after reviewer pass, but upstream should still treat it as
+a new narrow PR rather than a merge decision on the stale overlapping PRs.

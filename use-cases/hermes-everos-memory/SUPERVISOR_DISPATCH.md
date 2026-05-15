@@ -83,6 +83,31 @@ NEXT:
 | Implementation reserve | Codex Developer | OpenCode runtime when assigned | Small bounded fixes after verifier or supervisor asks. | Broad refactor, README churn, or remote mutation. |
 | Standby runtimes | Copilot, Cursor, Gemini, OpenClaw | Supervisor | Specialist review only when a scoped issue exists. | Self-starting new work outside this packet. |
 
+## Runtime Lane Activation
+
+Two local runtime-backed agent identities were created for focused lanes:
+
+- `Pi Riven Critic`: Pi runtime, assigned on `DAS-2673` for Riven taste and
+  product-boundary review.
+- `OpenCode Patch Scout`: Opencode runtime, assigned on `DAS-2674` for bounded
+  local implementation scouting.
+
+Activation status: `FLAG`.
+
+Local CLI probes passed for both runtimes, but Multica task execution failed:
+
+- Pi: local `pi --mode json` probe with OpenRouter DeepSeek passes; Multica
+  wrapper still returns `pi exited with error: exit status 1`.
+- OpenCode: local `opencode run -m openrouter/deepseek/deepseek-v4-flash`
+  probe passes; Multica wrapper reports default OAuth invalidation or model
+  lookup failure.
+
+Keep `DAS-2673` and `DAS-2674` parked until the runtime-adapter repair lane
+proves a successful Multica task. Both lanes remain read-only by default. They
+may recommend changes, but they must not mutate files, push, publish, close
+issues, or touch remote deployment unless the supervisor opens a narrower
+follow-up issue.
+
 ## Required Reports
 
 Each active lane must end with:
@@ -101,4 +126,3 @@ No lane may mark the remote deploy path `PASS` until all of these are true:
 - The guarded NixOS test lane succeeds.
 - The remote loopback full smoke retrieves stored memory.
 - Supervisor review returns `PASS`.
-

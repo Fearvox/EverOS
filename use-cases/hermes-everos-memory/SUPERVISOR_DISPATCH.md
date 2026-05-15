@@ -4,14 +4,14 @@
 
 Local EverOS packet: PASS.
 
-Remote EverCore deployment: FLAG/BLOCK until the remote auth repair and guarded
-NixOS test lane are proven.
+Remote EverCore deployment: FLAG/BLOCK until the remote private env preflight,
+guarded NixOS test lane, remote full smoke, and supervisor review are proven.
 
 The active local source packet is under this directory. The remote deploy lane
 must use the existing Multica issues instead of creating a parallel story:
 
 - `DAS-2666`: EverCore remote deploy gate via squad.
-- `DAS-2669`: Repair Windburn NixOS Codex runtime auth.
+- `DAS-2669`: Auth-route repair via DeepSeek/OpenRouter.
 
 ## Hard Guardrails
 
@@ -19,8 +19,11 @@ must use the existing Multica issues instead of creating a parallel story:
   commands without explicit human approval.
 - Keep remote host/IP values, credential paths, token payloads, signed URLs, and
   private env values out of public comments and screenshots.
-- Do not retry Windburn NixOS Codex deploy work until `DAS-2669` posts
-  `AUTH_REPAIRED` from a successful read-only proof task.
+- `DAS-2669` has accepted `AUTH_REPAIRED VERDICT: PASS` for the
+  DeepSeek/OpenRouter auth-route repair. Do not confuse that with remote deploy
+  readiness.
+- Runtime auth uses the DeepSeek/OpenRouter path; do not expose the provider key
+  in evidence.
 - Remote EverCore remains loopback-only. Any public bind or firewall exposure is
   `BLOCK`.
 - Local artifact completion and remote deploy readiness are separate gates.
@@ -31,7 +34,7 @@ must use the existing Multica issues instead of creating a parallel story:
 ROLE: EverOS control-room supervisor.
 
 MISSION:
-Keep the EverOS / Hermes / SkillHub / Riven packet moving from local PASS to
+Keep the EverOS / Hermes / SkillHub / Raven packet moving from local PASS to
 remote-ready evidence without laundering red gates or spawning duplicate work.
 
 READ FIRST:
@@ -39,6 +42,7 @@ READ FIRST:
 - use-cases/hermes-everos-memory/COMPLETION_AUDIT.md
 - use-cases/hermes-everos-memory/OWNER_PACKET.md
 - use-cases/hermes-everos-memory/SUPERVISOR_DISPATCH.md
+- use-cases/hermes-everos-memory/raven/RAVEN_V2_RESEARCH_LEDGER.md
 - Multica issues DAS-2666 and DAS-2669
 
 SOURCE TRUTH ORDER:
@@ -50,7 +54,8 @@ SOURCE TRUTH ORDER:
 CURRENT STATE:
 - Local EverOS packet is PASS.
 - Remote EverCore deploy is FLAG/BLOCK.
-- DAS-2669 auth repair is the blocker before Windburn NixOS Codex can be used.
+- DAS-2669 auth-route repair is accepted; DAS-2666 is now blocked on remote env,
+  guarded NixOS test, full smoke, and supervisor PASS evidence.
 - Do not treat remote Hermes read-only evidence as deploy success.
 
 CONTROL LOOP:
@@ -58,7 +63,8 @@ CONTROL LOOP:
 2. Check each assigned lane for a concrete PASS/FLAG/BLOCK report.
 3. Reject reports that omit commands, issue links, or file evidence.
 4. Keep one owner-readable packet rather than scattered chat commentary.
-5. Escalate to the operator only for approval, secrets, auth repair, or remote
+5. Route v2 ideas through `raven research packet <lane>` before implementation.
+6. Escalate to the operator only for approval, secrets, auth repair, or remote
    mutation decisions.
 
 OUTPUT SHAPE:
@@ -74,10 +80,10 @@ NEXT:
 | Lane | Lead | Support | Scope | Stop Condition |
 | --- | --- | --- | --- | --- |
 | Control room | Workbench Supervisor | Workbench Synthesizer | Track all lanes and produce one owner packet. | Any lane reports success without evidence. |
-| Runtime auth | Workbench Admin | NYC Ops Mechanic | Repair `DAS-2669`; prove Windburn NixOS Codex can do a read-only task. | Token/auth payload exposure or deploy drift. |
-| Remote deploy gate | EverCore Remote Deploy Cell | Windburn NixOS Hermes | Keep `DAS-2666` honest; read-only preflight until `AUTH_REPAIRED`. | Missing env, public bind risk, failed NixOS test, or Codex auth still broken. |
+| Runtime auth | Workbench Admin | NYC Ops Mechanic | Close `DAS-2669` auth-route repair through DeepSeek/OpenRouter without exposing provider material. | Token/auth payload exposure or deploy drift. |
+| Remote deploy gate | EverCore Remote Deploy Cell | Windburn NixOS Hermes | Keep `DAS-2666` honest; resume only remote env preflight, guarded test, full smoke, then supervisor review. | Missing env, public bind risk, failed NixOS test, or missing smoke evidence. |
 | Local verifier | QA Verifier | Codex Guardian | Re-run the local audit commands and public-safety scan. | Any command fails or secret/path pattern appears. |
-| Product story | Pi | Hermes Researcher, Claude Docs | Riven naming, SkillHub story, owner-readable public narrative. | Repo mutation or unsupported product claim. |
+| Product story | Pi | Hermes Researcher, Claude Docs | Raven naming, SkillHub story, owner-readable public narrative. | Repo mutation or unsupported product claim. |
 | Memory substrate | Memory Curator | Hermes Researcher | Dogfood evidence, provenance fields, memory packet shape. | Claims not backed by local provider/search evidence. |
 | SkillHub eval | Benchmark Scout | Remote Algorithm Advisor, Codex Developer | Turn `needs_eval` SkillHub items into an eval plan; do not promote them. | Treating `needs_eval` as production-ready. |
 | Implementation reserve | Codex Developer | OpenCode runtime when assigned | Small bounded fixes after verifier or supervisor asks. | Broad refactor, README churn, or remote mutation. |
@@ -87,7 +93,7 @@ NEXT:
 
 Two local runtime-backed agent identities were created for focused lanes:
 
-- `Pi Riven Critic`: Pi runtime, assigned on `DAS-2673` for Riven taste and
+- `Pi Raven Critic`: Pi runtime, assigned on `DAS-2673` for Raven taste and
   product-boundary review.
 - `OpenCode Patch Scout`: Opencode runtime, assigned on `DAS-2674` for bounded
   local implementation scouting.
@@ -122,7 +128,7 @@ NEXT:
 
 No lane may mark the remote deploy path `PASS` until all of these are true:
 
-- `DAS-2669` has `AUTH_REPAIRED`.
+- `DAS-2669` has accepted `AUTH_REPAIRED VERDICT: PASS`.
 - The guarded NixOS test lane succeeds.
 - The remote loopback full smoke retrieves stored memory.
 - Supervisor review returns `PASS`.

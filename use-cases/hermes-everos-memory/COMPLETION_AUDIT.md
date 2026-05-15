@@ -77,3 +77,9 @@ rg -n -i -f <operator-local-public-safety-patterns> use-cases/hermes-everos-memo
   packet and SkillHub contracts.
 - SkillHub write routes remain proposed until EverMe backend constraints are
   available.
+
+## Raven v2 closure — landed 2026-05-15
+
+Closeout via goalv3-cc goal `raven-v2-closure`: 7-commit batch landed on
+`gemini-cli-workspace`, PR open at https://github.com/Fearvox/EverOS/pull/31
+targeting `main`.

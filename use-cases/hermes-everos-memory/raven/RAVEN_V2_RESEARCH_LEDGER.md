@@ -25,10 +25,11 @@ only through bounded decisions:
 
 ## Current Truth
 
-- Local EverOS/Hermes/SkillHub/Riven packet is `PASS`.
+- Local EverOS/Hermes/SkillHub/Raven packet is `PASS`.
 - Remote EverCore deploy remains `FLAG/BLOCK`.
 - `DAS-2666` is the canonical remote deploy gate.
-- `DAS-2669` is the Windburn NixOS Codex auth blocker.
+- `DAS-2669` auth-route repair is accepted through DeepSeek/OpenRouter; parent
+  deploy readiness remains blocked on `DAS-2666` evidence.
 - `DAS-2670` is the current control-room dispatch.
 - `DAS-2675` tracks Pi/OpenCode Multica runtime-adapter repair.
 - Existing Raven v1 build work is dirty in the worktree; do not overwrite it.
@@ -195,6 +196,21 @@ RISKS:
 NEXT:
 VERDICT: PASS | FLAG | BLOCK
 ```
+
+## Executable Harness
+
+Raven v1 exposes the v2 research lane through bounded commands so research
+does not become unreviewable prose:
+
+```bash
+bin/raven research lanes
+bin/raven research packet native-feel --output -
+bin/raven research synthesize
+```
+
+The packet command always carries live hard-gate context. If `DAS-2666` or
+`DAS-2669` are still red, the packet can guide v1 work but cannot claim remote
+readiness.
 
 ## First Synthesis Target
 

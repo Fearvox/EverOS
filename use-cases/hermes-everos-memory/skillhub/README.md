@@ -91,4 +91,6 @@ Routes:
 - `GET /skills?target=hermes`
 - `GET /skills/:id`
 - `GET /skills/:id/render`
+- `GET /skills/:id/views`
+- `GET /skills/:id/install-packet?target=hermes`
 - `POST /skills/validate`

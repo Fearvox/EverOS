@@ -5,7 +5,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { readJson, renderPacket, validatePacket } from './skillhub-packet.mjs';
+import { readJson, renderPacket, renderSkillViews, validatePacket } from './skillhub-packet.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_PACKET_DIR = path.resolve(__dirname, '../skillhub/fixtures');
@@ -55,6 +55,29 @@ function packetSummary(packet) {
     source: packet.source,
     domains: packet.domains,
     install_targets: packet.install_targets,
+    evidence_refs: packet.evidence_refs,
+    eval_score: packet.eval_score,
+    rating: packet.rating,
+    votes: packet.votes,
+  };
+}
+
+function installPacket(packet, target) {
+  if (target && !packet.install_targets.includes(target)) {
+    return null;
+  }
+  return {
+    id: packet.id,
+    name: packet.name,
+    version: packet.version,
+    target: target || packet.install_targets[0],
+    compatible_targets: packet.install_targets,
+    source: packet.source,
+    visibility: packet.visibility,
+    status: packet.status,
+    domains: packet.domains,
+    summary: packet.summary,
+    body_markdown: packet.body_markdown,
     evidence_refs: packet.evidence_refs,
     eval_score: packet.eval_score,
     rating: packet.rating,
@@ -179,6 +202,50 @@ async function route(req, res, packets) {
       return;
     }
     sendText(res, 200, renderPacket(item.packet));
+    return;
+  }
+
+  if (
+    req.method === 'GET'
+    && segments.length === 3
+    && segments[0] === 'skills'
+    && segments[2] === 'views'
+  ) {
+    const item = packets.get(segments[1]);
+    if (!item) {
+      sendJson(res, 404, { ok: false, error: 'skill not found' });
+      return;
+    }
+    sendJson(res, 200, {
+      ok: true,
+      skill_id: item.packet.id,
+      views_markdown: renderSkillViews(item.packet),
+    });
+    return;
+  }
+
+  if (
+    req.method === 'GET'
+    && segments.length === 3
+    && segments[0] === 'skills'
+    && segments[2] === 'install-packet'
+  ) {
+    const item = packets.get(segments[1]);
+    if (!item) {
+      sendJson(res, 404, { ok: false, error: 'skill not found' });
+      return;
+    }
+    const target = url.searchParams.get('target');
+    const packet = installPacket(item.packet, target);
+    if (!packet) {
+      sendJson(res, 422, {
+        ok: false,
+        error: 'target not supported',
+        supported_targets: item.packet.install_targets,
+      });
+      return;
+    }
+    sendJson(res, 200, { ok: true, install_packet: packet });
     return;
   }
 

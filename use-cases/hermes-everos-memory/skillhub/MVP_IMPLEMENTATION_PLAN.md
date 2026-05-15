@@ -39,12 +39,12 @@ Current routes:
 - `GET /skills?target=hermes`
 - `GET /skills/:id`
 - `GET /skills/:id/render`
+- `GET /skills/:id/views`
+- `GET /skills/:id/install-packet?target=hermes`
 - `POST /skills/validate`
 
 Next API routes:
 
-- `GET /skills/:id/views`
-- `GET /skills/:id/install-packet?target=hermes`
 - `POST /skills/:id/evidence`
 - `POST /skills/:id/evolution-note`
 

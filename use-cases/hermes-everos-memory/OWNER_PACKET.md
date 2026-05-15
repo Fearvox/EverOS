@@ -14,7 +14,8 @@ loopback service.
   prefetch, sync, and auto-flush behavior.
 - Raven run packet contract, command contract, renderer, and gate verifier.
 - EverMe SkillHub packet schema, MVP view plan, renderer, read-only mock API,
-  and one real EvoAgentBench `SKILL.md` import fixture.
+  API-backed views/install-packet routes, and one real EvoAgentBench `SKILL.md`
+  import fixture.
 - NixOS/workhorse deploy packet, compose file, module draft, env example, and
   remote smoke script.
 - Local mock OpenAI-compatible server for model-free EverCore dogfood.

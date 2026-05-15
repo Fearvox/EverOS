@@ -23,4 +23,3 @@ test("passive memory engine does not expose a compact capability", () => {
   assert.equal(engine.info.ownsCompaction, false);
   assert.equal(Object.hasOwn(engine, "compact"), false);
 });
-

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://everos.local/schemas/skillhub-packet-v0.json",
+  "title": "EverMe SkillHub Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "summary",
+    "visibility",
+    "status",
+    "version",
+    "source",
+    "domains",
+    "install_targets",
+    "evidence_refs",
+    "body_markdown"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "owner_id": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "visibility": {
+      "type": "string",
+      "enum": ["private", "link", "community"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "needs_eval", "archived"]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9._-]+)?$"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["manual", "evercore_extracted", "imported", "community"]
+    },
+    "domains": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 80},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "install_targets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["hermes", "raven", "claude_code", "evercore", "openclaw"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "eval_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "votes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_evolved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 300},
+      "uniqueItems": true
+    },
+    "body_markdown": {
+      "type": "string",
+      "minLength": 1
+    },
+    "frontmatter": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    }
+  }
+}
+

@@ -1,0 +1,7 @@
+name: everos
+version: 0.1.0
+description: "EverOS memory provider for Hermes - local EverCore recall, turn sync, and memory tools."
+hooks:
+  - on_pre_compress
+  - on_memory_write
+  - on_delegation

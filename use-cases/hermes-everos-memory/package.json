@@ -1,0 +1,24 @@
+{
+  "name": "hermes-everos-memory",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "Hermes memory-provider helper CLI for EverOS/EverCore",
+  "scripts": {
+    "health": "node bin/everos-memory.mjs health",
+    "search": "node bin/everos-memory.mjs search",
+    "sync-smoke": "node bin/everos-memory.mjs sync-smoke",
+    "skillhub:sample": "node bin/skillhub-packet.mjs validate skillhub/fixtures/raven-skillhub-sample.json",
+    "skillhub:check": "node bin/skillhub-mock-api.mjs --check",
+    "skillhub:smoke": "scripts/skillhub-api-smoke.sh",
+    "skillhub:serve": "node bin/skillhub-mock-api.mjs",
+    "raven:sample": "node bin/raven-run.mjs validate raven/fixtures/doomsday-run.json",
+    "raven:render": "node bin/raven-run.mjs render raven/fixtures/doomsday-run.json",
+    "mock-openai:check": "node bin/mock-openai-compatible.mjs --check",
+    "mock-openai": "node bin/mock-openai-compatible.mjs",
+    "test": "node bin/everos-memory.mjs self-test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

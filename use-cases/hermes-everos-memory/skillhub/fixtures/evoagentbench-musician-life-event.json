@@ -1,0 +1,25 @@
+{
+  "id": "everme-evoagentbench.musician_life_event",
+  "name": "musician_life_event",
+  "summary": "Use unique personal life events (not musical works) as the primary search anchor for identifying musicians.",
+  "owner_id": "everme-evoagentbench",
+  "visibility": "private",
+  "status": "needs_eval",
+  "version": "0.1.0",
+  "source": "evercore_extracted",
+  "domains": [
+    "musician"
+  ],
+  "install_targets": [
+    "hermes"
+  ],
+  "evidence_refs": [
+    "benchmarks/EvoAgentBench/src/skill_evolution/evermemos/skills_sample/MUSICIAN/musician_life_event/SKILL.md"
+  ],
+  "body_markdown": "# Musician: Life Event Anchoring\n\n## When to use\nWhen a musician question describes distinctive personal experiences rather than discography clues.\n\n## Technique\nThe most distinctive information about musicians is often unique life events, not musical works. Life events are far more unique and searchable than album/song names.\n\nPriority ranking for biographical constraints:\n1. **Cause of death / special events:** \"died of professional negligence\", \"triple bypass surgery\" — extremely rare, almost always a direct hit\n2. **Personal life details:** \"five children\", \"divorced twice\", \"searched for biological father at age 17\"\n3. **Education / career turning points:** \"dropped out of college to pursue music\"\n4. **Work characteristics:** \"first album songs written by Boris Vian\" — use only when life events are unavailable\n\nAlso track auxiliary figures mentioned in questions: songwriters, doctors, family members.\n\n## Query Templates\n- `\"musician [cause of death] charged sentenced [year]\"`\n- `\"[musician name] \"divorced\" \"children\" wife\"`\n- `\"singer dropped out [school type] pursue music [country]\"`\n\n## Worked Examples\n**Dr. Kang Se Hoon:** Question mentioned hobbies of reading comics and playing computer games. Searched `\"Shin Hae-chul solo album 1990s radio DJ hobbies comics computer games\"` → then tracked the doctor: `\"Shin Hae-chul Kang Se-hoon charged professional negligence death sentenced\"`.\n\n**Vanic:** Born in May, dropped out of school for music production. After narrowing candidates, verified with `\"Vanic Jesse born May 1987 1988 1989 1990 Vancouver producer\"`.\n\n## Anti-pattern\nOver-relying on album or song name searches. Album names are often not distinctive enough (\"First Album\", \"The Light\"). Anchor with life events first, then use discography only for verification.",
+  "frontmatter": {
+    "name": "musician_life_event",
+    "description": "Use unique personal life events (not musical works) as the primary search anchor for identifying musicians.",
+    "always": true
+  }
+}

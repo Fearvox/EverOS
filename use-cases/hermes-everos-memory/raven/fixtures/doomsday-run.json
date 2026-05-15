@@ -1,0 +1,140 @@
+{
+  "id": "raven.everme-doomsday-run",
+  "title": "Raven / EverMe Doomsday Run",
+  "goal": "Turn the Chenyifan call into a focused Raven, EverMe SkillHub, and Hermes/EverOS dogfood execution lane with auditable local artifacts.",
+  "status": "reviewing",
+  "owners": ["codex", "pi", "opencode", "hermes"],
+  "memory_providers": ["everos", "hermes"],
+  "lanes": [
+    {
+      "id": "raven-concept",
+      "owner": "pi",
+      "scope": "Taste, naming, story, interface wedge, and first public artifact.",
+      "mutation_policy": "read_only",
+      "verdict": "pass",
+      "evidence_refs": [
+        ".planning/raven-everme-doomsday/RAVEN_FIELD_MANUAL.md",
+        "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md"
+      ]
+    },
+    {
+      "id": "everme-skillhub",
+      "owner": "codex",
+      "scope": "Portable skill packet, mock API, and dogfood import surface.",
+      "mutation_policy": "local_only",
+      "verdict": "pass",
+      "evidence_refs": [
+        "use-cases/hermes-everos-memory/skillhub/schema.json",
+        "use-cases/hermes-everos-memory/skillhub/MVP_IMPLEMENTATION_PLAN.md",
+        "use-cases/hermes-everos-memory/skillhub/fixtures/evoagentbench-musician-life-event.json",
+        "use-cases/hermes-everos-memory/bin/skillhub-mock-api.mjs"
+      ]
+    },
+    {
+      "id": "hermes-everos-dogfood",
+      "owner": "hermes",
+      "scope": "Provider-level load, health, store, search, and recall gates.",
+      "mutation_policy": "local_only",
+      "verdict": "pass",
+      "evidence_refs": [
+        "use-cases/hermes-everos-memory/scripts/dogfood-smoke.sh",
+        ".planning/raven-everme-doomsday/HERMES_DOGFOOD_PLAN.md",
+        "use-cases/hermes-everos-memory/bin/mock-openai-compatible.mjs"
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "id": "provider-load",
+      "name": "Hermes provider load",
+      "status": "pass",
+      "command": "just provider-load",
+      "evidence": "Provider class loads and exposes everos memory tools.",
+      "blocks_completion": true
+    },
+    {
+      "id": "skillhub-api",
+      "name": "SkillHub mock API",
+      "status": "pass",
+      "command": "just skillhub-api-smoke",
+      "evidence": "Mock API serves health, target-filtered skill list, and rendered packet.",
+      "blocks_completion": true
+    },
+    {
+      "id": "full-memory-loop",
+      "name": "Full store/search/recall loop",
+      "status": "pass",
+      "command": "just dogfood-smoke full",
+      "evidence": "PASS provider_load, health, store, flush, search count=1, and prefetch chars=219 with local mock inference server.",
+      "blocks_completion": true
+    },
+    {
+      "id": "real-hermes-profile-turn",
+      "name": "Real Hermes profile turn",
+      "status": "pass",
+      "command": "hermes -z with a unique Raven marker, then EverOS search",
+      "evidence": "Hermes profile reports provider=everos, explicit everos_store marker searchable, and sync_turn marker searchable.",
+      "blocks_completion": true
+    },
+    {
+      "id": "raven-gate-verify",
+      "name": "Raven gate verifier",
+      "status": "pass",
+      "command": "just raven-verify",
+      "evidence": "raven-run verify renders blocking gates and exits non-zero for FLAG/BLOCK.",
+      "blocks_completion": true
+    },
+    {
+      "id": "skillhub-real-skill-import",
+      "name": "SkillHub real skill import",
+      "status": "pass",
+      "command": "just skillhub-import-sample && just skillhub-views skillhub/fixtures/evoagentbench-musician-life-event.json",
+      "evidence": "A real EvoAgentBench SKILL.md imports into a valid SkillHub packet and renders five MVP views.",
+      "blocks_completion": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".planning/raven-everme-doomsday/RAVEN_FIELD_MANUAL.md",
+      "purpose": "Raven command and taste contract.",
+      "public_safe": false
+    },
+    {
+      "path": "use-cases/hermes-everos-memory/skillhub/schema.json",
+      "purpose": "EverMe SkillHub packet contract.",
+      "public_safe": true
+    },
+    {
+      "path": "use-cases/hermes-everos-memory/skillhub/MVP_IMPLEMENTATION_PLAN.md",
+      "purpose": "EverMe SkillHub MVP view/API/implementation plan.",
+      "public_safe": true
+    },
+    {
+      "path": "use-cases/hermes-everos-memory/skillhub/fixtures/evoagentbench-musician-life-event.json",
+      "purpose": "Real EvoAgentBench skill import fixture.",
+      "public_safe": true
+    },
+    {
+      "path": "use-cases/hermes-everos-memory/raven/schema.json",
+      "purpose": "Raven run packet contract.",
+      "public_safe": true
+    },
+    {
+      "path": "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
+      "purpose": "Raven command/state/gate contract.",
+      "public_safe": true
+    }
+  ],
+  "evidence_refs": [
+    "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
+    "use-cases/hermes-everos-memory/skillhub/MVP_IMPLEMENTATION_PLAN.md",
+    "use-cases/hermes-everos-memory/skillhub/fixtures/evoagentbench-musician-life-event.json",
+    "use-cases/hermes-everos-memory/bin/raven-run.mjs verify",
+    "use-cases/hermes-everos-memory/scripts/skillhub-api-smoke.sh",
+    "use-cases/hermes-everos-memory/scripts/dogfood-smoke.sh",
+    ".planning/raven-everme-doomsday/HERMES_DOGFOOD_PLAN.md"
+  ],
+  "next_actions": [
+    "Promote the NixOS EverCore packet to an observed remote smoke."
+  ]
+}

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+binary="raven-console/target/debug/raven"
+changed=""
+if [[ -x "$binary" ]]; then
+  changed="$(find raven-console/src raven-console/Cargo.toml raven-console/Cargo.lock -type f -newer "$binary" -print -quit)"
+fi
+
+if [[ ! -x "$binary" || -n "$changed" ]]; then
+  cargo build --quiet --manifest-path raven-console/Cargo.toml
+fi
+
+exec "$binary" "$@"

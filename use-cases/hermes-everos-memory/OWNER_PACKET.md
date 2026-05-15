@@ -2,7 +2,8 @@
 
 ## Verdict
 
-PASS for the local Raven, EverMe SkillHub, and Hermes/EverOS dogfood packet.
+PASS for the local Riven/Raven, EverMe SkillHub, and Hermes/EverOS dogfood
+packet.
 
 FLAG remains for remote NixOS deployment. The deploy packet is ready for review,
 but EverCore is not yet proven active on the remote loopback service.
@@ -11,6 +12,8 @@ but EverCore is not yet proven active on the remote loopback service.
 
 - Hermes `everos` memory-provider shim with search, store, health, flush,
   prefetch, sync, and auto-flush behavior.
+- Riven concept packet and naming boundary, implemented through the Raven v0
+  command namespace.
 - Raven run packet contract, command contract, renderer, and gate verifier.
 - EverMe SkillHub packet schema, MVP view plan, renderer, read-only mock API,
   API-backed views/install-packet routes, and one real EvoAgentBench `SKILL.md`

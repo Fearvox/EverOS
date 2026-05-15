@@ -1,7 +1,7 @@
 {
   "id": "raven.everme-doomsday-run",
-  "title": "Raven / EverMe Doomsday Run",
-  "goal": "Turn the source conversation into a focused Raven, EverMe SkillHub, and Hermes/EverOS dogfood execution lane with auditable local artifacts.",
+  "title": "Riven / Raven / EverMe Doomsday Run",
+  "goal": "Turn the source conversation into a focused Riven concept, EverMe SkillHub, and Hermes/EverOS dogfood execution lane with auditable local artifacts. Riven is represented by the current Raven v0 command namespace until a migration is approved.",
   "status": "done",
   "owners": ["codex", "pi", "opencode", "hermes"],
   "memory_providers": ["everos", "hermes"],
@@ -9,11 +9,12 @@
     {
       "id": "raven-concept",
       "owner": "pi",
-      "scope": "Taste, naming, story, interface wedge, and first public artifact.",
+      "scope": "Riven taste, naming, story, interface wedge, and first public artifact through the Raven v0 compatibility surface.",
       "mutation_policy": "read_only",
       "verdict": "pass",
       "evidence_refs": [
         "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
+        "use-cases/hermes-everos-memory/raven/RIVEN_CONCEPT.md",
         "use-cases/hermes-everos-memory/raven/README.md"
       ]
     },
@@ -115,6 +116,11 @@
       "public_safe": true
     },
     {
+      "path": "use-cases/hermes-everos-memory/raven/RIVEN_CONCEPT.md",
+      "purpose": "Riven concept and naming boundary.",
+      "public_safe": true
+    },
+    {
       "path": "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
       "purpose": "Raven command/state/gate contract.",
       "public_safe": true
@@ -127,6 +133,7 @@
   ],
   "evidence_refs": [
     "use-cases/hermes-everos-memory/OWNER_PACKET.md",
+    "use-cases/hermes-everos-memory/raven/RIVEN_CONCEPT.md",
     "use-cases/hermes-everos-memory/raven/COMMAND_CONTRACT.md",
     "use-cases/hermes-everos-memory/skillhub/MVP_IMPLEMENTATION_PLAN.md",
     "use-cases/hermes-everos-memory/skillhub/fixtures/evoagentbench-musician-life-event.json",

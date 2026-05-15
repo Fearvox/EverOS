@@ -2,6 +2,9 @@
 
 `v0` contract for a Raven run.
 
+Riven is the operator-facing concept name for this surface. Raven is the
+repo-local v0 codename and command namespace kept for compatibility.
+
 Raven is not a marketing page here. This directory defines the packet that a
 CLI/TUI can validate, render, and later execute against Hermes/EverOS memory.
 
@@ -9,6 +12,7 @@ CLI/TUI can validate, render, and later execute against Hermes/EverOS memory.
 
 | File | Purpose |
 | --- | --- |
+| `RIVEN_CONCEPT.md` | Public-safe Riven concept and naming boundary |
 | `COMMAND_CONTRACT.md` | Public-safe command/state/gate contract for Raven v0 |
 | `schema.json` | Public-safe JSON Schema for a Raven run packet |
 | `fixtures/doomsday-run.json` | Sample run packet for the current dogfood lane |

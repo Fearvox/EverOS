@@ -4,7 +4,7 @@ use crate::context::Context;
 use crate::model::{DoctorCheck, DoctorReport, Verdict};
 use crate::{output, receipt, repl, research, snapshot, tui, RavenResult};
 use clap::{Parser, Subcommand};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::process::Command;
 
 #[derive(Parser)]
@@ -632,9 +632,4 @@ fn command_check(program: &str, args: &[&str]) -> DoctorCheck {
             evidence: err.to_string(),
         },
     }
-}
-
-#[allow(dead_code)]
-fn relative_path_exists(root: &Path, relative: &str) -> bool {
-    root.join(relative).exists()
 }

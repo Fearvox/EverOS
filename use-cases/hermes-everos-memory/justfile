@@ -1,0 +1,135 @@
+set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
+
+health:
+  bun run bin/everos-memory.mjs health
+
+search query:
+  bun run bin/everos-memory.mjs search "{{query}}"
+
+sync-smoke:
+  bun run bin/everos-memory.mjs sync-smoke
+
+self-test:
+  bun run bin/everos-memory.mjs self-test
+
+provider-load:
+  scripts/check-provider-load.sh
+
+dogfood-smoke mode="provider-only":
+  scripts/dogfood-smoke.sh --mode "{{mode}}"
+
+deepseek-auth-preflight file="deploy/nixos/evercore.env.example":
+  scripts/deepseek-auth-preflight.sh --env "{{file}}"
+
+skillhub-sample:
+  node bin/skillhub-packet.mjs validate skillhub/fixtures/raven-skillhub-sample.json
+
+skillhub-render file="skillhub/fixtures/raven-skillhub-sample.json":
+  node bin/skillhub-packet.mjs render "{{file}}"
+
+skillhub-views file="skillhub/fixtures/raven-skillhub-sample.json":
+  node bin/skillhub-packet.mjs views "{{file}}"
+
+skillhub-from-skill file:
+  node bin/skillhub-packet.mjs from-skill "{{file}}"
+
+skillhub-import-sample:
+  node bin/skillhub-packet.mjs validate skillhub/fixtures/evoagentbench-musician-life-event.json
+
+skillhub-api-check:
+  node bin/skillhub-mock-api.mjs --check
+
+skillhub-api port="18765":
+  node bin/skillhub-mock-api.mjs --port "{{port}}"
+
+skillhub-api-smoke:
+  scripts/skillhub-api-smoke.sh
+
+raven-sample:
+  node bin/raven-run.mjs validate raven/fixtures/doomsday-run.json
+
+raven-render:
+  node bin/raven-run.mjs render raven/fixtures/doomsday-run.json
+
+raven-verify:
+  node bin/raven-run.mjs verify raven/fixtures/doomsday-run.json
+
+raven-help:
+  bin/raven --help
+
+raven-status:
+  bin/raven status
+
+raven-packet:
+  bin/raven packet show
+
+raven-gates:
+  bin/raven gates
+
+raven-research-lanes:
+  bin/raven research lanes
+
+raven-research-packet-smoke:
+  bin/raven research packet native-feel --output -
+
+raven-research-synthesis:
+  bin/raven research synthesize
+
+raven-agents:
+  bin/raven agents list
+
+raven-doctor:
+  bin/raven doctor
+
+raven-native-audit:
+  bin/raven native-audit
+
+raven-runs:
+  bin/raven runs list
+
+raven-sc:
+  bin/raven sc
+
+raven-sc-status:
+  bin/raven sc status
+
+raven-sc-sessions:
+  bin/raven sc sessions
+
+raven-sc-providers:
+  bin/raven sc providers
+
+raven-sc-worktree:
+  bin/raven sc worktree
+
+raven-run-verify:
+  bin/raven run verify
+
+raven-chat-smoke:
+  RAVEN_HERMES_BIN=/bin/echo bin/raven chat send raven chat smoke
+
+raven-chat-receipt-smoke:
+  RAVEN_HERMES_BIN=/bin/echo bin/raven chat send --receipt - raven chat smoke
+
+raven-repl-smoke:
+  printf '/status\n/gates\n/research native-feel\n/chat raven chat smoke\n/memory raven\n/agents\n/runs\n/audit\n/quit\n' | RAVEN_HERMES_BIN=/bin/echo bin/raven repl
+
+raven-tui-smoke:
+  RAVEN_TUI_ONCE=1 bin/raven tui
+
+raven-console-check:
+  cargo fmt --manifest-path raven-console/Cargo.toml --check
+  cargo clippy --manifest-path raven-console/Cargo.toml -- -D warnings
+  cargo test --manifest-path raven-console/Cargo.toml
+
+mock-openai-check:
+  node bin/mock-openai-compatible.mjs --check
+
+mock-openai port="18080":
+  node bin/mock-openai-compatible.mjs --port "{{port}}"
+
+remote-smoke mode="health":
+  deploy/nixos/scripts/evercore-remote-smoke.sh --mode "{{mode}}"
+
+install-local:
+  scripts/install-local.sh

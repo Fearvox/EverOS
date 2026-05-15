@@ -1,0 +1,20 @@
+{
+  "id": "raven.operator-memory-recall",
+  "name": "Operator Memory Recall",
+  "summary": "Recall prior project decisions before a Raven or Hermes run starts.",
+  "owner_id": "everme-local",
+  "visibility": "private",
+  "status": "needs_eval",
+  "version": "0.1.0",
+  "source": "manual",
+  "domains": ["agent-ops", "memory", "software-engineering"],
+  "install_targets": ["hermes", "raven", "evercore"],
+  "eval_score": 0,
+  "rating": 0,
+  "votes": 0,
+  "evidence_refs": [
+    "use-cases/hermes-everos-memory/scripts/dogfood-smoke.sh --mode provider-only"
+  ],
+  "body_markdown": "# Operator Memory Recall\n\n## When to use\nBefore an agent run starts, search durable project memory for prior decisions, constraints, and open gates.\n\n## Technique\nUse a short query that includes the project name, the active goal, and the decision surface. Prefer evidence-backed memories over summary-only memories.\n\n## Anti-pattern\nDo not call memory recall a PASS unless the current run proves health, store, search, and recall."
+}
+

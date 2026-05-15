@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://everos.local/schemas/raven-run-packet-v0.json",
+  "title": "Raven Run Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "goal",
+    "status",
+    "owners",
+    "memory_providers",
+    "lanes",
+    "gates",
+    "artifacts",
+    "evidence_refs",
+    "next_actions"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 160
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "status": {
+      "type": "string",
+      "enum": ["captured", "dispatching", "executing", "reviewing", "done", "blocked"]
+    },
+    "owners": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 80},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "memory_providers": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 80},
+      "uniqueItems": true
+    },
+    "lanes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "owner", "scope", "mutation_policy", "verdict"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+          },
+          "owner": {
+            "type": "string",
+            "enum": ["codex", "pi", "opencode", "hermes", "muw", "human"]
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "mutation_policy": {
+            "type": "string",
+            "enum": ["read_only", "local_only", "external_requires_approval"]
+          },
+          "verdict": {
+            "type": "string",
+            "enum": ["pass", "flag", "block", "active"]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1, "maxLength": 300},
+            "uniqueItems": true
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "status", "evidence", "blocks_completion"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pass", "flag", "block", "not_run"]
+          },
+          "command": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 800
+          },
+          "blocks_completion": {
+            "type": "boolean"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "purpose", "public_safe"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "public_safe": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 300},
+      "uniqueItems": true
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 300}
+    }
+  }
+}

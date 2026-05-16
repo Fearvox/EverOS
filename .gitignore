@@ -227,3 +227,9 @@ use-cases/**/package-lock.json
 # Local playwright + goal state traces
 .playwright-mcp/
 .goal/
+
+# Hermes EverOS Raven SkillHub dogfood artifacts (runtime / local traces)
+# These are intentionally generated during dogfood smoke tests but should not pollute git
+.kilo/
+use-cases/hermes-everos-memory/raven/.local-runs/
+use-cases/hermes-everos-memory/apps/

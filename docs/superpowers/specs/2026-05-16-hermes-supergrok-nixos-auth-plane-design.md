@@ -134,7 +134,7 @@ The design uses two caches:
 - a short-lived SQLite retrieval cache for collection search results
 - Hermes conversation caching via the existing `x-grok-conv-id` behavior when xAI transport is in use
 
-Cache keys should include the collection name, bundle hash, and query hash. That makes invalidation straightforward when the corpus changes.
+Cache keys should include the collection name, bundle hash, normalized query hash, top_k, and stable filter serialization. That makes invalidation straightforward when the corpus changes and keeps repeated turns on the same bundle at `O(1)` average cache lookup cost.
 
 Context retrieval should stay small and focused:
 
@@ -144,6 +144,24 @@ Context retrieval should stay small and focused:
 - no private paths or token material in the injected text
 
 The EverOS memory provider remains the durable local turn-memory layer. The xAI collection is a separate knowledge corpus, not a replacement for local memory.
+
+## Sync Algorithm
+
+The NixOS sync job should be content-addressed instead of rebuild-everything:
+
+- normalize the approved source root list once
+- walk the source tree once
+- ignore generated outputs and public-surface junk
+- hash each source document after sanitization
+- store a manifest row per document path with its content hash and upload state
+- diff the new manifest against the last successful manifest with a path -> hash map
+- upload only the added or changed documents in stable path order
+- mark deletions as tombstones in the manifest so the next run can reconcile them safely
+- publish the new manifest pointer only after the upload succeeds
+
+That keeps the first run at `O(N)` but makes incremental refreshes proportional to the changed set, `O(Δ)`, instead of resending the entire corpus.
+
+If the plugin merges multiple candidate sources at read time, it should keep only the best `K` results in a bounded min-heap rather than sorting the full candidate list. That keeps the merge step at `O(M log K)` instead of `O(M log M)`.
 
 ## Hooks and Sandbox
 
@@ -173,6 +191,8 @@ The implementation should prove each plane independently:
 - session smoke: Hermes can log into xAI with SuperGrok OAuth and start a turn
 - sync smoke: the NixOS service can build, upload, and refresh the `Windburn` collection
 - cache smoke: repeated queries hit the local retrieval cache when the bundle hash is unchanged
+- delta smoke: an unchanged source tree produces a no-op manifest diff and skips upload
+- top-k smoke: merged candidates preserve only the strongest `K` results without a full resort
 - hook smoke: secret/path redaction works before model-visible output
 - failure smoke: missing secrets, expired auth, and retrieval timeouts degrade cleanly
 
@@ -188,13 +208,14 @@ The existing repo already has good patterns for this style of proof:
 2. Add the knowledge sync service and timer.
 3. Wire the retrieval plugin and hooks.
 4. Add cache and receipt files.
-5. Run the session, sync, cache, and failure smokes.
+5. Run the session, sync, cache, delta, top-k, and failure smokes.
 6. Treat the remote lane as `PASS` only when the auth planes stay separated and the knowledge corpus can be refreshed again without reworking the architecture.
 
 ## Success Criteria
 
 - Hermes uses SuperGrok OAuth for model turns on NixOS.
 - The remote host can refresh the xAI knowledge corpus without exposing the management key to the session.
+- Incremental refreshes reuse the manifest diff path when the source tree is unchanged.
 - Retrieved knowledge enters the prompt through hooks, not ad hoc manual copy/paste.
 - The system continues to function when sync is stale or temporarily unavailable.
 - The design stays compatible with the existing EverOS memory provider and remote EverCore packet.

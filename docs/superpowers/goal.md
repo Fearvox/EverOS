@@ -3,7 +3,7 @@
 Short `/goal` capsule:
 
 ```text
-Read and execute docs/superpowers/specs/2026-05-16-hermes-supergrok-nixos-auth-plane-design.md as the source of truth. Turn Hermes SuperGrok OAuth, xAI collection sync, and NixOS host control into a clean three-plane implementation with content-addressed delta sync, bounded top-k retrieval, and a local retrieval cache. Keep auth boundaries strict, preserve the existing EverOS memory provider, and prove the remote lane with live smokes before calling it done.
+Read and execute docs/superpowers/specs/2026-05-16-hermes-supergrok-nixos-auth-plane-design.md as the source of truth. Turn Hermes SuperGrok OAuth, xAI collection sync, and NixOS host control into a clean three-plane implementation with content-addressed delta sync, bounded top-k retrieval, and a local retrieval cache. Fix the knowledge anchors up front, then build `everos-ops-mcp` as the reusable ops plane. Keep auth boundaries strict, preserve the existing EverOS memory provider, and prove the remote lane with live smokes before calling it done.
 ```
 
 ## Role
@@ -26,6 +26,8 @@ The current repo already has:
 - an existing EverOS memory provider path under `use-cases/hermes-everos-memory`;
 - a remote EverCore/NixOS packet under `use-cases/hermes-everos-memory/deploy/nixos/`;
 - an `.algo-profile/` history for the content-addressed sync, bounded top-k merge, and retrieval cache choices.
+- a fixed knowledge-anchor contract rooted at `research-vault`, `dash-knowledge-vault`, and `dash-kv-view-full`;
+- a new `everos-ops-mcp` package under `use-cases/hermes-everos-memory/apps/`.
 
 Do not treat any of those as optional context. They are the baseline.
 
@@ -38,6 +40,7 @@ Do not treat any of those as optional context. They are the baseline.
 5. Do not claim incremental sync unless a no-op delta path is proven on an unchanged source tree.
 6. Do not claim retrieval is ready unless cache hit, cache miss, and stale-bundle behavior are all tested.
 7. Do not touch unrelated workspace junk in `.goal/`, `.kilo/`, `.playwright-mcp/`, or local run output.
+8. Do not widen the knowledge surface beyond the agreed anchors before the ops plane is stable.
 
 ## Primary Objective
 
@@ -45,8 +48,10 @@ Deliver a remote-first Hermes knowledge lane on NixOS where:
 
 - Hermes session auth is handled by SuperGrok OAuth,
 - xAI knowledge uploads are handled by a collection-scoped management key on the host,
+- the canonical knowledge anchors are the three agreed roots above,
 - the sync job is content-addressed and delta-aware,
 - retrieval uses a local cache plus bounded top-k merge,
+- `everos-ops-mcp` exposes the reusable ops/status surface,
 - and every plane can fail independently without collapsing the others.
 
 ## Required Outputs
@@ -57,6 +62,7 @@ The implementation should produce:
 - a manifest/delta engine that skips unchanged documents,
 - a Hermes-facing retrieval layer that injects concise, provenanced context,
 - cache and receipt artifacts for sync and retrieval,
+- a reusable `everos-ops-mcp` backend with public-safe anchor/status tools,
 - validation scripts or smokes that prove session, sync, cache, delta, and red-gate behavior,
 - and any small docs updates needed to keep the operator flow legible.
 

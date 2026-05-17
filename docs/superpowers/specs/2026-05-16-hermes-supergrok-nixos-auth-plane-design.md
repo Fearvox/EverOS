@@ -13,11 +13,13 @@ This design keeps those concerns separate:
 1. Hermes session auth for interactive model turns.
 2. xAI collection auth for knowledge upload and refresh.
 3. NixOS host auth for scheduling, file ownership, and deployment control.
+4. A reusable `everos-ops-mcp` plane for public-safe anchor and ops status, which can be mounted by ChatGPT custom apps without exposing secrets.
 
 ## Goals
 
 - Use SuperGrok OAuth only for Hermes model sessions.
 - Keep xAI collection management credentials out of the Hermes session context.
+- Keep the knowledge corpus anchored to the three agreed source roots before any broader expansion.
 - Make the knowledge corpus reproducible and incrementally refreshable on NixOS.
 - Inject retrieved knowledge into Hermes through hooks and tool boundaries, not through ad hoc prompt stuffing.
 - Support both scheduled and manual sync on the remote host.
@@ -30,6 +32,7 @@ This design keeps those concerns separate:
 - Mirroring every repo file into xAI.
 - Letting model output mutate the knowledge corpus directly.
 - Sharing one secret across the session, collection, and host planes.
+- Growing the knowledge surface beyond the agreed anchors before the ops plane is stable.
 
 ## Decision
 
@@ -40,6 +43,7 @@ The recommended implementation is a host-owned sync service on NixOS plus a Herm
 - A Hermes plugin uses collection search plus local cache to retrieve relevant snippets before a turn.
 - Hermes hooks redact, gate, and record tool activity.
 - `execute_code` is allowed only for mechanical packaging and validation work, not for auth-sensitive calls.
+- A separate `everos-ops-mcp` service exposes public-safe anchor/status and bounded smoke operations for ChatGPT custom app wiring.
 
 This gives one clean operator flow on NixOS without turning OAuth into a universal credential.
 
@@ -90,6 +94,14 @@ The NixOS host owns a dedicated sync service and timer. The service:
 
 The sync service uses a collection-scoped xAI management key that lives in a host secret file wired in as the unit's `EnvironmentFile`. The key is readable by the sync unit only.
 
+The canonical knowledge anchors are fixed up front and treated as the shared source contract for every knowledge-related surface:
+
+- `research-vault` -> `/Users/0xvox/Documents/Evensong/research-vault`
+- `dash-knowledge-vault` -> `/Users/0xvox/Desktop/dash-knowledge-vault`
+- `dash-kv-view-full` -> `/Users/0xvox/Desktop/dash-kv-view-full`
+
+These anchors are the input set for the future knowledge MCP layer and the current ops surface. They should stay stable unless the operator explicitly expands the corpus.
+
 The bundle itself is the reproducible artifact. It should contain the same repo knowledge corpus that was already prepared for xAI, plus enough metadata to make incremental updates safe:
 
 - source roots
@@ -107,6 +119,19 @@ NixOS controls when sync runs, where the bundle lives, and which service user ow
 - a manual `systemctl start` / operator-triggered run for catch-up or re-upload
 
 The timer is the default path and should refresh on an hourly cadence unless host config overrides it. Manual runs use the same service so the behavior stays identical.
+
+### 4. Ops MCP plane
+
+`everos-ops-mcp` is a reusable ChatGPT-facing MCP server for the high-value operational surface around this lane.
+
+Its first job is not broad automation. Its first job is public-safe observability and bounded execution:
+
+- report token-file health without printing token contents,
+- report anchor presence and freshness,
+- expose a narrow allowlist of smoke commands for the Hermes/EverOS lane,
+- and keep future knowledge and signals MCP servers composable rather than monolithic.
+
+This plane should stay separate from the collection sync key and from Hermes session auth. ChatGPT can mount it as a custom MCP app, but it should not become the universal credential bucket.
 
 ## Data Flow
 

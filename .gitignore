@@ -236,3 +236,16 @@ use-cases/**/package-lock.json
 .kilo/
 use-cases/hermes-everos-memory/raven/.local-runs/
 use-cases/hermes-everos-memory/apps/
+
+# Windburn system artifacts (runtime, not temporary)
+.kilo/raven-aliases.zsh
+
+# Multica Ultimate Workbench runtime
+.automations/
+.automations/**/*.json
+
+# Codex session artifacts (already covered but be explicit)
+.codex/.codex-global-state.json
+.codex/.codex-global-state.json.bak
+.sisyphus/
+.gstack/

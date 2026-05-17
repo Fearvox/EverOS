@@ -1,6 +1,6 @@
 ## Summary
 
-<!-- What changed, and why? -->
+<!-- What changed, why, and what evidence shows it is correct? -->
 
 ## Area
 
@@ -15,7 +15,7 @@
 
 ## Verification
 
-<!-- List commands run, manual checks, screenshots, or reasons verification was not needed. -->
+<!-- List exact commands, checks, screenshots, or a clear reason verification was not needed. -->
 
 ```text
 
@@ -27,6 +27,7 @@
 - [ ] I updated docs, examples, or setup notes when behavior changed.
 - [ ] I added or updated tests when the change affects behavior.
 - [ ] I did not commit secrets, `.env` files, dependency folders, or generated output.
+- [ ] I listed the exact evidence, checks, or blocker for this change.
 - [ ] Active relative links in Markdown files resolve.
 
 ## Notes for Reviewers

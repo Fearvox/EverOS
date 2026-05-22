@@ -14,7 +14,7 @@
 
 ## 项目结构（只看重点）
 
-```
+```text
 EverOS/
 ├── methods/EverCore/     <-- 核心代码！主要看这里
 ├── benchmarks/           <-- 跑分测试
@@ -31,12 +31,14 @@ EverOS/
 ### 前置条件
 
 确保你电脑上有：
+
 - Docker（不知道有没有？跑 `docker --version`）
 - Python 3.10+（跑 `python --version`）
 
 没有的话先装：
-- Docker: https://docs.docker.com/get-docker/
-- Python: https://www.python.org/downloads/
+
+- Docker: <https://docs.docker.com/get-docker/>
+- Python: <https://www.python.org/downloads/>
 
 ### 第 1 步：进入核心目录
 
@@ -53,6 +55,7 @@ docker compose up -d
 这一步会启动 MongoDB、Redis、Elasticsearch、Milvus。等 1-2 分钟。
 
 检查是否启动成功：
+
 ```bash
 docker compose ps
 ```
@@ -76,11 +79,12 @@ cp env.template .env
 ```
 
 然后编辑 `.env` 文件，填上你的 API Key：
-```
+
+```text
 OPENAI_API_KEY=sk-xxx你的key
 ```
 
-### 第 5 步：跑起来！
+### 第 5 步：跑起来
 
 ```bash
 uv run python src/run.py
@@ -106,7 +110,7 @@ uv run python src/run.py
 
 核心代码都在 `methods/EverCore/src/`：
 
-```
+```text
 src/
 ├── run.py                          <-- 启动入口
 ├── agentic_layer/
@@ -118,6 +122,7 @@ src/
 ```
 
 **建议先看**：
+
 1. `src/run.py` - 程序从哪里开始
 2. `src/agentic_layer/memory_manager.py` - 记忆是怎么管理的
 
@@ -126,15 +131,18 @@ src/
 ## 遇到问题？
 
 ### Docker 起不来
+
 ```bash
 docker compose down
 docker compose up -d
 ```
 
 ### 端口被占用
+
 换个端口，在 `.env` 里改 `PORT=其他端口号`
 
 ### 依赖装不上
+
 ```bash
 uv cache clean
 uv sync --refresh

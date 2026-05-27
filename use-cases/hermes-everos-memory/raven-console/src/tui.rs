@@ -1,6 +1,8 @@
 use crate::adapters::hermes;
 use crate::context::Context;
-use crate::model::{HermesChatTranscriptLine, HermesChatTurn, RavenSnapshot, Verdict};
+use crate::model::{
+    AgenticLoopPhase, HermesChatTranscriptLine, HermesChatTurn, RavenSnapshot, Verdict,
+};
 use crate::sanitizer::sanitize_text;
 use crate::snapshot;
 use crate::RavenResult;
@@ -26,6 +28,7 @@ use std::time::Duration;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Panel {
     Status,
+    Loop,
     Packet,
     Chat,
     Memory,
@@ -60,6 +63,7 @@ struct TuiState {
     input: String,
     evidence: String,
     chat: VecDeque<ChatLine>,
+    loop_activity: VecDeque<LoopActivityLine>,
     chat_inflight: bool,
 }
 
@@ -69,6 +73,12 @@ struct ChatLine {
     verdict: Option<Verdict>,
 }
 
+struct LoopActivityLine {
+    phase: AgenticLoopPhase,
+    verdict: Verdict,
+    text: String,
+}
+
 enum BackgroundEvent {
     Snapshot(Box<RavenSnapshot>),
     Chat(HermesChatTurn),
@@ -76,6 +86,7 @@ enum BackgroundEvent {
 
 const SURFACE_TITLE: &str = "RAVEN // DOOMSDAY-MAXXED-MOGGED";
 const CHAT_HISTORY_LIMIT: usize = 24;
+const LOOP_ACTIVITY_LIMIT: usize = 16;
 
 impl Default for TuiState {
     fn default() -> Self {
@@ -86,6 +97,7 @@ impl Default for TuiState {
             evidence: "Remote gates stay red until live evidence proves every hard gate."
                 .to_string(),
             chat: VecDeque::new(),
+            loop_activity: VecDeque::new(),
             chat_inflight: false,
         }
     }
@@ -136,6 +148,26 @@ fn run_loop(
                 BackgroundEvent::Chat(turn) => {
                     state.chat_inflight = false;
                     state.evidence = turn.evidence.clone();
+                    push_loop_activity(
+                        &mut state,
+                        LoopActivityLine {
+                            phase: AgenticLoopPhase::Observe,
+                            verdict: turn.verdict,
+                            text: format!(
+                                "Hermes observed in {}ms via {}.",
+                                turn.duration_ms, turn.runtime
+                            ),
+                        },
+                    );
+                    push_loop_activity(
+                        &mut state,
+                        LoopActivityLine {
+                            phase: AgenticLoopPhase::Verify,
+                            verdict: Verdict::Flag,
+                            text: "Gate state unchanged; remote hard gates still decide closure."
+                                .to_string(),
+                        },
+                    );
                     push_chat_line(
                         &mut state,
                         ChatLine {
@@ -221,6 +253,13 @@ fn push_chat_line(state: &mut TuiState, line: ChatLine) {
     state.chat.push_back(line);
 }
 
+fn push_loop_activity(state: &mut TuiState, line: LoopActivityLine) {
+    if state.loop_activity.len() == LOOP_ACTIVITY_LIMIT {
+        state.loop_activity.pop_front();
+    }
+    state.loop_activity.push_back(line);
+}
+
 fn receive_background_event(rx: &Receiver<BackgroundEvent>) -> Option<BackgroundEvent> {
     match rx.try_recv() {
         Ok(event) => Some(event),
@@ -244,8 +283,14 @@ fn handle_normal_key(key: KeyEvent, state: &mut TuiState) -> TuiAction {
         KeyCode::Char('q') => return TuiAction::Quit,
         KeyCode::Char('u') => return TuiAction::Refresh,
         KeyCode::Char('?') => state.panel = Panel::Help,
+        KeyCode::Char('l') => state.panel = Panel::Loop,
         KeyCode::Char('h') | KeyCode::Char('c') => state.panel = Panel::Chat,
-        KeyCode::Char('i') | KeyCode::Enter if state.panel == Panel::Chat => {
+        KeyCode::Char('i') if matches!(state.panel, Panel::Chat | Panel::Loop) => {
+            state.mode = InputMode::Chat;
+            state.input.clear();
+            state.evidence = "Hermes input mode. Enter sends; Esc cancels.".to_string();
+        }
+        KeyCode::Enter if matches!(state.panel, Panel::Chat | Panel::Loop) => {
             state.mode = InputMode::Chat;
             state.input.clear();
             state.evidence = "Hermes input mode. Enter sends; Esc cancels.".to_string();
@@ -301,7 +346,9 @@ fn handle_input_key(key: KeyEvent, state: &mut TuiState) -> TuiAction {
                 } else if state.chat_inflight {
                     state.evidence = "Hermes turn already running.".to_string();
                 } else {
-                    state.panel = Panel::Chat;
+                    if state.panel != Panel::Loop {
+                        state.panel = Panel::Chat;
+                    }
                     push_chat_line(
                         state,
                         ChatLine {
@@ -316,6 +363,22 @@ fn handle_input_key(key: KeyEvent, state: &mut TuiState) -> TuiAction {
                             role: "system",
                             text: "queued Hermes turn; UI remains live".to_string(),
                             verdict: Some(Verdict::Flag),
+                        },
+                    );
+                    push_loop_activity(
+                        state,
+                        LoopActivityLine {
+                            phase: AgenticLoopPhase::Capture,
+                            verdict: Verdict::Pass,
+                            text: "Operator prompt captured and sanitized.".to_string(),
+                        },
+                    );
+                    push_loop_activity(
+                        state,
+                        LoopActivityLine {
+                            phase: AgenticLoopPhase::Act,
+                            verdict: Verdict::Flag,
+                            text: "Hermes turn queued; UI remains live.".to_string(),
                         },
                     );
                     state.mode = InputMode::Normal;
@@ -338,6 +401,7 @@ fn handle_input_key(key: KeyEvent, state: &mut TuiState) -> TuiAction {
 fn apply_palette(input: &str, state: &mut TuiState) {
     match input.trim().to_ascii_lowercase().as_str() {
         "status" | "s" => state.panel = Panel::Status,
+        "loop" | "agentic" | "single" | "l" => state.panel = Panel::Loop,
         "packet" | "p" => state.panel = Panel::Packet,
         "chat" | "hermes" | "h" | "c" => state.panel = Panel::Chat,
         "memory" | "m" => state.panel = Panel::Memory,
@@ -434,6 +498,7 @@ fn render_body(frame: &mut Frame<'_>, area: Rect, snapshot: &RavenSnapshot, stat
 fn render_rail(frame: &mut Frame<'_>, area: Rect, active: Panel) {
     let items = [
         ("s", "Status", "truth stack", Panel::Status),
+        ("l", "Loop", "single agent", Panel::Loop),
         ("p", "Packet", "owner view", Panel::Packet),
         ("h", "Hermes Chat", "dialogue", Panel::Chat),
         ("m", "Memory", "bridge health", Panel::Memory),
@@ -475,6 +540,7 @@ fn render_rail(frame: &mut Frame<'_>, area: Rect, active: Panel) {
 fn render_panel(frame: &mut Frame<'_>, area: Rect, snapshot: &RavenSnapshot, state: &TuiState) {
     let (title, lines) = match state.panel {
         Panel::Status => ("Status", status_lines(snapshot)),
+        Panel::Loop => ("Agentic Loop", loop_lines(snapshot, state)),
         Panel::Packet => ("Packet", packet_lines(snapshot)),
         Panel::Chat => ("Hermes Chat", chat_lines(state)),
         Panel::Memory => ("Memory", memory_lines(snapshot)),
@@ -514,6 +580,17 @@ fn render_evidence(frame: &mut Frame<'_>, area: Rect, snapshot: &RavenSnapshot, 
         ]));
     }
     lines.push(Line::from(""));
+    lines.push(section("AGENTIC LOOP"));
+    lines.push(Line::from(vec![
+        chip("loop", snapshot.loop_state.verdict.to_string()),
+        Span::raw("  "),
+        chip("phase", snapshot.loop_state.active_phase.to_string()),
+    ]));
+    lines.push(Line::from(vec![Span::styled(
+        snapshot.loop_state.output_contract.clone(),
+        Style::default().fg(Color::Gray),
+    )]));
+    lines.push(Line::from(""));
     lines.push(section("RISK REGISTER"));
     for risk in &snapshot.risks {
         lines.push(Line::from(vec![
@@ -534,7 +611,7 @@ fn render_input(frame: &mut Frame<'_>, area: Rect, state: &TuiState) {
     let (title, prompt, color) = match state.mode {
         InputMode::Normal => (
             "INPUT // NORMAL",
-            "keys: h chat | i input | u refresh | ? help | : palette | / memory | s/p/m/a/g/r/o/d/n panels | q quit"
+            "keys: l loop | h chat | i input | u refresh | ? help | : palette | / memory | s/p/m/a/g/r/o/d/n panels | q quit"
                 .to_string(),
             Color::DarkGray,
         ),
@@ -626,6 +703,73 @@ fn packet_lines(snapshot: &RavenSnapshot) -> Vec<Line<'static>> {
             Span::styled(doc.evidence.clone(), Style::default().fg(Color::Gray)),
         ]));
     }
+    lines
+}
+
+fn loop_lines(snapshot: &RavenSnapshot, state: &TuiState) -> Vec<Line<'static>> {
+    let loop_state = &snapshot.loop_state;
+    let mut lines = vec![
+        section("SINGLE AGENTIC LOOP"),
+        Line::from(vec![
+            chip("verdict", loop_state.verdict.to_string()),
+            Span::raw("  "),
+            chip("active", loop_state.active_phase.to_string()),
+        ]),
+        kv("mode", &loop_state.mode),
+        kv("objective", &loop_state.objective),
+        kv("mutation", &loop_state.mutation_policy),
+        Line::from(""),
+        section("ALLOWED ACTIONS"),
+    ];
+    for action in &loop_state.allowed_actions {
+        lines.push(bullet(action));
+    }
+    lines.push(Line::from(""));
+    lines.push(section("STOP CONDITIONS"));
+    for condition in &loop_state.stop_conditions {
+        lines.push(bullet(condition));
+    }
+    lines.push(Line::from(""));
+    lines.push(section("PHASES"));
+    for step in &loop_state.steps {
+        lines.push(Line::from(vec![
+            phase_span(step.phase),
+            Span::raw(" "),
+            verdict_span(step.verdict.to_string()),
+            Span::raw(" "),
+            Span::styled(
+                format!("{:<24}", step.label),
+                Style::default().fg(Color::White),
+            ),
+            Span::styled(step.evidence.clone(), Style::default().fg(Color::Gray)),
+        ]));
+    }
+
+    lines.push(Line::from(""));
+    lines.push(section("LIVE TURN"));
+    if state.loop_activity.is_empty() {
+        lines.push(Line::from(vec![
+            Span::styled("idle", Style::default().fg(Color::DarkGray)),
+            Span::raw(" "),
+            Span::styled(
+                "press i here or in Hermes Chat to run one bounded turn.",
+                Style::default().fg(Color::Gray),
+            ),
+        ]));
+    } else {
+        for item in &state.loop_activity {
+            lines.push(Line::from(vec![
+                phase_span(item.phase),
+                Span::raw(" "),
+                verdict_span(item.verdict.to_string()),
+                Span::raw(" "),
+                Span::styled(item.text.clone(), Style::default().fg(Color::Gray)),
+            ]));
+        }
+    }
+
+    lines.push(Line::from(""));
+    lines.push(kv("contract", &loop_state.output_contract));
     lines
 }
 
@@ -891,12 +1035,13 @@ fn help_lines() -> Vec<Line<'static>> {
         kv("?", "help"),
         kv(":", "palette"),
         kv("/", "memory/search"),
+        kv("l", "single-agent loop panel"),
         kv("h/c", "Hermes chat panel"),
-        kv("i", "prompt input when Hermes panel is active"),
+        kv("i", "prompt input when Loop or Hermes panel is active"),
         kv("u", "refresh live Multica + memory data"),
         kv(
             "panels",
-            "s status | p packet | h chat | m memory | a agents",
+            "s status | l loop | p packet | h chat | m memory | a agents",
         ),
         kv("panels", "g gates | r runs | d doctor | n native audit"),
         kv("panels", "o superconductor"),
@@ -937,6 +1082,7 @@ fn shell_block(title: &'static str, accent: Color) -> Block<'static> {
 fn panel_color(panel: Panel) -> Color {
     match panel {
         Panel::Status => Color::Cyan,
+        Panel::Loop => Color::LightGreen,
         Panel::Packet => Color::Magenta,
         Panel::Chat => Color::Magenta,
         Panel::Memory => Color::Green,
@@ -993,6 +1139,22 @@ fn section(label: &'static str) -> Line<'static> {
             .fg(Color::White)
             .add_modifier(Modifier::BOLD),
     )])
+}
+
+fn phase_span(phase: AgenticLoopPhase) -> Span<'static> {
+    Span::styled(
+        format!("{:<8}", phase),
+        Style::default()
+            .fg(Color::LightGreen)
+            .add_modifier(Modifier::BOLD),
+    )
+}
+
+fn bullet(value: &str) -> Line<'static> {
+    Line::from(vec![
+        Span::styled("- ", Style::default().fg(Color::Yellow)),
+        Span::styled(value.to_string(), Style::default().fg(Color::Gray)),
+    ])
 }
 
 fn kv(label: &'static str, value: &str) -> Line<'static> {
@@ -1052,5 +1214,50 @@ mod tests {
             state.chat.back().map(|line| line.text.as_str()),
             Some("turn-29")
         );
+    }
+
+    #[test]
+    fn loop_activity_is_bounded_fifo() {
+        let mut state = TuiState::default();
+
+        for index in 0..20 {
+            push_loop_activity(
+                &mut state,
+                LoopActivityLine {
+                    phase: AgenticLoopPhase::Act,
+                    verdict: Verdict::Flag,
+                    text: format!("loop-{index}"),
+                },
+            );
+        }
+
+        assert_eq!(state.loop_activity.len(), LOOP_ACTIVITY_LIMIT);
+        assert_eq!(
+            state.loop_activity.front().map(|line| line.text.as_str()),
+            Some("loop-4")
+        );
+        assert_eq!(
+            state.loop_activity.back().map(|line| line.text.as_str()),
+            Some("loop-19")
+        );
+    }
+
+    #[test]
+    fn loop_prompt_stays_on_loop_panel() {
+        let mut state = TuiState {
+            panel: Panel::Loop,
+            mode: InputMode::Chat,
+            input: "one bounded turn".to_string(),
+            ..TuiState::default()
+        };
+
+        let action = handle_input_key(
+            KeyEvent::new(KeyCode::Enter, KeyModifiers::empty()),
+            &mut state,
+        );
+
+        assert!(matches!(action, TuiAction::SendChat(prompt) if prompt == "one bounded turn"));
+        assert_eq!(state.panel, Panel::Loop);
+        assert_eq!(state.loop_activity.len(), 2);
     }
 }

@@ -20,6 +20,7 @@ It owns:
 - run packet validation;
 - memory health/search before work starts;
 - lane and mutation-policy visibility;
+- single-agent loop visibility;
 - gate visibility and conservative verdict calculation;
 - sanitized JSON snapshot and receipt output;
 - owner packet export;
@@ -41,6 +42,7 @@ It does not own:
 | `raven tui` | terminal | ratatui console with status, rail, active panel, evidence drawer, input line | `RAVEN_TUI_ONCE=1` must render deterministic smoke output |
 | `raven repl` | slash commands | same handlers as CLI | piped smoke stays deterministic |
 | `raven chat send [--cwd <path>] [--json] [--receipt <path\|->] [--save] <prompt>` | bounded prompt text | sanitized `HermesChatTurn` or `RavenReceipt` | Hermes failure is `FLAG`, not UI crash; chat receipts cannot green remote deploy |
+| `raven loop [status] [--json]` | packet + gate + run state | `AgenticLoopState` or compact loop contract | loop closure is `FLAG` while remote hard gates or missing receipts remain |
 | `raven packet show [--json]` | local packet/docs | packet summary | source docs resolve |
 | `raven packet export [--output <path\|->]` | snapshot | sanitized owner packet markdown | public-safety sanitizer clean |
 | `raven memory health [--json]` | EverOS bridge | health verdict | provider failure is `FLAG`, not crash |
@@ -78,6 +80,30 @@ State transitions:
 4. `reviewing` after work stops and evidence is being checked.
 5. `done` only when every blocking gate is `pass`.
 6. `blocked` when a blocking gate needs human or external action.
+
+## Single Agentic Loop Behavior
+
+Raven keeps a visible single-agent loop above the raw chat transcript:
+
+```text
+CAPTURE -> PLAN -> ACT -> OBSERVE -> VERIFY -> RECEIPT
+```
+
+The loop is intentionally human-in-the-loop. It captures one bounded objective,
+routes one Hermes turn, keeps observations attached to the evidence drawer, then
+lets gates and receipts decide closure. This is the missing bridge between
+`chat` and `runs`: a prompt can produce useful local evidence, but it cannot
+silently mutate gate state.
+
+Loop invariants:
+
+- `raven loop` prints the typed `AgenticLoopState`;
+- `/loop` in the REPL maps to the same handler;
+- `l` in the TUI opens the loop panel, and `i` from that panel starts one
+  Hermes prompt;
+- chat turns add live loop breadcrumbs for capture, act, observe, and verify;
+- receipts are explicit through `--receipt` or `--save`;
+- remote deploy remains red until `DAS-2666` hard evidence passes.
 
 ## Memory Behavior
 

@@ -21,6 +21,8 @@ but EverCore is not yet proven active on the remote loopback service.
 - Raven Hermes chat bridge: `raven chat send`, bare-text/`/chat` REPL turns,
   and the TUI Hermes panel share one sanitized adapter; TUI execution runs in
   the background so redraw and key handling remain live.
+- Raven single-agent loop surface: `raven loop`, `/loop`, and TUI `l` expose
+  capture, plan, act, observe, verify, and receipt phases above raw chat.
 - Raven v2 research harness: `raven research lanes`, `raven research packet
   <lane>`, and `raven research synthesize` keep v2 work as live-gate-calibrated
   decision packets instead of freeform research prose.
@@ -51,6 +53,8 @@ cd use-cases/hermes-everos-memory && just raven-verify
 cd use-cases/hermes-everos-memory && just raven-console-check
 cd use-cases/hermes-everos-memory && just raven-status
 cd use-cases/hermes-everos-memory && bin/raven status --json
+cd use-cases/hermes-everos-memory && just raven-loop
+cd use-cases/hermes-everos-memory && bin/raven loop --json
 cd use-cases/hermes-everos-memory && just raven-research-lanes
 cd use-cases/hermes-everos-memory && just raven-research-packet-smoke
 cd use-cases/hermes-everos-memory && just raven-research-synthesis

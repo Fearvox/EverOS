@@ -22,6 +22,7 @@ pub fn run(ctx: &Context) -> NativeAuditReport {
             "keybindings",
             if source.contains("KeyCode::Char('q')")
                 && source.contains("KeyCode::Char('?')")
+                && source.contains("KeyCode::Char('l')")
                 && source.contains("KeyCode::Char('h')")
                 && source.contains("KeyCode::Char('i')")
                 && source.contains("KeyCode::Char('o')")
@@ -30,7 +31,7 @@ pub fn run(ctx: &Context) -> NativeAuditReport {
             } else {
                 Verdict::Block
             },
-            "TUI exposes h/c chat, i prompt input, q, ?, :, /, s, p, m, a, g, r, o, d, n, Esc, and Ctrl-C paths.",
+            "TUI exposes l loop, h/c chat, i prompt input, q, ?, :, /, s, p, m, a, g, r, o, d, n, Esc, and Ctrl-C paths.",
             true,
         ),
         item(
@@ -88,13 +89,13 @@ pub fn run(ctx: &Context) -> NativeAuditReport {
         item(
             "typed IPC",
             Verdict::Pass,
-            "RavenSnapshot, RavenReceipt, HermesChatTurn, and ScReport are serde-typed JSON contracts.",
+            "RavenSnapshot, AgenticLoopState, RavenReceipt, HermesChatTurn, and ScReport are serde-typed JSON contracts.",
             false,
         ),
         item(
             "evidence visibility",
             Verdict::Pass,
-            "remote hard gates, local gates, runs, docs, and watchlist evidence are visible.",
+            "remote hard gates, loop phases, local gates, runs, docs, and watchlist evidence are visible.",
             false,
         ),
         item(

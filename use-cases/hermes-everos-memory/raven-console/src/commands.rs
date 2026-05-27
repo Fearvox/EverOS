@@ -41,6 +41,11 @@ pub enum Commands {
         #[command(subcommand)]
         command: MemoryCommand,
     },
+    /// Show the single-agent goal/act/observe/verify loop.
+    Loop {
+        #[command(subcommand)]
+        command: Option<LoopCommand>,
+    },
     /// Show agent lane status.
     Agents {
         #[command(subcommand)]
@@ -114,6 +119,12 @@ pub enum ChatCommand {
 pub enum AgentsCommand {
     /// List agent/watch lanes.
     List,
+}
+
+#[derive(Subcommand)]
+pub enum LoopCommand {
+    /// Show loop state.
+    Status,
 }
 
 #[derive(Subcommand)]
@@ -227,6 +238,15 @@ pub fn execute(cli: Cli, ctx: &Context) -> RavenResult<()> {
                 }
             }
         },
+        Commands::Loop { command: _ } => {
+            let snapshot = snapshot::build(ctx);
+            if cli.json {
+                output::json(&snapshot.loop_state)
+            } else {
+                output::agentic_loop(&snapshot.loop_state);
+                Ok(())
+            }
+        }
         Commands::Agents { command: _ } => {
             let snapshot = snapshot::build(ctx);
             if cli.json {
@@ -408,6 +428,7 @@ pub fn dispatch_repl(ctx: &Context, input: &str) -> RavenResult<bool> {
             println!("/help");
             println!("/status");
             println!("/packet");
+            println!("/loop");
             println!("/chat <prompt>");
             println!("/memory <query>");
             println!("/agents");
@@ -421,6 +442,7 @@ pub fn dispatch_repl(ctx: &Context, input: &str) -> RavenResult<bool> {
         }
         "/status" => output::status(&snapshot::build(ctx)),
         "/packet" => output::packet(&snapshot::build(ctx)),
+        "/loop" => output::agentic_loop(&snapshot::build(ctx).loop_state),
         "/agents" => output::agents(&snapshot::build(ctx)),
         "/gates" => output::gates(&snapshot::build(ctx)),
         "/research" => output::research_lanes(&research::list_lanes()),

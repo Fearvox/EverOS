@@ -152,3 +152,23 @@ Agents must not remove labels applied by humans or CI.
   Manual label changes can create Linear mirror noise.
 - `.github/workflows/overnight-watch.yml` powers the sleep-lane patrol. Do not
   edit it during an active sleep run unless the owner assigns that work.
+
+## Development Notes
+
+- All I/O is async; use `await`.
+- EverCore is multi-tenant; data must remain tenant-scoped.
+- Prompts live in `methods/EverCore/src/memory_layer/prompts/` with EN/ZH
+  variants.
+- Prefer existing repo patterns and component boundaries before adding new
+  abstractions.
+
+## GitHub Agent Review Contract
+
+- GitHub Copilot, Codex, and other review agents should follow
+  `.github/copilot-instructions.md`.
+- Start PR reviews with the MUW block:
+  `VERDICT: PASS / FLAG / BLOCK`, `VERDICT_SUMMARY:`, and `EVIDENCE:`.
+- Do not mark a PR `PASS` from author summary alone; inspect the actual diff,
+  linked issue, and available checks first.
+- Report actionable findings first, ordered by severity, with file/path,
+  evidence, impact, and fix guidance.

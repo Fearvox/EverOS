@@ -1,0 +1,99 @@
+version: 2
+updates:
+  # pip — EverCore (primary package)
+  - package-ecosystem: "pip"
+    directory: "/methods/EverCore"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+      - "python:uv"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    open-pull-requests-limit: 5
+
+  # pip — HyperMem
+  - package-ecosystem: "pip"
+    directory: "/methods/HyperMem"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    open-pull-requests-limit: 3
+
+  # pip — EverMemBench
+  - package-ecosystem: "pip"
+    directory: "/benchmarks/EverMemBench"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    open-pull-requests-limit: 3
+
+  # pip — EvoAgentBench
+  - package-ecosystem: "pip"
+    directory: "/benchmarks/EvoAgentBench"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    open-pull-requests-limit: 3
+
+  # npm — game-of-throne-demo
+  - package-ecosystem: "npm"
+    directory: "/use-cases/game-of-throne-demo"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+      - "javascript"
+    groups:
+      npm_and_yarn:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    open-pull-requests-limit: 3
+
+  # npm — claude-code-plugin
+  - package-ecosystem: "npm"
+    directory: "/use-cases/claude-code-plugin"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    labels:
+      - "dependencies"
+      - "javascript"
+    groups:
+      npm_and_yarn:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    open-pull-requests-limit: 3

@@ -1,0 +1,22 @@
+# Fork-local paths owned by @Fearvox (the lab owner).
+# Upstream paths are intentionally unlisted — they defer to upstream maintainers.
+
+# CI/CD workflows (fork-owned)
+.github/workflows/linear-sync.yml     @Fearvox
+.github/workflows/sync-upstream.yml   @Fearvox
+.github/workflows/overnight-watch.yml @Fearvox
+
+# Issue templates (fork-owned)
+.github/ISSUE_TEMPLATE/pr_tracker.yml      @Fearvox
+.github/ISSUE_TEMPLATE/security_tracker.yml @Fearvox
+
+# Community docs (fork-maintained)
+.github/CONTRIBUTING.md @Fearvox
+.github/SECURITY.md     @Fearvox
+AGENTS.md               @Fearvox
+
+# Planning directory (fork-only, on sleep-log)
+.planning/ @Fearvox
+
+# CLAUDE.md (project-level AI instructions)
+CLAUDE.md @Fearvox

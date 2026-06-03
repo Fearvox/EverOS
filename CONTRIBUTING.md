@@ -17,7 +17,7 @@ What we actively welcome from the community:
 | 🐛 Bug reports | [Open a bug issue](https://github.com/EverMind-AI/everos/issues/new?template=bug_report.md) |
 | 💡 Feature ideas / use cases | [Open a feature issue](https://github.com/EverMind-AI/everos/issues/new?template=feature_request.md) |
 | 🔧 Suggested fixes | An issue with a code snippet / patch attached (see below) |
-| ❓ Questions & discussion | [GitHub Discussions](https://github.com/EverMind-AI/everos/discussions) / [Discord](https://discord.gg/pfwwskxp) |
+| ❓ Questions & discussion | [GitHub Discussions](https://github.com/EverMind-AI/everos/discussions) / [Discord](https://discord.gg/gYep5nQRZJ) |
 
 > **Pull requests opened against this repository will be closed** with a pointer
 > to this policy. Please open an issue instead — it is the fastest path to
@@ -64,7 +64,7 @@ are expected to uphold it. Report unacceptable behavior to evermind@shanda.com.
 ## Questions
 
 - [GitHub Discussions](https://github.com/EverMind-AI/everos/discussions) — general Q&A
-- [Discord](https://discord.gg/pfwwskxp) — community chat
+- [Discord](https://discord.gg/gYep5nQRZJ) — community chat
 - Email: evermind@shanda.com
 
 ---

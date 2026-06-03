@@ -122,11 +122,11 @@ in
     virtualisation.docker.enable = true;
 
     users.groups = lib.mkIf cfg.createUser {
-      ${cfg.group} = { };
+      "${cfg.group}" = { };
     };
 
     users.users = lib.mkIf cfg.createUser {
-      ${cfg.user} = {
+      "${cfg.user}" = {
         isSystemUser = true;
         group = cfg.group;
         extraGroups = [ "docker" ];

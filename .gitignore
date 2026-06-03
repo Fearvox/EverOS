@@ -235,7 +235,6 @@ use-cases/**/package-lock.json
 # These are intentionally generated during dogfood smoke tests but should not pollute git
 .kilo/
 use-cases/hermes-everos-memory/raven/.local-runs/
-use-cases/hermes-everos-memory/apps/
 
 # Windburn system artifacts (runtime, not temporary)
 .kilo/raven-aliases.zsh

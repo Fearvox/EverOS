@@ -141,12 +141,16 @@ class EverOSClient:
             },
         )
 
-    def flush_agent(self, *, user_id: str, session_id: str) -> dict:
-        return self.request(
-            "POST",
-            "/api/v1/memories/agent/flush",
-            {"user_id": user_id, "session_id": session_id},
-        )
+    def flush_agent(self, *, user_id: str, session_id: Optional[str] = None) -> dict:
+        # EverCore treats session_id as optional on the flush endpoint.
+        # When unset, omit it from the payload so the server uses its
+        # default (a freshly-allocated session per flush) rather than
+        # coalescing flushes into a shared empty-string session across
+        # agents/runs. Copilot review on PR #104.
+        payload: Dict[str, Any] = {"user_id": user_id}
+        if session_id:
+            payload["session_id"] = session_id
+        return self.request("POST", "/api/v1/memories/agent/flush", payload)
 
 
 class EverOSMemoryProvider(MemoryProvider):
@@ -326,9 +330,13 @@ class EverOSMemoryProvider(MemoryProvider):
                 self._flush_session(session_id)
                 return json.dumps({"result": "stored", "data": data.get("data")}, ensure_ascii=False)
             if tool_name == "everos_flush":
+                # Pass session_id as-is (None when unset); flush_agent
+                # omits it from the payload so EverCore uses its default
+                # rather than an empty-string shared session (Copilot
+                # review on PR #104).
                 data = self._client.flush_agent(
                     user_id=self._user_id,
-                    session_id=self._session_id or "",
+                    session_id=self._session_id or None,
                 )
                 return json.dumps({"result": "flushed", "data": data.get("data")}, ensure_ascii=False)
         except urllib.error.URLError as exc:

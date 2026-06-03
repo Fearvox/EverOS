@@ -30,8 +30,6 @@
     "raven:tui-smoke": "RAVEN_TUI_ONCE=1 bin/raven tui",
     "mock-openai:check": "node bin/mock-openai-compatible.mjs --check",
     "mock-openai": "node bin/mock-openai-compatible.mjs",
-    "ops-mcp:check": "npm --prefix apps/everos-ops-mcp run check",
-    "ops-mcp:start": "npm --prefix apps/everos-ops-mcp start",
     "test": "node bin/everos-memory.mjs self-test"
   },
   "engines": {

@@ -432,8 +432,8 @@ auto-mention the corresponding owners.
 
 ```
 .github/ISSUE_TEMPLATE/
-├── bug_report.md            software deps: lancedb / sqlite / ruff
-├── feature_request.md       generic template
+├── bug_report.yml           software deps: lancedb / sqlite / ruff
+├── feature_request.yml      generic template
 └── config.yml               disable blank issue + Discord / Discussions links
 
 CONTRIBUTING.md              contributor onboarding: setup / code style /

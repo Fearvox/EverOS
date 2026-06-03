@@ -1,7 +1,7 @@
 # Engineering & Dev-Efficiency Infrastructure
 
 > Companions: business architecture lives in [architecture.md](architecture.md);
-> hard coding constraints live in [../.claude/rules/](../.claude/rules/).
+> hard coding constraints live in `.claude/rules/`.
 > This document covers the surrounding tooling, configuration, and processes
 > — what we adopted, what role each piece plays, and how they fit together.
 
@@ -381,7 +381,7 @@ dev   ●──●──●──●──●──●──●──●──�
   Vertical │ in the diagram = "dev HEAD merged into master via release PR + v0.x tag"
 ```
 
-Details in [../.claude/skills/new-branch/SKILL.md](../.claude/skills/new-branch/SKILL.md).
+Details in `.claude/skills/new-branch/SKILL.md`.
 
 ### 7.2 PR / MR template (shared across platforms)
 
@@ -424,7 +424,7 @@ auto-mention the corresponding owners.
 ```
 
 `gitlint` enforces format **locally** (commit-msg pre-commit stage). See
-[../.claude/skills/commit/SKILL.md](../.claude/skills/commit/SKILL.md).
+`.claude/skills/commit/SKILL.md`.
 
 ---
 
@@ -550,8 +550,8 @@ evolution**.
 
 ## 12. References
 
-- Hard coding rules: [../.claude/rules/](../.claude/rules/) (auto-loaded by Claude Code)
-- Slash command workflows: [../.claude/skills/](../.claude/skills/)
+- Hard coding rules: `.claude/rules/` (auto-loaded by Claude Code)
+- Slash command workflows: `.claude/skills/`
 - Contributor onboarding: [../CONTRIBUTING.md](../CONTRIBUTING.md)
 - Architecture: [architecture.md](architecture.md)
 - Claude Code memory mechanism: [code.claude.com/docs/en/memory.md](https://code.claude.com/docs/en/memory.md)

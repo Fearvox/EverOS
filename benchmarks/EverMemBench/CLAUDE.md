@@ -14,7 +14,7 @@ choice (direct comparison) and open-ended (LLM-judge).
 
 ## Internal map
 
-```
+```text
 eval/
 ├── cli.py        main entry — orchestrates the 4-stage pipeline
 ├── config/       YAML configs per memory system + per dataset slice
@@ -61,7 +61,7 @@ python tools/analyze_results.py <run-output-dir>
 
 - **Message format differs per system.** Memos wants
   `[Group: X][Speaker: Y]content`; Mem0 wants `run_id="${user_id}_${groupId}"`
-  + `name=<Speaker>`. The README has the full matrix — do not paper over the
+  - `name=<Speaker>`. The README has the full matrix — do not paper over the
   differences with a generic adapter.
 - **Timestamp handling is per-system.** Memos uses native `chat_time`, Mem0
   uses Unix timestamps per batch. Misaligned timestamps silently kill recall.

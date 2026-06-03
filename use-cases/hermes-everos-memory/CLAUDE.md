@@ -14,7 +14,7 @@ This is also the staging ground for the **Hermes SuperGrok NixOS** lane (see
 
 ## Internal map
 
-```
+```text
 __init__.py          thin Hermes interface shim (Python class entry)
 bin/
   everos-memory.mjs    operator/dev CLI (Node/Bun) — health/search/sync-smoke

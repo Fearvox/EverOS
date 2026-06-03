@@ -24,15 +24,18 @@ If neither side of `prompts/` changed, skip — this skill has nothing to say.
 ## Procedure
 
 1. **Confirm scope.** From repo root:
+
    ```bash
    cd methods/EverCore/src/memory_layer/prompts
    ```
 
 2. **File-name mirror.** Both directories must have identical file lists
    (excluding `__pycache__`):
+
    ```bash
    diff <(ls en/ | grep -v __pycache__) <(ls zh/ | grep -v __pycache__)
    ```
+
    Any difference is a bug. The fix is **always** to add the missing file to
    the side that lacks it. The new file can be a translation OR an explicit
    re-export from the other side (the existing convention — see
@@ -40,6 +43,7 @@ If neither side of `prompts/` changed, skip — this skill has nothing to say.
 
 3. **Export-symbol parity.** For each file pair `en/X.py` and `zh/X.py`,
    their public exports must be the same set:
+
    ```bash
    python -c "
    import ast, sys, pathlib
@@ -59,6 +63,7 @@ If neither side of `prompts/` changed, skip — this skill has nothing to say.
            if missing_in_en: print(f'{f.name}: en missing {missing_in_en}')
    "
    ```
+
    Re-exports count: `zh/agent_prompts.py` doing
    `from ...en.agent_prompts import FOO, BAR` exposes `FOO` and `BAR` as
    ZH symbols — that satisfies parity even though the strings live on the EN

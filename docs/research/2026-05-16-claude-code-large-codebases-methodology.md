@@ -9,6 +9,7 @@
 ## 核心方法论（7 条）
 
 ### 1. CLAUDE.md 文件优先
+
 - **作用**：每个会话自动加载的上下文文件，给 Claude 提供代码库知识
 - **层级**：
   - 根目录 `CLAUDE.md`：大图、整体架构
@@ -17,6 +18,7 @@
 - **加载机制**：Claude 会自动向上遍历目录树，加载路径上所有 `CLAUDE.md`
 
 ### 2. Hooks 让设置自我进化
+
 - **传统认知**：Hooks 是防止 Claude 做错事的脚本
 - **高阶用法**：持续改进的催化剂
   - `Stop` hook：会话结束后反思发生了什么，提出 `CLAUDE.md` 更新（上下文新鲜时）
@@ -24,6 +26,7 @@
   - 确定性检查：lint、格式化等，比依赖 Claude 记忆更一致
 
 ### 3. Skills 按需提供专业知识
+
 - **问题**：大型代码库有几十种任务类型，不需要每个会话都加载所有专业知识
 - **解决方案**：渐进式披露（Progressive Disclosure）
   - Skills 按需加载，只在任务需要时注入
@@ -31,17 +34,20 @@
   - 避免上下文竞争，节省 token
 
 ### 4. 在子目录初始化，而非仓库根目录
+
 - **原则**：Claude 在 scoped 到与任务实际相关的代码部分时效果最好
 - **Monorepo 注意**：虽然工具默认假设根目录访问，但 Claude 会自动向上查找 `CLAUDE.md`
 - **实践**：在子目录工作，根级上下文不会丢失
 
 ### 5. 按子目录限定测试和 Lint 命令
+
 - **问题**：Claude 改了一个服务就跑完整测试套件 → 超时 + 浪费上下文
 - **方案**：在子目录级 `CLAUDE.md` 指定适用于该部分的命令
 - **适用**：服务导向的代码库（每个目录有自己的测试和构建命令）
 - **编译型语言 monorepo**：跨目录依赖深，子目录 scoping 更难，可能需要项目特定构建配置
 
 ### 6. 目录结构不工作时，构建代码库地图
+
 - **场景**：代码未组织在常规目录结构中
 - **方案**：在仓库根目录放轻量 markdown 文件，每行描述一个顶级文件夹的内容
 - **作用**：给 Claude 一张目录表，在打开文件前先扫描
@@ -51,6 +57,7 @@
 - **简单场景**：用 `@` 提及特定文件或目录也能达到同样效果
 
 ### 7. 运行 LSP 服务器，让 Claude 按符号搜索
+
 - **问题**：对大型代码库常用函数名做 grep → 返回数千个匹配，Claude 烧上下文去搞清楚哪个有意义
 - **方案**：用 LSP（语言服务器协议）按符号搜索
   - LSP 只返回指向同一符号的引用
@@ -89,11 +96,13 @@
 ## 实践建议（基于 EverOS 仓库）
 
 ### 当前状态
+
 - ✅ `CLAUDE.md` 已存在（232 行，覆盖 runtime artifacts）
 - ✅ `.codex/AGENTS.md` 已配置（Windburn 通信配置）
 - ⚠️ 子目录 `CLAUDE.md` 可能缺失（methods/、benchmarks/、use-cases/ 等）
 
 ### 建议补充
+
 1. **子目录 CLAUDE.md**：
    - `methods/EverCore/CLAUDE.md` — EverCore 特定约定
    - `benchmarks/EverMemBench/CLAUDE.md` — 评估运行命令
@@ -111,7 +120,7 @@
 
 ## 参考资料
 
-- 原博客：https://claude.com/blog/how-claude-code-works-in-large-codebases-best-practices-and-where-to-start
-- Claude Code 文档：https://docs.anthropic.com/en/docs/claude-code
-- Windburn 认知缓存：https://github.com/Fearvox/multica-ultimate-workbench/blob/main/docs/windburn-cognitive-cache-direction.md
-- Multica Ultimate Workbench：https://github.com/Fearvox/multica-ultimate-workbench
+- 原博客：<https://claude.com/blog/how-claude-code-works-in-large-codebases-best-practices-and-where-to-start>
+- Claude Code 文档：<https://docs.anthropic.com/en/docs/claude-code>
+- Windburn 认知缓存：<https://github.com/Fearvox/multica-ultimate-workbench/blob/main/docs/windburn-cognitive-cache-direction.md>
+- Multica Ultimate Workbench：<https://github.com/Fearvox/multica-ultimate-workbench>

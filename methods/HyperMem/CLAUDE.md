@@ -16,7 +16,7 @@ LoCoMo eval before merge.
 
 ## Internal map
 
-```
+```text
 hypermem/
 ├── main/         entry points for construction + retrieval + evaluation
 ├── structure.py  hypergraph data structures (topics, episodes, facts, edges)

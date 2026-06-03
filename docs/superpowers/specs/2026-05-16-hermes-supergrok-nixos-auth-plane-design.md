@@ -1,9 +1,11 @@
 # Hermes SuperGrok on NixOS: Three Auth Planes
 
 ## Status
+
 Draft design, approved at the architecture level.
 
 ## Context
+
 Hermes now supports `xai-oauth`, and the local session shows a successful SuperGrok login with `model.provider=xai-oauth` and default model `grok-4.3`.
 
 At the same time, the remote NixOS path needs the sanitized repository knowledge bundle that was already prepared for the `Windburn` xAI collection. That bundle is not the same thing as the interactive chat session: it is a durable knowledge corpus that must be refreshable on a remote host.

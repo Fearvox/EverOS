@@ -202,7 +202,7 @@ everos/                        # repo root
 - [docs/engineering.md](docs/engineering.md) — Engineering & dev-efficiency infrastructure (CI / tooling / Claude Code)
 - [CHANGELOG.md](CHANGELOG.md) — Release notes
 - [CONTRIBUTING.md](CONTRIBUTING.md) — How to contribute
-- [.claude/rules/](.claude/rules/) — Detailed coding conventions (auto-loaded by Claude Code)
+- [Coding conventions](docs/engineering.md) — Detailed coding conventions, auto-loaded by Claude Code
 
 <br>
 

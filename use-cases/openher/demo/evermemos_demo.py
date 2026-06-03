@@ -13,15 +13,21 @@ Usage:
     python demo/evermemos_demo.py
 
     # With self-hosted EverCore
-    export EVERMEMOS_BASE_URL=http://localhost:1995/api/v1
+    export EVERMEMOS_BASE_URL=http://localhost:1995
     python demo/evermemos_demo.py
+
+Note: the rewritten EverCore HTTP API mounts every route under the
+absolute prefix ``/api/v1/memory`` (see
+``src/everos/entrypoints/api/routes/``). EVERMEMOS_BASE_URL should point
+at the host root (no ``/api/v1`` suffix); a trailing ``/api/v1`` is
+stripped automatically for backward compatibility.
 """
 
 import asyncio
 import os
 import sys
 import json
-from datetime import datetime
+import time
 from typing import Optional
 
 # ──────────────────────────────────────────────
@@ -39,9 +45,17 @@ class EverCoreClient:
     """Minimal EverCore client for demo purposes."""
 
     def __init__(self, base_url: str, api_key: str = ""):
-        self.base_url = base_url.rstrip("/")
+        # Routes are mounted at the absolute prefix "/api/v1/memory", so the
+        # client builds full paths from the host root. Strip a trailing
+        # "/api/v1" (or "/api/v1/") so legacy env values keep working.
+        root = base_url.rstrip("/")
+        for suffix in ("/api/v1/memory", "/api/v1"):
+            if root.endswith(suffix):
+                root = root[: -len(suffix)]
+                break
+        self.base_url = root.rstrip("/")
         self.api_key = api_key
-        self._client = httpx.AsyncClient(timeout=10.0)
+        self._client = httpx.AsyncClient(timeout=30.0)
         self.available = bool(base_url)
 
     async def _headers(self) -> dict:
@@ -51,11 +65,11 @@ class EverCoreClient:
         return h
 
     async def health_check(self) -> bool:
-        """Check if EverCore is reachable."""
+        """Check if EverCore is reachable (GET /health)."""
         try:
-            # Try the health endpoint (remove /api/v1 suffix)
-            health_url = self.base_url.replace("/api/v1", "") + "/health"
-            resp = await self._client.get(health_url, headers=await self._headers())
+            resp = await self._client.get(
+                f"{self.base_url}/health", headers=await self._headers()
+            )
             return resp.status_code == 200
         except Exception:
             return False
@@ -70,27 +84,41 @@ class EverCoreClient:
         user_message: str,
         agent_reply: str,
     ) -> dict:
-        """Store a conversation turn as memory."""
-        now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+        """Store a conversation turn as memory.
+
+        POST /api/v1/memory/add — body is a ``MemorizeAddRequest``:
+        ``session_id`` (the demo's group_id namespace), ``app_id`` /
+        ``project_id`` scope, and ``messages[]`` of
+        ``{sender_id, sender_name, role, timestamp(ms), content}``.
+        The contract requires ``timestamp`` to be a Unix epoch in
+        **milliseconds** (int > 0) and ``role`` to be one of
+        ``user | assistant | tool``.
+        """
+        now_ms = int(time.time() * 1000)
         messages = [
             {
-                "message_id": f"msg_{hash(user_message) & 0xFFFF:04x}_u",
-                "create_time": now,
-                "sender": user_id,
+                "sender_id": user_id,
                 "sender_name": user_name,
+                "role": "user",
+                "timestamp": now_ms,
                 "content": user_message,
             },
             {
-                "message_id": f"msg_{hash(agent_reply) & 0xFFFF:04x}_a",
-                "create_time": now,
-                "sender": persona_id,
+                "sender_id": persona_id,
                 "sender_name": persona_name,
+                "role": "assistant",
+                "timestamp": now_ms,
                 "content": agent_reply,
             },
         ]
         resp = await self._client.post(
-            f"{self.base_url}/memories",
-            json={"messages": messages, "group_id": group_id},
+            f"{self.base_url}/api/v1/memory/add",
+            json={
+                "session_id": group_id,
+                "app_id": "openher",
+                "project_id": "demo",
+                "messages": messages,
+            },
             headers=await self._headers(),
         )
         return resp.json() if resp.status_code == 200 else {"error": resp.text}
@@ -102,27 +130,54 @@ class EverCoreClient:
         group_id: str,
         top_k: int = 5,
     ) -> dict:
-        """Search for relevant memories."""
-        resp = await self._client.get(
-            f"{self.base_url}/memories/search",
-            params={
-                "query": query,
+        """Search for relevant memories.
+
+        POST /api/v1/memory/search — body is a ``SearchRequest``: the owner
+        is identified by ``user_id`` XOR ``agent_id`` (exactly one), the
+        method enum is ``hybrid``, ``top_k`` must be -1 or 1..100, and
+        ``include_profile`` pulls the accumulated profile alongside hits.
+        The demo's ``group_id`` namespace maps to ``app_id`` / ``project_id``
+        scope (same scope used on the /add side).
+        """
+        resp = await self._client.post(
+            f"{self.base_url}/api/v1/memory/search",
+            json={
                 "user_id": user_id,
-                "group_id": group_id,
+                "query": query,
+                "app_id": "openher",
+                "project_id": "demo",
+                "method": "hybrid",
                 "top_k": top_k,
-                "retrieve_method": "hybrid",
+                "include_profile": True,
             },
             headers=await self._headers(),
         )
         return resp.json() if resp.status_code == 200 else {"error": resp.text}
 
     async def get_user_profile(self, user_id: str) -> dict:
-        """Get user profile (accumulated from conversations)."""
-        resp = await self._client.get(
-            f"{self.base_url}/users/{user_id}/profile",
+        """Get the accumulated user profile.
+
+        There is no dedicated ``/users/{id}/profile`` route in the
+        rewritten API. Profiles are listed via POST /api/v1/memory/get with
+        ``memory_type="profile"`` (user-owned only). This returns the inner
+        ``profile_data`` dict of the first profile row, or ``{}`` if none.
+        """
+        resp = await self._client.post(
+            f"{self.base_url}/api/v1/memory/get",
+            json={
+                "user_id": user_id,
+                "memory_type": "profile",
+                "app_id": "openher",
+                "project_id": "demo",
+            },
             headers=await self._headers(),
         )
-        return resp.json() if resp.status_code == 200 else {}
+        if resp.status_code != 200:
+            return {}
+        profiles = resp.json().get("data", {}).get("profiles", [])
+        if not profiles:
+            return {}
+        return profiles[0].get("profile_data", {})
 
     async def close(self):
         await self._client.aclose()
@@ -201,7 +256,7 @@ async def main():
         print("  Option B — Self-hosted:")
         print("    cd vendor/EverCore && docker compose up -d")
         print("    uv run python src/run.py")
-        print("    export EVERMEMOS_BASE_URL=http://localhost:1995/api/v1")
+        print("    export EVERMEMOS_BASE_URL=http://localhost:1995")
         print()
         print("Get your API key: https://console.evermind.ai/")
         print()
@@ -269,12 +324,22 @@ async def main():
             user_id=user_id,
             group_id=group_id,
         )
-        memories = result.get("result", {}).get("memories", [])
+        # New envelope: {"request_id": ..., "data": {"episodes": [...],
+        # "profiles": [...], ...}}. Episode hits carry a "summary" plus
+        # nested "atomic_facts"; surface whichever is present.
+        episodes = result.get("data", {}).get("episodes", [])
         print(f"  Q: \"{query}\"")
-        if memories:
-            for mem in memories[:2]:
-                content = str(mem)[:100]
-                print(f"     → {content}")
+        if episodes:
+            for ep in episodes[:2]:
+                facts = ep.get("atomic_facts", [])
+                snippet = (
+                    facts[0]["content"]
+                    if facts
+                    else ep.get("summary") or ep.get("episode", "")
+                )
+                print(f"     → {str(snippet)[:100]}")
+        elif "error" in result:
+            print(f"     → (error: {str(result['error'])[:80]})")
         else:
             print("     → (no results yet — indexing may still be in progress)")
         print()

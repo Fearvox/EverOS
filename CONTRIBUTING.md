@@ -14,8 +14,8 @@ What we actively welcome from the community:
 
 | Type | Where |
 |---|---|
-| 🐛 Bug reports | [Open a bug issue](https://github.com/EverMind-AI/everos/issues/new?template=bug_report.md) |
-| 💡 Feature ideas / use cases | [Open a feature issue](https://github.com/EverMind-AI/everos/issues/new?template=feature_request.md) |
+| 🐛 Bug reports | [Open a bug issue](https://github.com/EverMind-AI/everos/issues/new?template=bug_report.yml) |
+| 💡 Feature ideas / use cases | [Open a feature issue](https://github.com/EverMind-AI/everos/issues/new?template=feature_request.yml) |
 | 🔧 Suggested fixes | An issue with a code snippet / patch attached (see below) |
 | ❓ Questions & discussion | [GitHub Discussions](https://github.com/EverMind-AI/everos/discussions) / [Discord](https://discord.gg/gYep5nQRZJ) |
 
@@ -25,7 +25,7 @@ What we actively welcome from the community:
 
 ## Reporting a bug
 
-Use the [bug report template](https://github.com/EverMind-AI/everos/issues/new?template=bug_report.md). Include:
+Use the [bug report template](https://github.com/EverMind-AI/everos/issues/new?template=bug_report.yml). Include:
 
 - Clear reproduction steps
 - Expected vs. actual behavior
@@ -34,7 +34,7 @@ Use the [bug report template](https://github.com/EverMind-AI/everos/issues/new?t
 
 ## Suggesting a feature
 
-Use the [feature request template](https://github.com/EverMind-AI/everos/issues/new?template=feature_request.md). Provide:
+Use the [feature request template](https://github.com/EverMind-AI/everos/issues/new?template=feature_request.yml). Provide:
 
 - The use case / problem being solved
 - Proposed API or behavior

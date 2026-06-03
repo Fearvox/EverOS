@@ -47,9 +47,10 @@ def _read_template() -> str:
     except (FileNotFoundError, ModuleNotFoundError) as exc:
         raise RuntimeError(
             f"packaged template {_TEMPLATE_NAME!r} not found under "
-            f"{_TEMPLATE_PACKAGE!r}; the wheel is missing its "
-            "force-include entry (see pyproject.toml "
-            "[tool.hatch.build.targets.wheel.force-include])."
+            f"{_TEMPLATE_PACKAGE!r}; the wheel was built without the "
+            "template under src/everos/ (it ships via "
+            '[tool.hatch.build.targets.wheel] packages=["src/everos"] '
+            "in pyproject.toml)."
         ) from exc
 
 

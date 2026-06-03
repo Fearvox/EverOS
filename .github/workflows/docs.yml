@@ -82,7 +82,7 @@ jobs:
 
           files = {
               Path("README.md"): "## Use Cases",
-              Path("use-cases/README.md"): "## Use Case Catalogue",
+              Path("use-cases/README.md"): "## Use Cases",
           }
 
           failures = []

@@ -206,7 +206,10 @@ src/memory_layer/memory_extractor/profile_memory_extractor keep llm merge.py
 #LLM related
 AGENTS.mk
 docs/api_docs/profile_extraction_fields.md
-.claude/
+# Claude Code: session-local artifacts only; skills/hooks/commands stay versioned
+.claude/settings.local.json
+.claude/worktrees/
+.claude/verify/
 .cursor/*
 
 #tmp_data
@@ -227,3 +230,21 @@ use-cases/**/package-lock.json
 # Local playwright + goal state traces
 .playwright-mcp/
 .goal/
+
+# Hermes EverOS Raven SkillHub dogfood artifacts (runtime / local traces)
+# These are intentionally generated during dogfood smoke tests but should not pollute git
+.kilo/
+use-cases/hermes-everos-memory/raven/.local-runs/
+
+# Windburn system artifacts (runtime, not temporary)
+.kilo/raven-aliases.zsh
+
+# Multica Ultimate Workbench runtime
+.automations/
+.automations/**/*.json
+
+# Codex session artifacts (already covered but be explicit)
+.codex/.codex-global-state.json
+.codex/.codex-global-state.json.bak
+.sisyphus/
+.gstack/

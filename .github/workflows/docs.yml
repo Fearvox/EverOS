@@ -94,6 +94,7 @@ jobs:
               Path("methods/README.md"),
               Path("benchmarks/README.md"),
               Path("AGENTS.md"),
+              Path(".github/PULL_REQUEST_TEMPLATE.md"),
               Path(".github/CONTRIBUTING.md"),
               Path(".github/CODE_OF_CONDUCT.md"),
               Path(".github/SECURITY.md"),

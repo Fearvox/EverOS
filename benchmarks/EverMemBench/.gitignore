@@ -26,9 +26,8 @@ htmlcov/
 .cursor/
 .DS_Store
 
-# Claude Code
+# Claude Code session artifacts (CLAUDE.md is versioned, .claude/ is session-local)
 .claude/
-CLAUDE.md
 
 # Logs
 *.log

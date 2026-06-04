@@ -63,7 +63,9 @@ async def extract_atomic_facts(
 ) -> None:
     # 1. List the user senders in this memcell; bail early if there are none.
     memcell = event.memcell
-    sender_ids = sorted({m.sender_id for m in memcell.items if m.role == "user"})
+    sender_ids = sorted(
+        {m.sender_id for m in memcell.items if getattr(m, "role", None) == "user"}
+    )
     if not sender_ids:
         logger.info(
             "atomic_facts_extracted",

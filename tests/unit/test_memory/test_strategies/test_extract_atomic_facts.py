@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 import structlog.testing
-from everalgo.types import AtomicFact, ChatMessage, MemCell
+from everalgo.types import AtomicFact, ChatMessage, MemCell, ToolCallResult
 
 from everos.infra.ome.testing import FakeStrategyContext
 from everos.memory.events import UserPipelineStarted
@@ -221,3 +221,66 @@ async def test_skips_when_memcell_has_no_messages(
     assert matching, "log line should still fire (count=0)"
     assert matching[0]["count"] == 0
     mock_wcls.return_value.append_entries.assert_not_called()
+
+
+async def test_handles_tool_items_without_role(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Regression: in the shipped default ``mode = "agent"`` config, memcells
+    mix ``ChatMessage`` with ``ToolCallResult`` / ``ToolCallRequest`` items
+    that have NO ``role`` attribute. The user-sender filter must use
+    ``getattr(m, "role", None)`` — a bare ``m.role`` raised ``AttributeError``
+    on the first tool item, which the OME runner swallowed (retry → DLQ), so
+    every tool-using turn silently extracted zero facts.
+    """
+    monkeypatch.setattr(mod, "_writer", None, raising=False)
+    memcell = MemCell(
+        items=[
+            ChatMessage(
+                id="m1",
+                role="user",
+                content="book me a flight",
+                timestamp=1_700_000_000_000,
+                sender_id="u_alice",
+            ),
+            ToolCallResult(
+                tool_call_id="tc1",
+                content="flight booked",
+                timestamp=1_700_000_001_000,
+            ),
+            ChatMessage(
+                id="m3",
+                role="user",
+                content="thanks",
+                timestamp=1_700_000_002_000,
+                sender_id="u_bob",
+            ),
+        ],
+        timestamp=1_700_000_002_000,
+    )
+    event = UserPipelineStarted(memcell_id="mc_a", session_id="s1", memcell=memcell)
+
+    with (
+        patch(
+            "everos.memory.strategies.extract_atomic_facts.get_llm_client",
+            return_value=object(),
+        ),
+        patch(
+            "everos.memory.strategies.extract_atomic_facts.AtomicFactExtractor"
+        ) as mock_cls,
+        patch(
+            "everos.memory.strategies.extract_atomic_facts.AtomicFactWriter"
+        ) as mock_wcls,
+    ):
+        mock_cls.return_value.aextract = AsyncMock(
+            return_value=[_fact(None, "alice booked a flight")]
+        )
+        mock_wcls.return_value.append_entries = AsyncMock(return_value=[])
+        # Must not raise AttributeError on the role-less ToolCallResult item.
+        await extract_atomic_facts(event, FakeStrategyContext())
+
+    # Both user senders are still resolved despite the interleaved tool item.
+    owners = sorted(
+        c.args[0] for c in mock_wcls.return_value.append_entries.call_args_list
+    )
+    assert owners == ["u_alice", "u_bob"]

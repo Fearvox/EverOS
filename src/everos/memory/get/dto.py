@@ -25,11 +25,23 @@ from __future__ import annotations
 
 import datetime as _dt
 from enum import StrEnum
-from typing import Literal, Self
+from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, model_validator
 
 from everos.memory.search import FilterNode
+
+_SCOPE_ID_CHARSET = r"^[a-zA-Z0-9_.-]+$"
+_SCOPE_TRAVERSAL_TOKENS = frozenset({".", ".."})
+
+
+def _reject_scope_traversal(value: str) -> str:
+    if value in _SCOPE_TRAVERSAL_TOKENS:
+        raise ValueError("'.' and '..' are reserved (path traversal)")
+    return value
+
+
+ScopeId = Annotated[str, AfterValidator(_reject_scope_traversal)]
 
 
 class GetMemoryType(StrEnum):
@@ -69,8 +81,12 @@ class GetRequest(BaseModel):
     agent_id: str | None = Field(default=None, min_length=1)
     """Memory owner — provide ``user_id`` for ``episode`` / ``profile`` or
     ``agent_id`` for ``agent_case`` / ``agent_skill``; exactly one must be set."""
-    app_id: str = "default"
-    project_id: str = "default"
+    app_id: ScopeId = Field(
+        default="default", min_length=1, max_length=128, pattern=_SCOPE_ID_CHARSET
+    )
+    project_id: ScopeId = Field(
+        default="default", min_length=1, max_length=128, pattern=_SCOPE_ID_CHARSET
+    )
     """App / project scope (default ``"default"``). Pinned into the query
     ``where`` so a listing never crosses into another space's rows."""
     memory_type: GetMemoryType

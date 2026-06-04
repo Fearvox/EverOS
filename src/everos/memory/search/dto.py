@@ -23,9 +23,21 @@ from __future__ import annotations
 
 import datetime as _dt
 from enum import StrEnum
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, model_validator
+
+_SCOPE_ID_CHARSET = r"^[a-zA-Z0-9_.-]+$"
+_SCOPE_TRAVERSAL_TOKENS = frozenset({".", ".."})
+
+
+def _reject_scope_traversal(value: str) -> str:
+    if value in _SCOPE_TRAVERSAL_TOKENS:
+        raise ValueError("'.' and '..' are reserved (path traversal)")
+    return value
+
+
+ScopeId = Annotated[str, AfterValidator(_reject_scope_traversal)]
 
 
 class SearchMethod(StrEnum):
@@ -72,8 +84,12 @@ class SearchRequest(BaseModel):
     """Memory owner — provide ``user_id`` for user-memory (episodes /
     profiles) or ``agent_id`` for agent-memory (cases / skills); exactly
     one must be set."""
-    app_id: str = "default"
-    project_id: str = "default"
+    app_id: ScopeId = Field(
+        default="default", min_length=1, max_length=128, pattern=_SCOPE_ID_CHARSET
+    )
+    project_id: ScopeId = Field(
+        default="default", min_length=1, max_length=128, pattern=_SCOPE_ID_CHARSET
+    )
     """App / project scope (default ``"default"``). Pinned into the LanceDB
     ``where`` so a search never crosses into another space's rows."""
     query: str = Field(min_length=1)

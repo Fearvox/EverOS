@@ -66,7 +66,9 @@ async def process(payload: dict[str, Any]) -> IngestResult:
         non_text_total += non_text
 
         ts_ms: int = int(m["timestamp"])
-        message_id = gen_message_id(session_id, ts_ms, idx)
+        message_id = gen_message_id(
+            session_id, ts_ms, idx, role=m["role"], sender_id=m["sender_id"], text=text
+        )
         ts = from_timestamp(ts_ms)
 
         canonical.append(

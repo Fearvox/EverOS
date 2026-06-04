@@ -181,4 +181,6 @@ def register(parent: typer.Typer) -> None:
         typer.echo("Next steps:")
         typer.echo("  1. Edit the file and fill in the API keys (see comments inside).")
         typer.echo("  2. Run `everos server start`.")
-        typer.echo("Docs: https://github.com/EverMind-AI/EverOS/blob/main/QUICKSTART.md")
+        typer.echo(
+            "Docs: https://github.com/EverMind-AI/EverOS/blob/main/QUICKSTART.md"
+        )
